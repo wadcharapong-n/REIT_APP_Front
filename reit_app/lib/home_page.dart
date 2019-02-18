@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reit_app/favorite.dart';
 
 @override
 Widget appBarDashbord() {
@@ -51,7 +52,24 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarDashbord(),
-      body: Column(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 16.0, 16.0, 16.0),
+            child: Text(
+              'Favorite',
+              style: TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: 'Poppins'),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          Favorite()
+        ],
+      ),
       drawer: drawerDashbord(),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/favorite.dart';
+import 'package:reit_app/screens/home_page/widgets/favorite.dart';
 
 @override
 Widget appBarDashbord() {

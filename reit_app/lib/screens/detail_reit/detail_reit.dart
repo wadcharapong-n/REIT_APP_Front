@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/model/reit.dart';
+import 'package:reit_app/models/reit.dart';
 
 class DetailReit extends StatelessWidget {
   final Reit reit;

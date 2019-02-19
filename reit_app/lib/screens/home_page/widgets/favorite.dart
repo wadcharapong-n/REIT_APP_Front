@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/model/reit.dart';
-import 'package:reit_app/detail_reit.dart';
-import 'package:flutter/services.dart';
-import 'dart:convert';
+import 'package:reit_app/models/reit.dart';
+import 'package:reit_app/screens/detail_reit/detail_reit.dart';
+import 'package:reit_app/services/favorite_services.dart';
 
 class Favorite extends StatefulWidget {
   @override
@@ -16,12 +15,11 @@ class FavoriteState extends State<Favorite> {
   @override
   void initState() {
     super.initState();
-    loadAddress();
+    loadJson();
   }
 
-  loadAddress() async {
-    String jsonAddress = await rootBundle.loadString('lib/json/reit.json');
-    final jsonResponse = json.decode(jsonAddress);
+  loadJson() async {
+    final jsonResponse = await loadReit();
     setState(() {
       jsonResponse.forEach((v) {
         print(v);
@@ -85,7 +83,6 @@ class ReitRowState extends State<ReitRow> {
 
     final reitCardContent = Container(
       margin: EdgeInsets.fromLTRB(20.0, 16.0, 16.0, 16.0),
-      // constraints: BoxConstraints.expand(),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Column(
           children: <Widget>[
@@ -111,9 +108,6 @@ class ReitRowState extends State<ReitRow> {
             ),
           ],
         ),
-        // Container(
-        //   margin: EdgeInsets.symmetric(vertical: 5.0),
-        // ),
         Text(widget.reit.name, style: subHeaderTextStyle),
         Container(
             margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -153,7 +147,6 @@ class ReitRowState extends State<ReitRow> {
             pageBuilder: (_, __, ___) => DetailReit(widget.reit),
           )),
       child: Container(
-        // height: 200.0,
         margin: const EdgeInsets.symmetric(
           vertical: 8.0,
           horizontal: 24.0,

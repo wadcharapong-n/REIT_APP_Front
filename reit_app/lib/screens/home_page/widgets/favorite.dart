@@ -144,7 +144,7 @@ class ReitRowState extends State<ReitRow> {
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (_, __, ___) => DetailReit(widget.reit),
+            pageBuilder: (_, __, ___) => DetailReit(widget.reit.id),
           )),
       child: Container(
         margin: const EdgeInsets.symmetric(

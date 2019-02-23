@@ -23,31 +23,6 @@ Widget appBarDashbord() {
   );
 }
 
-@override
-Widget drawerDashbord() {
-  print("drawer");
-  return Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          child: Text(
-            'Menu',
-            style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w200,
-                fontSize: 20.0),
-          ),
-          decoration: BoxDecoration(
-            color: Colors.green[600],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,7 +32,39 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 16.0, 16.0, 16.0),
+              padding: EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                     Navigator.pushNamed(context, '/Search');
+                },
+                child: Container(
+                  height: 40.0,
+                  width: 700.0,
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.search),
+                      Text(
+                        '  Search',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300,
+                            fontFamily: 'Poppins'),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 10.0),
             child: Text(
               'Favorite',
               style: TextStyle(
@@ -71,7 +78,6 @@ class HomePage extends StatelessWidget {
           Favorite()
         ],
       ),
-      drawer: drawerDashbord(),
     );
   }
 }

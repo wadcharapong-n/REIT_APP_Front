@@ -127,7 +127,7 @@ class ReitRowState extends State<ReitRow> {
 
     final reitCard = Container(
       child: reitCardContent,
-      margin: EdgeInsets.only(left: 46.0),
+      // margin: EdgeInsets.only(left: 46.0),
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,

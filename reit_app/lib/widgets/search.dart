@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/services/search_all_reit_services.dart';
+import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 
 class ExamplePage extends StatefulWidget {
   @override
@@ -107,14 +108,9 @@ class _ExamplePageState extends State<ExamplePage> {
             child: ListTile(
               title: Text(suggestion[index].symbol),
               subtitle: Text(suggestion[index].name),
-              onTap: () {
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PageRoute()),
-                  );
-                }
-              },
+              onTap: () => Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => DetailReit(suggestion[index].id)
+                  ))
             ),
           );
         },

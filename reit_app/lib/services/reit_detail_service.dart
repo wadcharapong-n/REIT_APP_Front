@@ -1,4 +1,4 @@
-import 'dart:_http';
+import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
 import 'package:reit_app/models/reit_detail.dart';

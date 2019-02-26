@@ -224,5 +224,3 @@ class DetailReitState extends State<DetailReit>{
 
 }
 
-class await {
-}

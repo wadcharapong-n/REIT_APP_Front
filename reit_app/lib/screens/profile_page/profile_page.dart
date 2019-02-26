@@ -121,6 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.blue,
                     elevation: 12,
                     onPressed: () {
+                      Navigator.pushNamed(context, "/Home");
                       // Perform some action
                     },
                   ),
@@ -141,12 +142,16 @@ class _ProfilePageState extends State<ProfilePage> {
           Colors.white,
         ]),
       ),
-      child: Column(
+      child: ListView(
         children: <Widget>[
-          picture,
-          detail,
-        ],
-      ),
+          Column(
+          children: <Widget>[
+            picture,
+            detail,
+          ],
+        )
+        ]
+      )
     );
 
     return Scaffold(

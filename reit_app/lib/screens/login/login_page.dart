@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:login/home_page.dart';
-// import 'profile_page.dart';
+//import 'package:reit_app/screens/login/login_page.dart';
+import 'package:reit_app/screens/profile_page/profile_page.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          // Navigator.of(context).pushNamed(ProfilePage.tag);
+           Navigator.of(context).pushNamed(ProfilePage.tag);
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          // Navigator.of(context).pushNamed(ProfilePage.tag);
+           Navigator.of(context).pushNamed(ProfilePage.tag);
         },
         padding: EdgeInsets.all(12),
         color: Colors.blue,

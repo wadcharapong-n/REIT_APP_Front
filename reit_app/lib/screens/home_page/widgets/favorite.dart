@@ -4,6 +4,8 @@ import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/services/favorite_services.dart';
 
 class Favorite extends StatefulWidget {
+  final Function emptyReit;
+  const Favorite({Key key, this.emptyReit}) : super(key: key);
   @override
   FavoriteState createState() {
     return FavoriteState();
@@ -26,25 +28,42 @@ class FavoriteState extends State<Favorite> {
         final reitFormJson = Reit.fromJson(v);
         reits.add(reitFormJson);
       });
+      checkEmptyReit();
     });
   }
 
   deleteCard(reit) {
     setState(() {
       reits.remove(reit);
+      checkEmptyReit();
     });
+  }
+
+  checkEmptyReit() {
+    bool value;
+    if (reits.length == 0) {
+      value = true;
+    } else {
+      value = false;
+    }
+    widget.emptyReit(value);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemBuilder: (context, index) => ReitRow(
-                reit: reits[index],
-                deleteCard: deleteCard,
-              ),
-          itemCount: reits.length,
-          padding: EdgeInsets.symmetric(vertical: 16.0)),
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (overscroll) {
+        overscroll.disallowGlow();
+      },
+      child: Expanded(
+        child: ListView.builder(
+            itemBuilder: (context, index) => ReitRow(
+                  reit: reits[index],
+                  deleteCard: deleteCard,
+                ),
+            itemCount: reits.length,
+            padding: EdgeInsets.symmetric(vertical: 16.0)),
+      ),
     );
   }
 }
@@ -96,7 +115,8 @@ class ReitRowState extends State<ReitRow> {
                 IconButton(
                   icon: Icon(
                     Icons.star,
-                    color: Colors.pink,
+                    color: Colors.blue,
+                    size: 30,
                   ),
                   tooltip: 'Delete Favorite',
                   onPressed: () {
@@ -111,9 +131,9 @@ class ReitRowState extends State<ReitRow> {
         Text(widget.reit.name, style: subHeaderTextStyle),
         Container(
             margin: EdgeInsets.symmetric(vertical: 8.0),
-            height: 2.0,
-            width: 40.0,
-            color: Colors.black),
+            height: 2.5,
+            width: 50.0,
+            color: Colors.green),
         Container(
           margin: EdgeInsets.symmetric(vertical: 8.0),
         ),
@@ -131,7 +151,7 @@ class ReitRowState extends State<ReitRow> {
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(16.0),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.black12,

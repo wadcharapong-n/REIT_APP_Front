@@ -3,10 +3,11 @@ import 'dart:async' show Future;
 import 'dart:convert';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:http/http.dart' as http;
+import 'package:reit_app/app_config.dart';
 
 Future<ReitDetail> getReitDetailById() async {
-  final response =
-  await http.get('https://demo9258039.mockable.io/reit-detail',
+//  final response = await http.get(AppConfig.apiUrl + '/reit-detail',
+  final response = await http.get('https://demo9258039.mockable.io/reit-detail',
     headers: {
       HttpHeaders.contentTypeHeader: 'application/json'
     });
@@ -17,3 +18,6 @@ Future<ReitDetail> getReitDetailById() async {
     throw Exception('Failed to load data');
   }
 }
+
+
+await http.get('https://demo9258039.mockable.io/reit-detail',

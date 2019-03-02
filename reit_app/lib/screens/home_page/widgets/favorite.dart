@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/models/reit.dart';
-import 'package:reit_app/screens/detail_reit/detail_reit.dart';
+import 'package:reit_app/models/reit_favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
+import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 
 class Favorite extends StatefulWidget {
   final Function emptyReit;
@@ -13,35 +13,26 @@ class Favorite extends StatefulWidget {
 }
 
 class FavoriteState extends State<Favorite> {
-  List<Reit> reits = [];
+  List<ReitFavorite> reitsFavorite = List();
   @override
   void initState() {
     super.initState();
-    loadJson();
-  }
-
-  loadJson() async {
-    final jsonResponse = await loadReit();
-    setState(() {
-      jsonResponse.forEach((v) {
-        print(v);
-        final reitFormJson = Reit.fromJson(v);
-        reits.add(reitFormJson);
-      });
+    getReitFavoriteByUserId('1').then((result) {
+      reitsFavorite = result;
       checkEmptyReit();
     });
   }
 
   deleteCard(reit) {
     setState(() {
-      reits.remove(reit);
+      reitsFavorite.remove(reit);
       checkEmptyReit();
     });
   }
 
   checkEmptyReit() {
     bool value;
-    if (reits.length == 0) {
+    if (reitsFavorite.length == 0) {
       value = true;
     } else {
       value = false;
@@ -58,10 +49,10 @@ class FavoriteState extends State<Favorite> {
       child: Expanded(
         child: ListView.builder(
             itemBuilder: (context, index) => ReitRow(
-                  reit: reits[index],
+                  reitFavorite: reitsFavorite[index],
                   deleteCard: deleteCard,
                 ),
-            itemCount: reits.length,
+            itemCount: reitsFavorite.length,
             padding: EdgeInsets.symmetric(vertical: 16.0)),
       ),
     );
@@ -69,10 +60,11 @@ class FavoriteState extends State<Favorite> {
 }
 
 class ReitRow extends StatefulWidget {
-  final Reit reit;
+  final ReitFavorite reitFavorite;
   final Function deleteCard;
 
-  const ReitRow({Key key, this.reit, this.deleteCard}) : super(key: key);
+  const ReitRow({Key key, this.reitFavorite, this.deleteCard})
+      : super(key: key);
 
   @override
   ReitRowState createState() {
@@ -92,7 +84,7 @@ class ReitRowState extends State<ReitRow> {
         color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400);
 
     final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 16.0);
-    Widget _planetValue({String value}) {
+    Widget _reitValue({String value}) {
       return Row(children: <Widget>[
         Expanded(
           child: Text(value, style: regularTextStyle),
@@ -109,7 +101,7 @@ class ReitRowState extends State<ReitRow> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  widget.reit.symbol,
+                  widget.reitFavorite.ticker,
                   style: headerTextStyle,
                 ),
                 IconButton(
@@ -120,15 +112,14 @@ class ReitRowState extends State<ReitRow> {
                   ),
                   tooltip: 'Delete Favorite',
                   onPressed: () {
-                    print('object');
-                    this.widget.deleteCard(widget.reit);
+                    this.widget.deleteCard(widget.reitFavorite);
                   },
                 ),
               ],
             ),
           ],
         ),
-        Text(widget.reit.name, style: subHeaderTextStyle),
+        Text(widget.reitFavorite.ticker, style: subHeaderTextStyle),
         Container(
             margin: EdgeInsets.symmetric(vertical: 8.0),
             height: 2.5,
@@ -138,16 +129,13 @@ class ReitRowState extends State<ReitRow> {
           margin: EdgeInsets.symmetric(vertical: 8.0),
         ),
         Row(
-          children: <Widget>[
-            Expanded(child: _planetValue(value: widget.reit.price))
-          ],
+          children: <Widget>[Expanded(child: _reitValue(value: '0.00'))],
         )
       ]),
     );
 
     final reitCard = Container(
       child: reitCardContent,
-      // margin: EdgeInsets.only(left: 46.0),
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
@@ -164,7 +152,7 @@ class ReitRowState extends State<ReitRow> {
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (_, __, ___) => DetailReit(widget.reit.symbol),
+            pageBuilder: (_, __, ___) => DetailReit(widget.reitFavorite.ticker),
           )),
       child: Container(
         margin: const EdgeInsets.symmetric(

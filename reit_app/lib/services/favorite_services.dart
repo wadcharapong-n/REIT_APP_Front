@@ -1,13 +1,23 @@
+import 'dart:io';
 import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
+import 'package:reit_app/models/reit_favorite.dart';
+import 'package:http/http.dart' as http;
+import 'package:reit_app/app_config.dart';
 
-Future<String> _loadReitAsset() async {
-  return await rootBundle.loadString('lib/json/reit.json');
-}
+Future<List<ReitFavorite>> getReitFavoriteByUserId(String userId) async {
+  final response =
+      await http.get(AppConfig.apiUrl + "/reitFavorite/" + userId, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+  if (response.statusCode == 200) {
+    List<ReitFavorite> allReitFavorite = List();
+    json.decode(response.body).forEach((reitFavorite) {
+      allReitFavorite.add(ReitFavorite.fromJson(reitFavorite));
+    });
 
-Future loadReit() async {
-  String jsonAddress = await _loadReitAsset();
-  final jsonResponse = json.decode(jsonAddress);
-  return jsonResponse;
+    return allReitFavorite;
+  } else {
+    throw Exception('Failed to load data');
+  }
 }

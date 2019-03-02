@@ -13,7 +13,6 @@ Future loadReit() async {
   String jsonReitAll = await _loadReitAsset();
   final jsonResponse = json.decode(jsonReitAll);
   jsonResponse.forEach((v) {
-    print(v);
     final reitFormJson = SearchAllReit.fromJson(v);
     dataAllReit.add(reitFormJson);
   });

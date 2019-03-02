@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
+import 'package:reit_app/screens/home_page/widgets/favorite.dart';
+import 'package:reit_app/services/favorite_services.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
@@ -12,6 +14,7 @@ class DetailReit extends StatefulWidget {
 
 class DetailReitState extends State<DetailReit>{
   ReitDetail reitDetail;
+  bool favorite;
 
   @override
   void initState() {
@@ -20,8 +23,21 @@ class DetailReitState extends State<DetailReit>{
       setState(() {
         reitDetail = result;
       });
+      checkFavorite();
     });
   }
+
+ checkFavorite() {
+    for (final reitFavorite in FavoriteState.reitsFavorite) {
+      if (reitFavorite.ticker == reitDetail.symbol) {
+        favorite = true;
+        break;
+      } else {
+        favorite = false;
+      }
+    }
+  }
+
 
   Widget build(BuildContext context) {
     if (reitDetail == null) {
@@ -32,6 +48,35 @@ class DetailReitState extends State<DetailReit>{
         centerTitle: true,
         title: Text("Reit Detail"),
         backgroundColor: Colors.green,
+        actions: <Widget>[
+          favorite == true
+              ? IconButton(
+                  icon: Icon(
+                    Icons.star,
+                    color: Colors.blue,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      favorite = false;
+                    });
+                  },
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.star_border,
+                    color: Colors.blue,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    addReitFavorite('1', reitDetail.symbol).then((result) {
+                      setState(() {
+                        favorite = true;
+                      });
+                    });
+                  },
+                ),
+        ],
       ),
       body: new Container(
         margin: EdgeInsets.all(10),

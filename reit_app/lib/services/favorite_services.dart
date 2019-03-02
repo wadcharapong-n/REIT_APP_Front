@@ -21,3 +21,15 @@ Future<List<ReitFavorite>> getReitFavoriteByUserId(String userId) async {
     throw Exception('Failed to load data');
   }
 }
+
+Future addReitFavorite(String userId, String ticker) async {
+  final response = await http.post(
+    AppConfig.apiUrl + "/reitFavorite",
+    body: {"userId": userId, "Ticker": ticker},
+  );
+  if (response.statusCode == 200) {
+    return 'success';
+  } else {
+    throw Exception('Failed to load data');
+  }
+}

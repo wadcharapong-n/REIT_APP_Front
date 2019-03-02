@@ -13,7 +13,7 @@ class Favorite extends StatefulWidget {
 }
 
 class FavoriteState extends State<Favorite> {
-  List<ReitFavorite> reitsFavorite = List();
+  static List<ReitFavorite> reitsFavorite = List();
   @override
   void initState() {
     super.initState();

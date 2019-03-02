@@ -109,7 +109,7 @@ class _ExamplePageState extends State<ExamplePage> {
               title: Text(suggestion[index].symbol),
               subtitle: Text(suggestion[index].name),
               onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => DetailReit(suggestion[index].id)
+                    pageBuilder: (_, __, ___) => DetailReit(suggestion[index].symbol)
                   ))
             ),
           );

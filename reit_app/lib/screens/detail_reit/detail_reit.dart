@@ -3,8 +3,8 @@ import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
 
 class DetailReit extends StatefulWidget {
-  final String reitId;
-  DetailReit(this.reitId);
+  final String reitSymbol;
+  DetailReit(this.reitSymbol);
 
   @override
   DetailReitState createState() => DetailReitState();
@@ -16,7 +16,7 @@ class DetailReitState extends State<DetailReit>{
   @override
   void initState() {
     super.initState();
-    getReitDetailById().then((result) {
+    getReitDetailBySymbol(widget.reitSymbol).then((result) {
       setState(() {
         reitDetail = result;
       });
@@ -70,8 +70,8 @@ class DetailReitState extends State<DetailReit>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(reitDetail.symbol, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                Text(reitDetail.nameThai, overflow: TextOverflow.ellipsis),
-                Text(reitDetail.nameEng, overflow: TextOverflow.ellipsis),
+                Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis),
+                Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis),
               ],
             ),
           ),
@@ -81,9 +81,9 @@ class DetailReitState extends State<DetailReit>{
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(reitDetail.price.toString(), style: TextStyle(fontSize: 40, color: Colors.green)),
-                Text(reitDetail.highestPrice.toString(), style: TextStyle(fontSize: 16, color: Colors.blue)),
-                Text(reitDetail.lowestPrice.toString(), style: TextStyle(fontSize: 16, color: Colors.red)),
+                Text(reitDetail.priceOfDay, style: TextStyle(fontSize: 40, color: Colors.green)),
+                Text(reitDetail.maxPriceOfDay, style: TextStyle(fontSize: 16, color: Colors.blue)),
+                Text(reitDetail.minPriceOfDay, style: TextStyle(fontSize: 16, color: Colors.red)),
               ],
             ),
           )
@@ -109,9 +109,9 @@ class DetailReitState extends State<DetailReit>{
             new Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text(reitDetail.parValue.toString()),
-                Text(reitDetail.pe.toString()),
-                Text(reitDetail.floorPrice.toString()),
+                Text(reitDetail.parValue),
+                Text(reitDetail.peValue),
+                Text(reitDetail.floorValue),
               ],
             )
           ],
@@ -136,8 +136,8 @@ class DetailReitState extends State<DetailReit>{
           new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(reitDetail.pNav.toString()),
-              Text(reitDetail.ceilingPrice.toString()),
+              Text(reitDetail.parNAV),
+              Text(reitDetail.ceilingValue),
               Text("")
             ],
           )
@@ -183,7 +183,7 @@ class DetailReitState extends State<DetailReit>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text("นโยบายเงินปันผล", style: TextStyle(fontWeight: FontWeight.bold),),
-                Text(reitDetail.dividendPolicy),
+                Text(reitDetail.policy),
               ],
             )
           )

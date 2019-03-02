@@ -1,52 +1,72 @@
 class ReitDetail {
   final String id;
   final String symbol;
-  final String nameThai;
-  final String nameEng;
-  final double price;
-  final double highestPrice;
-  final double lowestPrice;
-  final double parValue;
-  final double pNav;
-  final double pe;
-  final double ceilingPrice;
-  final double floorPrice;
-  final String dividendPolicy;
+  final String trustNameTh;
+  final String trustNameEn;
+  final String priceOfDay;
+  final String maxPriceOfDay;
+  final String minPriceOfDay;
+  final String parValue;
+  final String parNAV;
+  final String peValue;
+  final String ceilingValue;
+  final String floorValue;
+  final String policy;
   final String trustee;
+  final String nickName;
+  final String reitManager;
+  final String address;
+  final String registrationDate;
+  final String investmentAmount;
+  final String establishmentDate;
 
   const ReitDetail({
     this.id,
     this.symbol,
-    this.nameThai,
-    this.nameEng,
-    this.price,
-    this.highestPrice,
-    this.lowestPrice,
+    this.trustNameTh,
+    this.trustNameEn,
+    this.priceOfDay,
+    this.maxPriceOfDay,
+    this.minPriceOfDay,
     this.parValue,
-    this.pNav,
-    this.pe,
-    this.ceilingPrice,
-    this.floorPrice,
-    this.dividendPolicy,
-    this.trustee
+    this.parNAV,
+    this.peValue,
+    this.ceilingValue,
+    this.floorValue,
+    this.policy,
+    this.trustee,
+    this.nickName,
+    this.reitManager,
+    this.address,
+    this.registrationDate,
+    this.investmentAmount,
+    this.establishmentDate,
   });
+
+  String handledNullString(String value) => value == null ? "" : value;
 
   factory ReitDetail.fromJson(Map<String, dynamic> json) {
     return ReitDetail(
-      id: json['id'],
-      symbol: json['symbol'],
-      nameThai: json['nameThai'],
-      nameEng: json['nameEng'],
-      price: json['price'],
-      highestPrice: json['highestPrice'],
-      lowestPrice: json['lowestPrice'],
-      parValue: json['parValue'],
-      pNav: json['pNav'],
-      pe: json['pe'],
-      ceilingPrice: json['ceilingPrice'],
-      floorPrice: json['floorPrice'],
-      dividendPolicy: json['dividendPolicy'],
-      trustee: json['trustee'],
+      id: json['Id'],
+      symbol: json['Symbol'],
+      trustNameTh: json['TrustNameTh'],
+      trustNameEn: json['TrustNameEn'],
+      priceOfDay: json['PriceOfDay'],
+      maxPriceOfDay: json['MaxPriceOfDay'],
+      minPriceOfDay: json['MinPriceOfDay'],
+      parValue: json['ParValue'],
+      parNAV: json['ParNAV'],
+      peValue: json['PeValue'],
+      ceilingValue: json['CeilingValue'],
+      floorValue: json['FloorValue'],
+      policy: json['Policy'],
+      trustee: json['Trustee'],
+      nickName: json['NickName'],
+      reitManager: json['ReitManager'],
+      address: json['Address'],
+      registrationDate: json['RegistrationDate'],
+      investmentAmount: json['InvestmentAmount'],
+      establishmentDate: json['EstablishmentDate'],
     );
   }
 }

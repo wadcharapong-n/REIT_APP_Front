@@ -23,13 +23,6 @@ class FavoriteState extends State<Favorite> {
     });
   }
 
-  deleteCard(reit) {
-    setState(() {
-      reitsFavorite.remove(reit);
-      checkEmptyReit();
-    });
-  }
-
   checkEmptyReit() {
     bool value;
     if (reitsFavorite.length == 0) {
@@ -50,7 +43,7 @@ class FavoriteState extends State<Favorite> {
         child: ListView.builder(
             itemBuilder: (context, index) => ReitRow(
                   reitFavorite: reitsFavorite[index],
-                  deleteCard: deleteCard,
+                  checkEmptyReit: checkEmptyReit,
                 ),
             itemCount: reitsFavorite.length,
             padding: EdgeInsets.symmetric(vertical: 16.0)),
@@ -61,9 +54,9 @@ class FavoriteState extends State<Favorite> {
 
 class ReitRow extends StatefulWidget {
   final ReitFavorite reitFavorite;
-  final Function deleteCard;
+  final Function checkEmptyReit;
 
-  const ReitRow({Key key, this.reitFavorite, this.deleteCard})
+  const ReitRow({Key key, this.reitFavorite, this.checkEmptyReit})
       : super(key: key);
 
   @override
@@ -73,6 +66,16 @@ class ReitRow extends StatefulWidget {
 }
 
 class ReitRowState extends State<ReitRow> {
+  deleteCard(String userId, String ticker) {
+    deleteReitFavorite('1', ticker).then((result) {
+      setState(() {
+        FavoriteState.reitsFavorite
+            .removeWhere((item) => item.userId == '1' && item.ticker == ticker);
+      });
+      widget.checkEmptyReit();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final baseTextStyle = const TextStyle(fontFamily: 'Poppins');
@@ -112,7 +115,15 @@ class ReitRowState extends State<ReitRow> {
                   ),
                   tooltip: 'Delete Favorite',
                   onPressed: () {
-                    this.widget.deleteCard(widget.reitFavorite);
+                    deleteReitFavorite('1', widget.reitFavorite.ticker)
+                        .then((result) {
+                      setState(() {
+                        deleteCard(
+                          widget.reitFavorite.userId,
+                          widget.reitFavorite.ticker,
+                        );
+                      });
+                    });
                   },
                 ),
               ],
@@ -151,9 +162,17 @@ class ReitRowState extends State<ReitRow> {
     );
 
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (_, __, ___) => DetailReit(widget.reitFavorite.ticker),
-          )),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailReit(
+                    reitSymbol: widget.reitFavorite.ticker,
+                  )),
+        ).then((result) {
+          widget.checkEmptyReit();
+        });
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 8.0,

@@ -37,7 +37,6 @@ class HomePageState extends State<HomePage> {
   emptyReit(value) {
     setState(() {
       isEmptyReit = value;
-      print(isEmptyReit);
     });
   }
 
@@ -53,7 +52,15 @@ class HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/Search');
+                Navigator.pushNamed(context, '/Search').then((result) {
+                  setState(() {
+                    if (FavoriteState.reitsFavorite.length == 0) {
+                      isEmptyReit = true;
+                    } else {
+                      isEmptyReit = false;
+                    }
+                  });
+                });
               },
               child: Container(
                 height: 40.0,

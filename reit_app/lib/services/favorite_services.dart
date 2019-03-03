@@ -33,3 +33,16 @@ Future addReitFavorite(String userId, String ticker) async {
     throw Exception('Failed to load data');
   }
 }
+
+Future deleteReitFavorite(String userId, String ticker) async {
+  final response = await http.delete(
+      AppConfig.apiUrl + "/reitFavorite?userId=" + userId + "&Ticker=" + ticker,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+      });
+  if (response.statusCode == 200) {
+    return 'success';
+  } else {
+    throw Exception('Failed to load data');
+  }
+}

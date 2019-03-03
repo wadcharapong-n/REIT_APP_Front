@@ -3,16 +3,17 @@ import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
 import 'package:reit_app/screens/home_page/widgets/favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
+import 'package:reit_app/models/reit_favorite.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
-  DetailReit(this.reitSymbol);
+  DetailReit({Key key, this.reitSymbol}) : super(key: key);
 
   @override
   DetailReitState createState() => DetailReitState();
 }
 
-class DetailReitState extends State<DetailReit>{
+class DetailReitState extends State<DetailReit> {
   ReitDetail reitDetail;
   bool favorite;
 
@@ -27,7 +28,7 @@ class DetailReitState extends State<DetailReit>{
     });
   }
 
- checkFavorite() {
+  checkFavorite() {
     for (final reitFavorite in FavoriteState.reitsFavorite) {
       if (reitFavorite.ticker == reitDetail.symbol) {
         favorite = true;
@@ -38,7 +39,6 @@ class DetailReitState extends State<DetailReit>{
     }
   }
 
-
   Widget build(BuildContext context) {
     if (reitDetail == null) {
       return new Scaffold();
@@ -47,7 +47,7 @@ class DetailReitState extends State<DetailReit>{
       appBar: new AppBar(
         centerTitle: true,
         title: Text("Reit Detail"),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.red[200],
         actions: <Widget>[
           favorite == true
               ? IconButton(
@@ -57,8 +57,13 @@ class DetailReitState extends State<DetailReit>{
                     size: 30,
                   ),
                   onPressed: () {
-                    setState(() {
-                      favorite = false;
+                    deleteReitFavorite('1', reitDetail.symbol).then((result) {
+                      setState(() {
+                        favorite = false;
+                      });
+                      FavoriteState.reitsFavorite.removeWhere((item) =>
+                          item.userId == '1' &&
+                          item.ticker == reitDetail.symbol);
                     });
                   },
                 )
@@ -73,10 +78,22 @@ class DetailReitState extends State<DetailReit>{
                       setState(() {
                         favorite = true;
                       });
+                      Object json = {
+                        'UserId': '1',
+                        'Ticker': reitDetail.symbol
+                      };
+                      FavoriteState.reitsFavorite
+                          .add(ReitFavorite.fromJson(json));
                     });
-                  },
-                ),
+                  })
         ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+        ),
       ),
       body: new Container(
         margin: EdgeInsets.all(10),
@@ -86,7 +103,7 @@ class DetailReitState extends State<DetailReit>{
             _getSection2(),
             _getSection3(),
             _getSection4()
-//            _getToolbar(context),
+            //  _getToolbar(context),
           ],
         ),
       ),
@@ -95,72 +112,75 @@ class DetailReitState extends State<DetailReit>{
 
   final borderBottom = new BoxDecoration(
     border: new Border(
-      bottom: BorderSide(
-        color: Colors.black12,
-        width: 1,
-      )
-    ),
+        bottom: BorderSide(
+      color: Colors.black12,
+      width: 1,
+    )),
   );
 
   Container _getSection1() {
     return new Container(
-      padding: EdgeInsets.only(bottom: 10),
-      decoration: borderBottom,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          new Expanded(
-            flex: 6,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(reitDetail.symbol, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis),
-                Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis),
-              ],
+        padding: EdgeInsets.only(bottom: 10),
+        decoration: borderBottom,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            new Expanded(
+              flex: 6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(reitDetail.symbol,
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                  Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis),
+                  Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis),
+                ],
+              ),
             ),
-          ),
-          new Expanded(
-            flex: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(reitDetail.priceOfDay, style: TextStyle(fontSize: 40, color: Colors.green)),
-                Text(reitDetail.maxPriceOfDay, style: TextStyle(fontSize: 16, color: Colors.blue)),
-                Text(reitDetail.minPriceOfDay, style: TextStyle(fontSize: 16, color: Colors.red)),
-              ],
-            ),
-          )
-        ],
-      )
-    );
+            new Expanded(
+              flex: 4,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(reitDetail.priceOfDay,
+                      style: TextStyle(fontSize: 40, color: Colors.green)),
+                  Text(reitDetail.maxPriceOfDay,
+                      style: TextStyle(fontSize: 16, color: Colors.blue)),
+                  Text(reitDetail.minPriceOfDay,
+                      style: TextStyle(fontSize: 16, color: Colors.red)),
+                ],
+              ),
+            )
+          ],
+        ));
   }
 
   Container _getSection2Left() {
     return new Container(
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("ราคา Par"),
-                Text("P/E"),
-                Text("ราคา Floor"),
-              ],
-            ),
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Text(reitDetail.parValue),
-                Text(reitDetail.peValue),
-                Text(reitDetail.floorValue),
-              ],
-            )
-          ],
-        ),
+      padding: EdgeInsets.only(left: 5, right: 5),
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("ราคา Par"),
+              Text("P/E"),
+              Text("ราคา Floor"),
+            ],
+          ),
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(reitDetail.parValue),
+              Text(reitDetail.peValue),
+              Text(reitDetail.floorValue),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -172,11 +192,7 @@ class DetailReitState extends State<DetailReit>{
         children: <Widget>[
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("P/Nav"),
-              Text("ราคา Ceiling"),
-              Text("")
-            ],
+            children: <Widget>[Text("P/Nav"), Text("ราคา Ceiling"), Text("")],
           ),
           new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -193,28 +209,21 @@ class DetailReitState extends State<DetailReit>{
 
   Container _getSection2() {
     return new Container(
-      padding: EdgeInsets.only(bottom: 10, top: 10),
-      decoration: borderBottom,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          new Expanded(
-            child: Column(
-                children: <Widget>[
-                  _getSection2Left()
-                ],
-            )
-          ),
-          new Expanded(
-              child: Column(
-                children: <Widget>[
-                  _getSection2Right()
-                ],
-              )
-          )
-        ],
-      )
-    );
+        padding: EdgeInsets.only(bottom: 10, top: 10),
+        decoration: borderBottom,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            new Expanded(
+                child: Column(
+              children: <Widget>[_getSection2Left()],
+            )),
+            new Expanded(
+                child: Column(
+              children: <Widget>[_getSection2Right()],
+            ))
+          ],
+        ));
   }
 
   Container _getSection3() {
@@ -224,15 +233,16 @@ class DetailReitState extends State<DetailReit>{
       child: Row(
         children: <Widget>[
           new Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("นโยบายเงินปันผล", style: TextStyle(fontWeight: FontWeight.bold),),
-                Text(reitDetail.policy),
-              ],
-            )
-          )
-
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "นโยบายเงินปันผล",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(reitDetail.policy),
+            ],
+          ))
         ],
       ),
     );
@@ -246,14 +256,15 @@ class DetailReitState extends State<DetailReit>{
         children: <Widget>[
           new Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("ทรัสตี (Trustee)", style: TextStyle(fontWeight: FontWeight.bold),),
-                  Text(reitDetail.trustee),
-                ],
-              )
-          )
-
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "ทรัสตี (Trustee)",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(reitDetail.trustee),
+            ],
+          ))
         ],
       ),
     );
@@ -265,7 +276,4 @@ class DetailReitState extends State<DetailReit>{
       child: new BackButton(color: Colors.white),
     );
   }
-
-
 }
-

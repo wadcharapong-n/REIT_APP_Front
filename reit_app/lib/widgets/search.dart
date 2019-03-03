@@ -98,27 +98,31 @@ class _ExamplePageState extends State<ExamplePage> {
         }
       }
       suggestion = tempList;
-  
     }
-     return ListView.builder(
-        itemCount: dataAllReit == null ? 0 : suggestion.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            margin: EdgeInsets.fromLTRB(8, 5, 0, 0),
-            child: ListTile(
-              title: Text(suggestion[index].symbol),
-              subtitle: Text(suggestion[index].name),
-              onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => DetailReit(suggestion[index].symbol)
-                  ))
-            ),
-          );
-        },
-      );
+    return ListView.builder(
+      itemCount: dataAllReit == null ? 0 : suggestion.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          margin: EdgeInsets.fromLTRB(8, 5, 0, 0),
+          child: ListTile(
+            title: Text(suggestion[index].symbol),
+            subtitle: Text(suggestion[index].name),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailReit(
+                          reitSymbol: suggestion[index].symbol,
+                        )),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 
   void _getData() async {
-    print('Success');
     setState(() {
       dataAllReit.shuffle();
       suggestion = dataAllReit;

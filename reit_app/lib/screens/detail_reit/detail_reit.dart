@@ -16,6 +16,12 @@ class DetailReit extends StatefulWidget {
 class DetailReitState extends State<DetailReit> {
   ReitDetail reitDetail;
   bool favorite;
+  bool isEllipsis = true;
+  void toggleEllipsis() {
+    setState(() {
+      isEllipsis = !isEllipsis;
+    });
+  }
 
   @override
   void initState() {
@@ -103,7 +109,6 @@ class DetailReitState extends State<DetailReit> {
             _getSection2(),
             _getSection3(),
             _getSection4()
-            //  _getToolbar(context),
           ],
         ),
       ),
@@ -118,6 +123,19 @@ class DetailReitState extends State<DetailReit> {
     )),
   );
 
+  Text getTrustNameTh() {
+    if(isEllipsis) {
+      return Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis);
+    }
+    return Text(reitDetail.trustNameTh);
+  }
+  Text getTrustNameEn() {
+    if(isEllipsis) {
+      return Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis);
+    }
+    return Text(reitDetail.trustNameEn);
+  }
+
   Container _getSection1() {
     return new Container(
         padding: EdgeInsets.only(bottom: 10),
@@ -130,11 +148,16 @@ class DetailReitState extends State<DetailReit> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(reitDetail.symbol,
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                  Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis),
-                  Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis),
+                  Text(reitDetail.symbol, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                  GestureDetector(
+                    onTap: toggleEllipsis,
+                    child: Column(
+                      children: <Widget>[
+                        getTrustNameTh(),  
+                        getTrustNameEn()
+                      ]
+                    )
+                  ),
                 ],
               ),
             ),
@@ -267,13 +290,6 @@ class DetailReitState extends State<DetailReit> {
           ))
         ],
       ),
-    );
-  }
-
-  Container _getToolbar(BuildContext context) {
-    return new Container(
-      margin: new EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: new BackButton(color: Colors.white),
     );
   }
 }

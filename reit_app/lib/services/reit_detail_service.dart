@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'dart:async' show Future;
 import 'dart:convert';
+import 'package:reit_app/interceptor.dart';
 import 'package:reit_app/models/reit_detail.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'package:reit_app/app_config.dart';
 
 Future<ReitDetail> getReitDetailBySymbol(String reitSymbol) async {
-  final response = await http.get(AppConfig.apiUrl + "/reit/" + reitSymbol,
+  final httpClient = new CustomHttpClient();
+  // final response = await httpClient.get(AppConfig.apiUrl + "/reit/" + reitSymbol,
+  final response = await httpClient.get('https://demo9258039.mockable.io/reit-detail',
     headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
     });

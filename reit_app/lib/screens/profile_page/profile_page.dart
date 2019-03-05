@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  static String tag = 'profile-page';
+  static String tag = 'login-page';
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => new _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final picture = Hero(
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
+    final ima = Center(
+      child: Container(
+        width: 200,
+        height: 200,
         child: CircleAvatar(
-          radius: 78.0,
-          backgroundColor: Colors.transparent,
-          backgroundImage: AssetImage('assets/alucard.jpg'),
+          backgroundColor: Colors.red,
+          maxRadius: 80,
+          backgroundImage: AssetImage(
+            'assets/alucard.jpg',
+          ),
         ),
       ),
     );
@@ -26,136 +28,95 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.all(12),
-            // color: Colors.red,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  // color: Colors.greenAccent,
-                  // margin: EdgeInsets.fromLTRB(left, top, right, bottom),
                   child: Container(
-                    // alignment: Alignment(0, 0),
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       'Nok',
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                 ),
                 Container(
-                  // color: Colors.greenAccent,
-                  // margin: EdgeInsets.all(25),
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     'Fly',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-            child: Container(
-              // color: Colors.greenAccent,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                      decoration: InputDecoration(
-                    labelText: 'ชื่อ',
-                    hintText: 'Smith',
-                  )),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Email', hintText: 'Smith@outlook.co.th'),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    alignment: Alignment(-1, 0),
-                    child: Text('เพศ'),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        child: Row(
-                          children: <Widget>[
-                            Radio(value: false, onChanged: (bool newValue) {}),
-                            Text('ชาย'),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        child: Row(
-                          children: <Widget>[
-                            Radio(value: false, onChanged: (bool newValue) {}),
-                            Text('หญิง'),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        child: Row(
-                          children: <Widget>[
-                            Radio(value: false, onChanged: (bool newValue) {}),
-                            Text('อื่นๆ'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    alignment: Alignment(-1, 0),
-                    child: Row(
-                      children: <Widget>[
-                        Checkbox(value: false, onChanged: (bool newValue) {}),
-                        Text('รับข่าวสารทางอีเมล'),
-                      ],
-                    ),
-                  ),
-                  RaisedButton(
-                    child: const Text('ยืนยันข้อมูล'),
-                    color: Colors.blue,
-                    elevation: 12,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/Home");
-                      // Perform some action
-                    },
-                  ),
-                ],
-              ),
             ),
           ),
         ],
       ),
     );
 
-    final body = Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(28.0),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Colors.white,
-          Colors.white,
-        ]),
+    final email = Padding(
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        child: TextFormField(
+          cursorColor: Colors.red,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                const Radius.circular(8.0),
+              ),
+            ),
+            labelText: 'Email',
+            labelStyle: TextStyle(
+              color: Colors.blue,
+            ),
+          ),
+          initialValue: 'Nok@gmail.com',
+          style: TextStyle(fontSize: 20.0, color: Colors.white),
+        ),
       ),
-      child: ListView(
-        children: <Widget>[
-          Column(
-          children: <Widget>[
-            picture,
-            detail,
-          ],
-        )
-        ]
-      )
+    );
+
+    final submitButton = Padding(
+      padding: EdgeInsets.symmetric(vertical: 16),
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: const Text(
+          'ยืนยันข้อมูล',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+        color: Colors.white,
+        elevation: 12,
+        onPressed: () {
+          Navigator.pushNamed(context, "/Home");
+          // Perform some action
+        },
+      ),
     );
 
     return Scaffold(
-      body: body,
+      backgroundColor: Colors.black,
+      body: Container(
+        margin: EdgeInsets.only(top: 60),
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          children: <Widget>[
+            ima,
+            detail,
+            email,
+            submitButton,
+          ],
+        ),
+      ),
     );
   }
 }

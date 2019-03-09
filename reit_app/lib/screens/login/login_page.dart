@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:reit_app/screens/profile_page/profile_page.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:reit_app/services/login-service.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -13,6 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoggedIn = false;
   var profileData;
+  String site;
   var facebookLogin = FacebookLogin();
 
   void onLoginStatusChanged(bool isLoggedIn, {profileData}) {
@@ -28,13 +30,13 @@ class _LoginPageState extends State<LoginPage> {
       tag: 'hero',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        radius: 150.0,
+        radius: 150,
         child: Image.asset('assets/logo.png'),
       ),
     );
 
     final loginButtonGoogle = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 16),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -65,13 +67,23 @@ class _LoginPageState extends State<LoginPage> {
           onLoginStatusChanged(false);
           break;
         case FacebookLoginStatus.loggedIn:
-          var graphResponse = await http.get(
-              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.height(200)&access_token=${facebookLoginResult.accessToken.token}');
+          var accessToken = facebookLoginResult.accessToken.token;
+          print(accessToken);
+          this.site = 'facebook';
+          // var graphResponse = await http.get(
+          //   'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.height(200)&access_token=${facebookLoginResult.accessToken.token}',
+          // );
 
-          var profile = json.decode(graphResponse.body);
-          print(profile.toString());
-
-          onLoginStatusChanged(true, profileData: profile);
+          // var profile = json.decode(graphResponse.body);
+          // print(profile.toString());
+          onLoginStatusChanged(true, profileData: null);
+          getToken(accessToken, this.site).then((isTrue) {
+            if (isTrue) {
+              Navigator.of(context).pushNamed(ProfilePage.tag);
+            } else {
+              initiateFacebookLogin();
+            }
+          });
           break;
       }
     }
@@ -95,14 +107,14 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: ListView(
           shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          padding: EdgeInsets.only(left: 24, right: 24),
           children: <Widget>[
             logo,
-            SizedBox(height: 100.0),
+            SizedBox(height: 100),
             loginButtonGoogle,
             or,
             loginFacebook,
-            SizedBox(height: 300.0),
+            SizedBox(height: 300),
           ],
         ),
       ),

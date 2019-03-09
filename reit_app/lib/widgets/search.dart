@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:reit_app/services/search_all_reit_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 
-class ExamplePage extends StatefulWidget {
+class SearchPage extends StatefulWidget {
   @override
-  _ExamplePageState createState() => _ExamplePageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
+class _SearchPageState extends State<SearchPage> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   List suggestion = List();
 
-  _ExamplePageState() {
+  _SearchPageState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
           _searchText = "";
-          suggestion = dataAllReit;
+          suggestion = reitAll;
         });
       } else {
         setState(() {
           _searchText = _filter.text;
-          suggestion = dataAllReit;
+          suggestion = reitAll;
         });
       }
     });
@@ -30,7 +30,7 @@ class _ExamplePageState extends State<ExamplePage> {
 
   @override
   void initState() {
-    this._getData();
+    this._getReitAll();
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _ExamplePageState extends State<ExamplePage> {
         icon: Icon(Icons.arrow_back),
         color: Colors.black,
         onPressed: () {
-          suggestion = dataAllReit;
+          suggestion = reitAll;
           _filter.clear();
           Navigator.pop(context);
         },
@@ -77,7 +77,7 @@ class _ExamplePageState extends State<ExamplePage> {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  suggestion = dataAllReit;
+                  suggestion = reitAll;
                   _filter.clear();
                 },
               )
@@ -100,13 +100,13 @@ class _ExamplePageState extends State<ExamplePage> {
       suggestion = tempList;
     }
     return ListView.builder(
-      itemCount: dataAllReit == null ? 0 : suggestion.length,
+      itemCount: reitAll == null ? 0 : suggestion.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: EdgeInsets.fromLTRB(8, 5, 0, 0),
           child: ListTile(
             title: Text(suggestion[index].symbol),
-            subtitle: Text(suggestion[index].name),
+            subtitle: Text(suggestion[index].trustNameTh),
             onTap: () {
               Navigator.push(
                 context,
@@ -122,29 +122,12 @@ class _ExamplePageState extends State<ExamplePage> {
     );
   }
 
-  void _getData() async {
+  void _getReitAll() async {
     setState(() {
-      dataAllReit.shuffle();
-      suggestion = dataAllReit;
+      reitAll.shuffle();
+      suggestion = reitAll;
     });
   }
 }
 
-class PageRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Second Route"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
+

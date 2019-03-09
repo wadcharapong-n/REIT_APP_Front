@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
-import 'package:reit_app/screens/home_page/widgets/favorite.dart';
+import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/models/reit_favorite.dart';
 
@@ -15,7 +15,7 @@ class DetailReit extends StatefulWidget {
 
 class DetailReitState extends State<DetailReit> {
   ReitDetail reitDetail;
-  bool favorite;
+  bool isEmptyFavorite;
   bool isEllipsis = true;
   void toggleEllipsis() {
     setState(() {
@@ -30,17 +30,17 @@ class DetailReitState extends State<DetailReit> {
       setState(() {
         reitDetail = result;
       });
-      checkFavorite();
+      checkEmptyFavorite();
     });
   }
 
-  checkFavorite() {
+  checkEmptyFavorite() {
     for (final reitFavorite in FavoriteState.reitsFavorite) {
-      if (reitFavorite.ticker == reitDetail.symbol) {
-        favorite = true;
+      if (reitFavorite.symbol == reitDetail.symbol) {
+        isEmptyFavorite = false;
         break;
       } else {
-        favorite = false;
+        isEmptyFavorite = true;
       }
     }
   }
@@ -55,49 +55,13 @@ class DetailReitState extends State<DetailReit> {
         title: Text("Reit Detail"),
         backgroundColor: Colors.red[200],
         actions: <Widget>[
-          favorite == true
-              ? IconButton(
-                  icon: Icon(
-                    Icons.star,
-                    color: Colors.blue,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    deleteReitFavorite('1', reitDetail.symbol).then((result) {
-                      setState(() {
-                        favorite = false;
-                      });
-                      FavoriteState.reitsFavorite.removeWhere((item) =>
-                          item.userId == '1' &&
-                          item.ticker == reitDetail.symbol);
-                    });
-                  },
-                )
-              : IconButton(
-                  icon: Icon(
-                    Icons.star_border,
-                    color: Colors.blue,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    addReitFavorite('1', reitDetail.symbol).then((result) {
-                      setState(() {
-                        favorite = true;
-                      });
-                      Object json = {
-                        'UserId': '1',
-                        'Ticker': reitDetail.symbol
-                      };
-                      FavoriteState.reitsFavorite
-                          .add(ReitFavorite.fromJson(json));
-                    });
-                  })
+          isEmptyFavorite == false ? iconDeleteFavorite() : iconAddFavorite()
         ],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pop(context, true);
+            Navigator.pop(context, false);
           },
         ),
       ),
@@ -115,6 +79,51 @@ class DetailReitState extends State<DetailReit> {
     );
   }
 
+  IconButton iconAddFavorite() {
+    return IconButton(
+        icon: Icon(
+          Icons.star_border,
+          color: Colors.blue,
+          size: 30,
+        ),
+        onPressed: () {
+          addReitFavorite('1', reitDetail.symbol).then((result) {
+            setState(() {
+              isEmptyFavorite = false;
+            });
+            FavoriteState.reitsFavorite.add(
+              ReitFavorite(
+                  userId: '1',
+                  symbol: reitDetail.symbol,
+                  trustNameTh: reitDetail.trustNameTh,
+                  trustNameEn: reitDetail.trustNameEn,
+                  priceOfDay: reitDetail.priceOfDay,
+                  maxPriceOfDay: reitDetail.maxPriceOfDay,
+                  minPriceOfDay: reitDetail.minPriceOfDay),
+            );
+          });
+        });
+  }
+
+  IconButton iconDeleteFavorite() {
+    return IconButton(
+      icon: Icon(
+        Icons.star,
+        color: Colors.blue,
+        size: 30,
+      ),
+      onPressed: () {
+        deleteReitFavorite('1', reitDetail.symbol).then((result) {
+          setState(() {
+            isEmptyFavorite = true;
+          });
+          FavoriteState.reitsFavorite.removeWhere(
+              (item) => item.userId == '1' && item.symbol == reitDetail.symbol);
+        });
+      },
+    );
+  }
+
   final borderBottom = new BoxDecoration(
     border: new Border(
         bottom: BorderSide(
@@ -124,13 +133,14 @@ class DetailReitState extends State<DetailReit> {
   );
 
   Text getTrustNameTh() {
-    if(isEllipsis) {
+    if (isEllipsis) {
       return Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis);
     }
     return Text(reitDetail.trustNameTh);
   }
+
   Text getTrustNameEn() {
-    if(isEllipsis) {
+    if (isEllipsis) {
       return Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis);
     }
     return Text(reitDetail.trustNameEn);
@@ -148,16 +158,15 @@ class DetailReitState extends State<DetailReit> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(reitDetail.symbol, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                  Text(reitDetail.symbol,
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
                   GestureDetector(
-                    onTap: toggleEllipsis,
-                    child: Column(
-                      children: <Widget>[
-                        getTrustNameTh(),  
+                      onTap: toggleEllipsis,
+                      child: Column(children: <Widget>[
+                        getTrustNameTh(),
                         getTrustNameEn()
-                      ]
-                    )
-                  ),
+                      ])),
                 ],
               ),
             ),

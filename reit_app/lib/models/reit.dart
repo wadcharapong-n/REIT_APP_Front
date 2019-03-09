@@ -1,25 +1,22 @@
 class Reit {
   final String id;
   final String symbol;
-  final String name;
-  final String price;
-  final String description;
+  final String trustNameTh;
+  final String trustNameEn;
 
   const Reit({
     this.id,
     this.symbol,
-    this.name,
-    this.price,
-    this.description,
+    this.trustNameTh,
+    this.trustNameEn,
   });
 
   factory Reit.fromJson(Map<String, dynamic> json) {
     return Reit(
-      id: json['id'],
-      symbol: json['symbol'],
-      name: json['name'],
-      price: json['price'],
-      description: json['description'],
+      id: json['ID'],
+      symbol: json['Symbol'],
+      trustNameTh: json['TrustNameTh'],
+      trustNameEn: json['TrustNameEn'],
     );
   }
 }

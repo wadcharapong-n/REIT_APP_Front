@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:reit_app/screens/profile_page/profile_page.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:reit_app/services/login-service.dart';
+import 'package:reit_app/services/login_service.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {

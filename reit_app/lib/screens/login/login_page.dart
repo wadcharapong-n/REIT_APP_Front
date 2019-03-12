@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/screens/profile_page/profile_page.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:reit_app/services/login_service.dart';
+//Mock
+import 'package:reit_app/models/user.dart';
+import 'package:reit_app/app_config.dart';
+import 'package:reit_app/functions/save_user_login.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -64,18 +67,22 @@ class _LoginPageState extends State<LoginPage> {
           break;
         case FacebookLoginStatus.loggedIn:
           var accessToken = facebookLoginResult.accessToken.token;
-          print(accessToken);
           this.site = 'facebook';
-          // var graphResponse = await http.get(
-          //   'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.height(200)&access_token=${facebookLoginResult.accessToken.token}',
-          // );
-
-          // var profile = json.decode(graphResponse.body);
-          // print(profile.toString());
           onLoginStatusChanged(true, profileData: null);
           getToken(accessToken, this.site).then((isTrue) {
             if (isTrue) {
-              Navigator.of(context).pushReplacementNamed('/Home');
+              User user = User(
+                  userID: '1',
+                  userName: 'userName',
+                  fullName: 'fullName',
+                  email: 'email',
+                  image: 'image',
+                  site: 'site');
+
+              AppConfig.user = user;
+              saveUserLogin(user: user).then((value) {
+                Navigator.of(context).pushReplacementNamed('/Home');
+              });
             } else {
               initiateFacebookLogin();
             }

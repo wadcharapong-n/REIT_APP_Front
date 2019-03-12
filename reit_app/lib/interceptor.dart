@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'dart:io';
+// import 'package:reit_app/app_config.dart';
 
 class CustomHttpClient extends IOClient {
   CustomHttpClient() : super();
   static String token = "Basic 23ftrwtdrwe23tydretyr2tyerty2rety";
+  // static String token = "Bearer " + AppConfig.token;
 
   final Map<String, String> _headers = {
     'Content-type': 'application/json',

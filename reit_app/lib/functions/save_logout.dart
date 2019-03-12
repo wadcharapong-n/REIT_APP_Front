@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
-saveLogout() async {
+Future saveLogout() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   await preferences.remove('LastUserId');
@@ -8,7 +9,6 @@ saveLogout() async {
   await preferences.remove('LastFullName');
   await preferences.remove('LastEmail');
   await preferences.remove('LastImage');
-  await preferences.remove('LastEmail');
   await preferences.remove('LastSite');
   await preferences.remove('LastToken');
 }

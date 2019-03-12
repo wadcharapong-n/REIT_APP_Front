@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
+import 'package:reit_app/functions/save_logout.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -51,6 +52,15 @@ class DashboardState extends State<Dashboard> {
         IconButton(
           icon: Icon(Icons.account_circle),
           onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.backspace),
+          onPressed: () {
+            saveLogout().then((v) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/Login', (Route<dynamic> route) => false);
+            });
+          },
         ),
       ],
       backgroundColor: Colors.red[200],

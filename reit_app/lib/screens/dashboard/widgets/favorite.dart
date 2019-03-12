@@ -3,6 +3,7 @@ import 'package:reit_app/models/reit_favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/screens/dashboard/widgets/text_style.dart';
+import 'package:reit_app/app_config.dart';
 
 class Favorite extends StatefulWidget {
   final Function checkIsEmptyReit;
@@ -19,7 +20,7 @@ class FavoriteState extends State<Favorite> {
   @override
   void initState() {
     super.initState();
-    getReitFavoriteByUserId('1').then((result) {
+    getReitFavoriteByUserId(AppConfig.user.userID).then((result) {
       reitsFavorite = result;
       checkIsEmptyReit();
     });
@@ -72,16 +73,6 @@ class ReitRowState extends State<ReitRow> {
   void toggleEllipsis() {
     setState(() {
       isEllipsis = !isEllipsis;
-    });
-  }
-
-  deleteCard(String userId, String symbol) {
-    deleteReitFavorite('1', symbol).then((result) {
-      setState(() {
-        FavoriteState.reitsFavorite
-            .removeWhere((item) => item.userId == '1' && item.symbol == symbol);
-      });
-      widget.checkIsEmptyReit();
     });
   }
 
@@ -164,13 +155,18 @@ class ReitRowState extends State<ReitRow> {
       ),
       tooltip: 'Delete Favorite',
       onPressed: () {
-        deleteReitFavorite('1', widget.reitFavorite.symbol).then((result) {
+        deleteReitFavorite(
+          AppConfig.user.userID,
+          widget.reitFavorite.symbol,
+        ).then((result) {
           setState(() {
-            deleteCard(
-              widget.reitFavorite.userId,
-              widget.reitFavorite.symbol,
+            FavoriteState.reitsFavorite.removeWhere(
+              (item) =>
+                  item.userId == AppConfig.user.userID &&
+                  item.symbol == widget.reitFavorite.symbol,
             );
           });
+          widget.checkIsEmptyReit();
         });
       },
     );
@@ -212,10 +208,16 @@ class ReitRowState extends State<ReitRow> {
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
                   _reitPriceMaxMin(
-                      text: 'Max : ', value: widget.reitFavorite.maxPriceOfDay, color: Colors.blue),
+                      text: 'Max : ',
+                      value: widget.reitFavorite.maxPriceOfDay,
+                      color: Colors.blue),
                   _reitPriceMaxMin(
-                      text: 'Min : ', value: widget.reitFavorite.minPriceOfDay, color: Colors.red),
-                  _reitPriceOfDay(value: widget.reitFavorite.priceOfDay, color: Colors.green),
+                      text: 'Min : ',
+                      value: widget.reitFavorite.minPriceOfDay,
+                      color: Colors.red),
+                  _reitPriceOfDay(
+                      value: widget.reitFavorite.priceOfDay,
+                      color: Colors.green),
                 ]),
           ),
         ),

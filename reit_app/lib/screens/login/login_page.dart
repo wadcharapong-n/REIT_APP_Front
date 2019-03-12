@@ -39,9 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(ProfilePage.tag);
-        },
+        onPressed: () {},
         padding: EdgeInsets.all(12),
         color: Colors.white,
         child: Text('Login With Google',
@@ -77,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
           onLoginStatusChanged(true, profileData: null);
           getToken(accessToken, this.site).then((isTrue) {
             if (isTrue) {
-              Navigator.of(context).pushNamed(ProfilePage.tag);
+              Navigator.of(context).pushReplacementNamed('/Home');
             } else {
               initiateFacebookLogin();
             }

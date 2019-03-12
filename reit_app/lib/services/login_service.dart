@@ -8,7 +8,7 @@ bool _isSuccess;
 Future getToken(String token, String site) async {
   final httpClient = new CustomHttpClient();
   final response = await httpClient.get(
-      "http://127.0.0.1:1323/Auth?token=" + token + "&site=" + site,
+      AppConfig.authApiUrl + "?token=" + token + "&site=" + site,
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
       });

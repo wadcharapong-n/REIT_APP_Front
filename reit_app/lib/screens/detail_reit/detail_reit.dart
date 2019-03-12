@@ -9,6 +9,13 @@ import 'package:reit_app/app_config.dart';
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
   DetailReit({Key key, this.reitSymbol}) : super(key: key);
+  // final reitDetailService = new ReitDetailService();
+
+  ReitDetailService reitDetailService = new ReitDetailService();
+  get reitService => reitDetailService;
+  set reitService(ReitDetailService value) {
+    reitDetailService = value;
+  }
 
   @override
   DetailReitState createState() => DetailReitState();
@@ -27,7 +34,7 @@ class DetailReitState extends State<DetailReit> {
   @override
   void initState() {
     super.initState();
-    getReitDetailBySymbol(widget.reitSymbol).then((result) {
+    widget.reitService.getReitDetailBySymbol(widget.reitSymbol).then((result) {
       setState(() {
         reitDetail = result;
       });

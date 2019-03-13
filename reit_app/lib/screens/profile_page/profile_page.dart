@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reit_app/app_config.dart';
 
 class ProfilePage extends StatefulWidget {
-  static String tag = 'login-page';
   @override
   _ProfilePageState createState() => new _ProfilePageState();
 }
@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      'Nok',
+                      AppConfig.user.fullName,
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -43,16 +43,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    'Fly',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.all(8),
+                //   child: Text(
+                //     'Fly',
+                //     style: TextStyle(
+                //         fontSize: 25,
+                //         fontWeight: FontWeight.bold,
+                //         color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.blue,
             ),
           ),
-          initialValue: 'Nok@gmail.com',
+          initialValue: AppConfig.user.email,
           style: TextStyle(fontSize: 20.0, color: Colors.white),
         ),
       ),
@@ -90,13 +90,13 @@ class _ProfilePageState extends State<ProfilePage> {
           borderRadius: BorderRadius.circular(24),
         ),
         child: const Text(
-          'ยืนยันข้อมูล',
+          'ย้อนกลับ',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
         color: Colors.white,
         elevation: 12,
         onPressed: () {
-          Navigator.pushNamed(context, "/Home");
+          Navigator.pop(context);
           // Perform some action
         },
       ),

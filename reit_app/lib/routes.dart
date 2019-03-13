@@ -9,7 +9,7 @@ class Routes {
   final routes = <String, WidgetBuilder>{
     '/': (context) => SplashPage(),
     '/Login': (context) => LoginPage(),
-    ProfilePage.tag: (context) => ProfilePage(),
+    '/Profile': (context) => ProfilePage(),
     '/Home': (context) => Dashboard(),
     '/Search': (context) => SearchPage()
   };

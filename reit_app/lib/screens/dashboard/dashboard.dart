@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
 import 'package:reit_app/functions/save_logout.dart';
+import 'package:reit_app/screens/profile_page/profile_page.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -51,7 +52,9 @@ class DashboardState extends State<Dashboard> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.account_circle),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/Profile');
+          },
         ),
         IconButton(
           icon: Icon(Icons.backspace),

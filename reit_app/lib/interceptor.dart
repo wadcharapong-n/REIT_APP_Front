@@ -3,35 +3,34 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'dart:io';
-import 'package:reit_app/app_config.dart';
-// import 'package:reit_app/app_config.dart';
+import 'package:reit_app/functions/get_token.dart';
 
 class CustomHttpClient extends IOClient {
   CustomHttpClient() : super();
-  static String token = "Basic "+AppConfig.token;
-  // static String token = "Bearer " + AppConfig.token;
-
-  final Map<String, String> _headers = {
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-    HttpHeaders.authorizationHeader: token
-  };
-
-  @override
-  Future<StreamedResponse> send(BaseRequest request) async{
-    return super.send(request..headers.addAll(_headers));
+  
+  Future<Map<String, String>> getHeader() async {
+    final Map<String, String> _headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: "Bearer " + await getToken(),
+    };
+    return _headers;
   }
 
   @override
-  Future<Response> head(Object url, {Map<String, String> headers}) {
-    return super.head(url, headers: headers..addAll(_headers));
+  Future<StreamedResponse> send(BaseRequest request) async {
+    return super.send(request..headers.addAll(await getHeader()));
   }
 
   @override
-  Future<Response> get(Object url, {Map<String, String> headers}) {
-    return super.get(url, headers: (headers ?? _headers)..addAll(_headers));
+  Future<Response> head(Object url, {Map<String, String> headers}) async {
+    return super.head(url, headers: headers..addAll(await getHeader()));
   }
 
+  @override
+  Future<Response> get(Object url, {Map<String, String> headers}) async {
+    return super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
+  }
 }
 
 class CustomMultipartRequest extends MultipartRequest {

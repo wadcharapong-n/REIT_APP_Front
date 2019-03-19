@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:reit_app/services/login_service.dart';
-//Mock
-import 'package:reit_app/models/user.dart';
-import 'package:reit_app/app_config.dart';
-import 'package:reit_app/functions/save_user_login.dart';
-import 'package:reit_app/services/getProfileData_service.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -72,19 +67,7 @@ class _LoginPageState extends State<LoginPage> {
           onLoginStatusChanged(true, profileData: null);
           getToken(accessToken, this.site).then((isTrue) {
             if (isTrue == true) {
-              getProfileData();
-              // User user = User(
-              //     userID: '1',
-              //     userName: 'userName',
-              //     fullName: 'fullName',
-              //     email: 'email',
-              //     image: 'image',
-              //     site: 'site');
-
-              // AppConfig.user = user;
-              // saveUserLogin(user: user).then((value) {
-                // Navigator.of(context).pushReplacementNamed('/Home');
-              // });
+              Navigator.of(context).pushReplacementNamed('/Dashboard');
             } else {
               initiateFacebookLogin();
             }

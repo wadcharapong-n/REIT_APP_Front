@@ -4,7 +4,6 @@ import 'package:reit_app/services/reit_detail_service.dart';
 import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/models/reit_favorite.dart';
-import 'package:reit_app/app_config.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
@@ -95,13 +94,12 @@ class DetailReitState extends State<DetailReit> {
           size: 30,
         ),
         onPressed: () {
-          addReitFavorite(AppConfig.user.userID, reitDetail.symbol).then((result) {
+          addReitFavorite(reitDetail.symbol).then((result) {
             setState(() {
               isEmptyFavorite = false;
             });
             FavoriteState.reitsFavorite.add(
               ReitFavorite(
-                  userId: AppConfig.user.userID,
                   symbol: reitDetail.symbol,
                   trustNameTh: reitDetail.trustNameTh,
                   trustNameEn: reitDetail.trustNameEn,
@@ -121,12 +119,12 @@ class DetailReitState extends State<DetailReit> {
         size: 30,
       ),
       onPressed: () {
-        deleteReitFavorite(AppConfig.user.userID, reitDetail.symbol).then((result) {
+        deleteReitFavorite(reitDetail.symbol).then((result) {
           setState(() {
             isEmptyFavorite = true;
           });
           FavoriteState.reitsFavorite.removeWhere(
-              (item) => item.userId == AppConfig.user.userID && item.symbol == reitDetail.symbol);
+              (item) => item.symbol == reitDetail.symbol);
         });
       },
     );

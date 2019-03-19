@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/app_config.dart';
+import 'package:reit_app/services/getProfileData_service.dart';
+import 'package:reit_app/models/user.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -7,6 +8,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  User user = User();
+
+  @override
+  void initState() {
+    super.initState();
+    getProfileData().then((result) {
+      setState(() {
+        user = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ima = Center(
@@ -35,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      AppConfig.user.fullName,
+                      user.fullName,
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -77,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.blue,
             ),
           ),
-          initialValue: AppConfig.user.email,
+          initialValue: 'user.email',
           style: TextStyle(fontSize: 20.0, color: Colors.white),
         ),
       ),

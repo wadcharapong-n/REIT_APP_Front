@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
 import 'package:reit_app/functions/save_logout.dart';
-import 'package:reit_app/screens/profile_page/profile_page.dart';
 
 class Dashboard extends StatefulWidget {
   @override

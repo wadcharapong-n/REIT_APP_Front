@@ -10,7 +10,7 @@ class Routes {
     '/': (context) => SplashPage(),
     '/Login': (context) => LoginPage(),
     '/Profile': (context) => ProfilePage(),
-    '/Home': (context) => Dashboard(),
+    '/Dashboard': (context) => Dashboard(),
     '/Search': (context) => SearchPage()
   };
 

@@ -3,7 +3,6 @@ import 'package:reit_app/models/reit_favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/screens/dashboard/widgets/text_style.dart';
-import 'package:reit_app/app_config.dart';
 
 class Favorite extends StatefulWidget {
   final Function checkIsEmptyReit;
@@ -20,7 +19,7 @@ class FavoriteState extends State<Favorite> {
   @override
   void initState() {
     super.initState();
-    getReitFavoriteByUserId(AppConfig.user.userID).then((result) {
+    getReitFavoriteByUserId().then((result) {
       reitsFavorite = result;
       checkIsEmptyReit();
     });
@@ -156,13 +155,11 @@ class ReitRowState extends State<ReitRow> {
       tooltip: 'Delete Favorite',
       onPressed: () {
         deleteReitFavorite(
-          AppConfig.user.userID,
           widget.reitFavorite.symbol,
         ).then((result) {
           setState(() {
             FavoriteState.reitsFavorite.removeWhere(
               (item) =>
-                  item.userId == AppConfig.user.userID &&
                   item.symbol == widget.reitFavorite.symbol,
             );
           });

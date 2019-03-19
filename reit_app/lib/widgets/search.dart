@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/services/search_all_reit_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
+import 'package:reit_app/models/reit.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _filter = TextEditingController();
+  List<Reit> reitAll = List();
   String _searchText = "";
   List suggestion = List();
 
@@ -30,8 +32,11 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    this._getReitAll();
     super.initState();
+    getReitAll().then((result) {
+      reitAll = result;
+      this._getReitAll();
+    });
   }
 
   Widget build(BuildContext context) {
@@ -129,5 +134,3 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 }
-
-

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:reit_app/services/search_all_reit_services.dart';
 import 'package:reit_app/functions/get_token.dart';
-import 'package:reit_app/functions/get_user.dart';
-import 'package:reit_app/app_config.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -18,13 +15,7 @@ class SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    getReitAll();
     getToken().then((resultToken) {
-      if (resultToken != null) {
-        getUser().then((resultUser) {
-          AppConfig.user = resultUser;
-        });
-      }
       startTime(resultToken);
     });
   }
@@ -32,7 +23,7 @@ class SplashPageState extends State<SplashPage> {
   startTime(String token) async {
     return Timer(Duration(seconds: splashDuration), () {
       if (token != null) {
-        Navigator.of(context).pushReplacementNamed('/Home');
+        Navigator.of(context).pushReplacementNamed('/Dashboard');
       } else {
         Navigator.of(context).pushReplacementNamed('/Login');
       }

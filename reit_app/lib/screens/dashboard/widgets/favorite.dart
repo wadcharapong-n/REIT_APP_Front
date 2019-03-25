@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/screens/dashboard/widgets/text_style.dart';
+import 'package:reit_app/services/reit_detail_service.dart';
 
 class Favorite extends StatefulWidget {
   final Function checkIsEmptyReit;
@@ -68,13 +70,14 @@ class ReitRow extends StatefulWidget {
 }
 
 class ReitRowState extends State<ReitRow> {
+  final injector = Injector.getInjector();
   bool isEllipsis = true;
   void toggleEllipsis() {
     setState(() {
       isEllipsis = !isEllipsis;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,9 +85,11 @@ class ReitRowState extends State<ReitRow> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => DetailReit(
-                    reitSymbol: widget.reitFavorite.symbol,
-                  )),
+            builder: (context) => DetailReit(
+              reitSymbol: widget.reitFavorite.symbol,
+              reitDetailService: injector.get<ReitDetailService>(),
+            )
+          ),
         ).then((result) {
           widget.checkIsEmptyReit();
         });

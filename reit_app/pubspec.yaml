@@ -24,6 +24,7 @@ dependencies:
   google_maps_flutter: ^0.4.0
   google_maps_webservice: ^0.0.12
   geolocator: ^3.0.1
+  flutter_simple_dependency_injection: ^1.0.1
 
 dev_dependencies:
   flutter_test:

@@ -6,14 +6,12 @@ import 'package:reit_app/interceptor.dart';
 
 Future<List<ReitFavorite>> getReitFavoriteByUserId() async {
   final httpClient = new CustomHttpClient();
-  final response = await httpClient
-      .get(AppConfig.apiUrl + "/reitFavorite/");
+  final response = await httpClient.get(AppConfig.apiUrl + "/reitFavorite/");
   if (response.statusCode == 200) {
     List<ReitFavorite> allReitFavorite = List();
     json.decode(response.body).forEach((reitFavorite) {
       allReitFavorite.add(ReitFavorite.fromJson(reitFavorite));
     });
-
     return allReitFavorite;
   } else {
     throw Exception('Failed to load data');

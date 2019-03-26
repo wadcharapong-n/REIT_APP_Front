@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
 import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
@@ -7,14 +8,15 @@ import 'package:reit_app/models/reit_favorite.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
-  final ReitDetailService reitDetailService;
-  DetailReit({Key key, this.reitSymbol, this.reitDetailService});
+  // final ReitDetailService reitDetailService;
+  DetailReit({Key key, this.reitSymbol});
   
   @override
   DetailReitState createState() => DetailReitState();
 }
 
 class DetailReitState extends State<DetailReit> {
+  final injector = Injector.getInjector();
   ReitDetail reitDetail;
   bool isEmptyFavorite;
   bool isEllipsis = true;
@@ -26,10 +28,15 @@ class DetailReitState extends State<DetailReit> {
 
   @override
   void initState() {
+    print("----------- initState --------------");
     super.initState();
-    widget.reitDetailService.getReitDetailBySymbol(widget.reitSymbol).then((result) {
+    print("----------- super.initState --------------");
+    ReitDetailService reitDetailService = injector.get<ReitDetailService>();
+    reitDetailService.getReitDetailBySymbol(widget.reitSymbol).then((result) {
       setState(() {
         reitDetail = result;
+        print("----------- reitDetail trustNameTh --------------");
+        print(reitDetail.trustNameTh);
       });
       checkEmptyFavorite();
     });

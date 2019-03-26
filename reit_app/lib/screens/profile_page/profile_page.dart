@@ -116,7 +116,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.orange[600],
+      ),
+      backgroundColor: Colors.orange[300],
       body: Container(
         margin: EdgeInsets.only(top: 60),
         child: ListView(

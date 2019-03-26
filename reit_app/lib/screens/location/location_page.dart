@@ -27,11 +27,6 @@ class _LocationPageState extends State<LocationPage> {
     _initLocationState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   Future<void> _initLocationState() async {
     try {
       final Geolocator geolocator = Geolocator()
@@ -131,7 +126,7 @@ class _LocationPageState extends State<LocationPage> {
         builder:
             (BuildContext context, AsyncSnapshot<GeolocationStatus> snapshot) {
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.data == GeolocationStatus.disabled ||
@@ -139,10 +134,15 @@ class _LocationPageState extends State<LocationPage> {
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: Text(
-                  'GPS Disabled',
-                  style: TextStyle(color: Colors.black),
-                ),
+                title: (snapshot.data == GeolocationStatus.disabled)
+                    ? Text(
+                        'GPS Disabled',
+                        style: TextStyle(color: Colors.black),
+                      )
+                    : Text(
+                        'GPS Denied',
+                        style: TextStyle(color: Colors.black),
+                      ),
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   color: Colors.black,
@@ -166,120 +166,119 @@ class _LocationPageState extends State<LocationPage> {
             );
           }
 
-          if (_position != null) {
-            return Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: Text(
-                  'Map',
-                  style: TextStyle(color: Colors.black),
-                ),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(
+                'Map',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              backgroundColor: Colors.orange[600],
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.refresh),
                   color: Colors.black,
                   onPressed: () {
-                    Navigator.pop(context);
+                    _initLocationState();
                   },
                 ),
-                backgroundColor: Colors.white,
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.refresh),
-                    color: Colors.black,
-                    onPressed: () {
-                      _initLocationState();
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.search),
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/MapSearch').then((result) {
-                        PlacesDetailsResponse place = result;
-                        mapController.moveCamera(
-                          CameraUpdate.newCameraPosition(
-                            CameraPosition(
-                              bearing: 270.0,
-                              target: LatLng(place.result.geometry.location.lat,
-                                  place.result.geometry.location.lng),
-                              tilt: 30.0,
-                              zoom: 17.0,
-                            ),
+                IconButton(
+                  icon: Icon(Icons.search),
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/MapSearch').then((result) {
+                      PlacesDetailsResponse place = result;
+                      mapController.moveCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                            bearing: 270.0,
+                            target: LatLng(place.result.geometry.location.lat,
+                                place.result.geometry.location.lng),
+                            tilt: 30.0,
+                            zoom: 17.0,
                           ),
-                        );
-                        _addMarker(place);
-                      });
-                    },
-                  ),
-                ],
-              ),
-              body: Stack(
-                children: <Widget>[
-                  GoogleMap(
-                    myLocationEnabled: true,
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      bearing: 270.0,
-                      target: LatLng(_position.latitude, _position.longitude),
-                      tilt: 30.0,
-                      zoom: 15.0,
-                    ),
-                    mapType: _currentMapType,
-                    markers: Set<Marker>.of(markers.values),
-                    onCameraMove: _onCameraMove,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 38,
-                            height: 38,
-                            child: RaisedButton(
-                              padding: EdgeInsets.all(0.0),
-                              color: Colors.white,
-                              onPressed: () {
-                                _removeMarker();
-                              },
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.padded,
-                              child: Icon(
-                                Icons.remove,
-                                size: 10.0,
-                                color: Colors.black.withOpacity(0.7),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 18.0),
-                          SizedBox(
-                            width: 38,
-                            height: 38,
-                            child: RaisedButton(
-                              padding: const EdgeInsets.all(0.0),
-                              color: Colors.white,
-                              onPressed: () {
-                                placesSearch(
-                                    _position.latitude, _position.longitude);
-                              },
-                              child: Icon(
-                                Icons.add_location,
-                                size: 20.0,
-                                color: Colors.black.withOpacity(0.7),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
+                      );
+                      _addMarker(place);
+                    });
+                  },
+                ),
+              ],
+            ),
+            body: (_position != null)
+                ? Stack(
+                    children: <Widget>[
+                      GoogleMap(
+                        myLocationEnabled: true,
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                          bearing: 270.0,
+                          target:
+                              LatLng(_position.latitude, _position.longitude),
+                          tilt: 30.0,
+                          zoom: 15.0,
+                        ),
+                        mapType: _currentMapType,
+                        markers: Set<Marker>.of(markers.values),
+                        onCameraMove: _onCameraMove,
                       ),
-                    ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 38,
+                                height: 38,
+                                child: RaisedButton(
+                                  padding: EdgeInsets.all(0.0),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    _removeMarker();
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.padded,
+                                  child: Icon(
+                                    Icons.remove,
+                                    size: 10.0,
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 18.0),
+                              SizedBox(
+                                width: 38,
+                                height: 38,
+                                child: RaisedButton(
+                                  padding: const EdgeInsets.all(0.0),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    placesSearch(_position.latitude,
+                                        _position.longitude);
+                                  },
+                                  child: Icon(
+                                    Icons.add_location,
+                                    size: 20.0,
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   )
-                ],
-              ),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
+                : Center(child: CircularProgressIndicator()),
+          );
         });
   }
 }

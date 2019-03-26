@@ -46,9 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
-    final or = Center(
-      child: Text('OR', style: TextStyle(color: Colors.white)),
-    );
+    
 
     void initiateFacebookLogin() async {
       var facebookLoginResult =
@@ -91,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.orange,
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -100,7 +98,6 @@ class _LoginPageState extends State<LoginPage> {
             logo,
             SizedBox(height: 100),
             loginButtonGoogle,
-            or,
             loginFacebook,
             SizedBox(height: 300),
           ],

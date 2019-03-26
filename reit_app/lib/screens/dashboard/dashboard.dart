@@ -21,7 +21,7 @@ class DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[200],
+      backgroundColor: Colors.orange[300],
       appBar: appBarDashbord(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +38,7 @@ class DashboardState extends State<Dashboard> {
 
   Widget appBarDashbord() {
     return AppBar(
-      elevation: 0.0,
+      elevation: 2,
       centerTitle: true,
       title: Text(
         'Dashbord',
@@ -65,7 +65,7 @@ class DashboardState extends State<Dashboard> {
           },
         ),
       ],
-      backgroundColor: Colors.red[200],
+      backgroundColor: Colors.orange[600],
     );
   }
 

@@ -57,10 +57,12 @@ class DetailReitState extends State<DetailReit> {
       return new Scaffold();
     }
     return new Scaffold(
+      backgroundColor: Colors.white,
       appBar: new AppBar(
+        elevation: 2,
         centerTitle: true,
         title: Text("Reit Detail"),
-        backgroundColor: Colors.red[200],
+        backgroundColor: Colors.orange[600],
         actions: <Widget>[
           isEmptyFavorite == false ? iconDeleteFavorite() : iconAddFavorite()
         ],

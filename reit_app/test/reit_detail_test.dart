@@ -8,6 +8,7 @@
 // import 'package:fluaterial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reit_app/models/reit_detail.dart';
 
@@ -44,42 +45,43 @@ class MockReitDetailService implements ReitDetailService {
   }
 }
 
-Widget getTestableWidget(ReitDetailService _reitDetailService) {
+Widget getTestableWidget() {
     return MaterialApp(
       home: new DetailReit(
         reitSymbol: "TEST",
-        reitDetailService: _reitDetailService
+        // reitDetailService: _reitDetailService
       ),
     );
   }
 
 void main() {
-  test('Should get Reit detail after initState', () {
-    var mockReitDetailService = new MockReitDetailService();
-    var reit = new DetailReit(reitSymbol: "TEST", reitDetailService: mockReitDetailService).createState();
-
-    // reit.widget.reitSymbol = "TEST";
-    print(reit.reitDetail);
-    // expect(await driver.getText(counterTextFinder), "0");
-  });
+  // test('Should get Reit detail after initState', () {
+  //   var mockReitDetailService = new MockReitDetailService();
+  //   final injector = Injector.getInjector();
+  //   injector.map<ReitDetailService>((injector) => mockReitDetailService);
+  //   var reit = new DetailReit(reitSymbol: "TEST").createState();
+  //   reit.initState();
+  //   print(reit.reitDetail);
+  //   // expect(await driver.getText(counterTextFinder), "0");
+  // });
   
 
-  // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-  //   var mockReitDetailService = new MockReitDetailService();  
-  //   // Build our app and trigger a frame.
-  //   await tester.pumpWidget(getTestableWidget(mockReitDetailService));
-    
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    var mockReitDetailService = new MockReitDetailService();
+    final injector = Injector.getInjector();
+    injector.map<ReitDetailService>((injector) => mockReitDetailService);
 
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(getTestableWidget());
     // Verify that our counter starts at 0.
     // expect(find.text('0'), findsOneWidget);
     // expect(find.text('1'), findsNothing);
 
     // Tap the '+' icon and trigger a frame.
     // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
-
+    await tester.pump();
     // Verify that our counter has incremented.
     // expect(find.text('0'), findsNothing);
     // expect(find.text('1'), findsOneWidget);
-  // });
+  });
 }

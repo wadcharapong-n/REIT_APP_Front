@@ -69,47 +69,64 @@ class DashboardState extends State<Dashboard> {
     );
   }
 
-  Container inputSearch() {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/Search').then((result) {
-            setState(() {
-              if (FavoriteState.reitsFavorite.length == 0) {
-                isEmptyReit = true;
-              } else {
-                isEmptyReit = false;
-              }
-            });
-          });
-        },
-        child: Container(
-          height: 40.0,
-          width: 1000.0,
-          margin: const EdgeInsets.all(10.0),
-          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
-            border: Border.all(color: Colors.black38),
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.search),
-              Text(
-                '  Search',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w300,
-                    fontFamily: 'Poppins'),
-                textAlign: TextAlign.left,
+  Row inputSearch() {
+    return Row(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/Search').then((result) {
+                setState(() {
+                  if (FavoriteState.reitsFavorite.length == 0) {
+                    isEmptyReit = true;
+                  } else {
+                    isEmptyReit = false;
+                  }
+                });
+              });
+            },
+            child: Container(
+              height: 40.0,
+              width: 320.0,
+              margin: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                border: Border.all(color: Colors.black38),
+                borderRadius: BorderRadius.circular(20.0),
               ),
-            ],
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.search),
+                  Text(
+                    '  Search',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins'),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+        Container(
+          height: 40,
+          width: 40,
+          padding: EdgeInsets.all(0.0),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white.withOpacity(0.9),
+            onPressed: () => {Navigator.pushNamed(context, '/Location')},
+            child: Icon(
+              Icons.location_on,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

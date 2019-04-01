@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:reit_app/models/reit_favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
-import 'package:reit_app/screens/dashboard/widgets/text_style.dart';
 
 class Favorite extends StatefulWidget {
   final Function checkIsEmptyReit;
@@ -74,7 +73,7 @@ class ReitRowState extends State<ReitRow> {
       isEllipsis = !isEllipsis;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,10 +81,9 @@ class ReitRowState extends State<ReitRow> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailReit(
-              reitSymbol: widget.reitFavorite.symbol,
-            )
-          ),
+              builder: (context) => DetailReit(
+                    reitSymbol: widget.reitFavorite.symbol,
+                  )),
         ).then((result) {
           widget.checkIsEmptyReit();
         });
@@ -142,7 +140,8 @@ class ReitRowState extends State<ReitRow> {
   Text reitSymbol() {
     return Text(
       widget.reitFavorite.symbol,
-      style: Style.headerTextStyle,
+      style: TextStyle(
+          color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
     );
   }
 
@@ -160,8 +159,7 @@ class ReitRowState extends State<ReitRow> {
         ).then((result) {
           setState(() {
             FavoriteState.reitsFavorite.removeWhere(
-              (item) =>
-                  item.symbol == widget.reitFavorite.symbol,
+              (item) => item.symbol == widget.reitFavorite.symbol,
             );
           });
           widget.checkIsEmptyReit();
@@ -189,9 +187,16 @@ class ReitRowState extends State<ReitRow> {
         onTap: toggleEllipsis,
         child: isEllipsis
             ? Text(widget.reitFavorite.trustNameTh,
-                style: Style.regularTextStyle, overflow: TextOverflow.ellipsis)
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400),
+                overflow: TextOverflow.ellipsis)
             : Text(widget.reitFavorite.trustNameTh,
-                style: Style.regularTextStyle));
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400)));
   }
 
   Row _getSection3() {
@@ -227,7 +232,8 @@ class ReitRowState extends State<ReitRow> {
     return Expanded(
       flex: 3,
       child: Text(text + value,
-          style: Style.regularTextStyle.copyWith(color: color),
+          style: TextStyle(
+              color: color, fontSize: 16.0, fontWeight: FontWeight.w400),
           textAlign: TextAlign.left),
     );
   }
@@ -237,7 +243,8 @@ class ReitRowState extends State<ReitRow> {
         flex: 4,
         child: Text(value,
             style:
-                Style.regularTextStyle.copyWith(fontSize: 22.0, color: color),
+                TextStyle(
+              color: color, fontSize: 22.0, fontWeight: FontWeight.w400),
             textAlign: TextAlign.right));
   }
 }

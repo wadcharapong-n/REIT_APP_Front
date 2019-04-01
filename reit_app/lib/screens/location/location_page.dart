@@ -13,13 +13,14 @@ class LocationPage extends StatefulWidget {
 
 class _LocationPageState extends State<LocationPage> {
   GoogleMapController mapController;
-  MapType _currentMapType = MapType.normal;
   Position _position;
+  StreamSubscription<Position> _positionStreamSubscription;
+  Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
+  MarkerId _selectedMarker;
   final places =
-      new GoogleMapsPlaces(apiKey: "AIzaSyCD6fMRbaD5XE3ZbYsfVryOMxY-0viOk8Y");
-
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  MarkerId selectedMarker;
+      GoogleMapsPlaces(apiKey: "AIzaSyCD6fMRbaD5XE3ZbYsfVryOMxY-0viOk8Y");
+  final Geolocator geolocator = Geolocator()
+    ..forceAndroidLocationManager = true;
 
   @override
   void initState() {
@@ -27,24 +28,41 @@ class _LocationPageState extends State<LocationPage> {
     _initLocationState();
   }
 
-  Future<void> _initLocationState() async {
+  Future _initLocationState() async {
     try {
-      final Geolocator geolocator = Geolocator()
-        ..forceAndroidLocationManager = true;
+      if (_positionStreamSubscription != null) {
+        _positionStreamSubscription.cancel();
+      }
       await geolocator.getCurrentPosition();
-      Stream<Position> positionStream = geolocator.getPositionStream(
-          LocationOptions(
-              accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 0));
-      positionStream
-          .listen((Position position) => setState(() => _position = position));
-    } on PlatformException {}
+      const LocationOptions locationOptions = LocationOptions(
+          accuracy: LocationAccuracy.bestForNavigation, timeInterval: 1000);
+      final Stream<Position> positionStream =
+          geolocator.getPositionStream(locationOptions);
+      _positionStreamSubscription = positionStream.listen((Position position) {
+        setState(() {
+          _position = position;
+        });
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      setState(() {
+        _position = null;
+      });
+    }
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    _positionStreamSubscription.cancel();
+    _positionStreamSubscription = null;
   }
 
   Future<void> placesSearch(double latitude, double longitude) async {
     List placesList = List();
     PlacesSearchResponse reponse = await places.searchNearbyWithRadius(
       Location(latitude, longitude),
-      25,
+      20,
     );
 
     if (reponse.isOkay) {
@@ -62,21 +80,21 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   void _onMarkerTapped(MarkerId markerId) {
-    final Marker tappedMarker = markers[markerId];
+    final Marker tappedMarker = _markers[markerId];
     if (tappedMarker != null) {
       setState(() {
-        if (markers.containsKey(selectedMarker)) {
-          final Marker resetOld = markers[selectedMarker]
+        if (_markers.containsKey(_selectedMarker)) {
+          final Marker resetOld = _markers[_selectedMarker]
               .copyWith(iconParam: BitmapDescriptor.defaultMarker);
-          markers[selectedMarker] = resetOld;
+          _markers[_selectedMarker] = resetOld;
         }
-        selectedMarker = markerId;
+        _selectedMarker = markerId;
         final Marker newMarker = tappedMarker.copyWith(
           iconParam: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueGreen,
           ),
         );
-        markers[markerId] = newMarker;
+        _markers[markerId] = newMarker;
       });
     }
   }
@@ -101,14 +119,14 @@ class _LocationPageState extends State<LocationPage> {
     );
 
     setState(() {
-      markers[markerId] = marker;
+      _markers[markerId] = marker;
     });
   }
 
   void _removeMarker() {
     setState(() {
-      if (markers.containsKey(selectedMarker)) {
-        markers.remove(selectedMarker);
+      if (_markers.containsKey(_selectedMarker)) {
+        _markers.remove(_selectedMarker);
       }
     });
   }
@@ -122,7 +140,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<GeolocationStatus>(
-        future: Geolocator().checkGeolocationPermissionStatus(),
+        future: geolocator.checkGeolocationPermissionStatus(),
         builder:
             (BuildContext context, AsyncSnapshot<GeolocationStatus> snapshot) {
           if (!snapshot.hasData) {
@@ -225,8 +243,8 @@ class _LocationPageState extends State<LocationPage> {
                           tilt: 30.0,
                           zoom: 15.0,
                         ),
-                        mapType: _currentMapType,
-                        markers: Set<Marker>.of(markers.values),
+                        mapType: MapType.normal,
+                        markers: Set<Marker>.of(_markers.values),
                         onCameraMove: _onCameraMove,
                       ),
                       Padding(

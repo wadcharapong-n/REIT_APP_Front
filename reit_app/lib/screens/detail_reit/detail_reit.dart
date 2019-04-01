@@ -62,7 +62,8 @@ class DetailReitState extends State<DetailReit> {
       appBar: new AppBar(
         elevation: 2,
         centerTitle: true,
-        title: Text("Reit Detail"),
+        title: Text("Reit Detail" ,  style: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),),
         backgroundColor: Colors.orange[600],
         actions: <Widget>[
           isEmptyFavorite == false ? iconDeleteFavorite() : iconAddFavorite()
@@ -200,7 +201,7 @@ class DetailReitState extends State<DetailReit> {
 
   Container _getSection2Left() {
     return new Container(
-      padding: EdgeInsets.only(left: 5, right: 5),
+      padding: EdgeInsets.only(left: 0, right: 5),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

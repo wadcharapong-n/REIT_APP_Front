@@ -41,29 +41,28 @@ class DashboardState extends State<Dashboard> {
       elevation: 2,
       centerTitle: true,
       title: Text(
-        'Dashbord',
+        'Dashboard',
         style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            fontSize: 25.0),
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),
       ),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.account_circle),
-          onPressed: () {
-            Navigator.of(context).pushNamed('/Profile');
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.backspace),
-          onPressed: () {
-            saveLogout().then((v) {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/Login', (Route<dynamic> route) => false);
-            });
-          },
-        ),
+        PopupMenuButton(
+            itemBuilder: (_) => <PopupMenuItem<String>>[
+                  PopupMenuItem<String>(
+                      child: const Text('Profile'), value: 'Profile'),
+                  PopupMenuItem<String>(
+                      child: const Text('Logout'), value: 'Logout'),
+                ],
+            onSelected: (value) {
+              if (value == 'Logout') {
+                saveLogout().then((_) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/Login', (Route<dynamic> route) => false);
+                });
+              } else if (value == 'Profile') {
+                Navigator.of(context).pushNamed('/Profile');
+              }
+            }),
       ],
       backgroundColor: Colors.orange[600],
     );
@@ -88,8 +87,8 @@ class DashboardState extends State<Dashboard> {
             },
             child: Container(
               height: 40.0,
-              width: 320.0,
-              margin: const EdgeInsets.all(10.0),
+              width: 310.0,
+              margin: const EdgeInsets.fromLTRB(15, 10, 5, 10),
               padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
@@ -102,10 +101,10 @@ class DashboardState extends State<Dashboard> {
                   Text(
                     '  Search',
                     style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w300,
-                        fontFamily: 'Poppins'),
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ],
@@ -135,22 +134,22 @@ class DashboardState extends State<Dashboard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 10.0),
+          padding: EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 5.0),
           child: Text(
             'Favorite',
             style: TextStyle(
-                fontSize: 25.0,
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Poppins'),
+              fontSize: 22.0,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
             textAlign: TextAlign.left,
           ),
         ),
         Container(
-            margin: EdgeInsets.fromLTRB(12, 0, 12, 8),
+            margin: EdgeInsets.fromLTRB(24, 0, 24, 0),
             height: 2.5,
-            width: 1000.0,
-            color: Colors.white),
+            width: 400.0,
+            color: Colors.black),
       ],
     );
   }

@@ -176,7 +176,7 @@ class ReitRowState extends State<ReitRow> {
         Container(
             margin: EdgeInsets.symmetric(vertical: 8.0),
             height: 2.5,
-            width: 190.0,
+            width: 350.0,
             color: Colors.green),
       ],
     );

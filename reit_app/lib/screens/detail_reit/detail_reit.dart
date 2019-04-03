@@ -5,12 +5,13 @@ import 'package:reit_app/services/reit_detail_service.dart';
 import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/models/reit_favorite.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
   // final ReitDetailService reitDetailService;
   DetailReit({Key key, this.reitSymbol});
-  
+
   @override
   DetailReitState createState() => DetailReitState();
 }
@@ -62,8 +63,11 @@ class DetailReitState extends State<DetailReit> {
       appBar: new AppBar(
         elevation: 2,
         centerTitle: true,
-        title: Text("Reit Detail" ,  style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),),
+        title: Text(
+          "Reit Detail",
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),
+        ),
         backgroundColor: Colors.orange[600],
         actions: <Widget>[
           isEmptyFavorite == false ? iconDeleteFavorite() : iconAddFavorite()
@@ -127,8 +131,8 @@ class DetailReitState extends State<DetailReit> {
           setState(() {
             isEmptyFavorite = true;
           });
-          FavoriteState.reitsFavorite.removeWhere(
-              (item) => item.symbol == reitDetail.symbol);
+          FavoriteState.reitsFavorite
+              .removeWhere((item) => item.symbol == reitDetail.symbol);
         });
       },
     );
@@ -164,13 +168,18 @@ class DetailReitState extends State<DetailReit> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             new Expanded(
-              flex: 6,
+              flex: 7,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(reitDetail.symbol,
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                  Row(
+                    children: <Widget>[
+                      Text(reitDetail.symbol,
+                          style: TextStyle(
+                              fontSize: 40, fontWeight: FontWeight.bold)),
+                      buttonBuy(),
+                    ],
+                  ),
                   GestureDetector(
                       onTap: toggleEllipsis,
                       child: Column(children: <Widget>[
@@ -181,7 +190,7 @@ class DetailReitState extends State<DetailReit> {
               ),
             ),
             new Expanded(
-              flex: 4,
+              flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -310,5 +319,37 @@ class DetailReitState extends State<DetailReit> {
         ],
       ),
     );
+  }
+
+  Container buttonBuy() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
+      child: ButtonTheme(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        minWidth: 50.0,
+        height: 25.0,
+        child: RaisedButton(
+          child: Text(
+            'Buy',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15),
+          ),
+          color: Colors.blue,
+          elevation: 4.0,
+          onPressed: () {
+            _launchURL();
+          },
+        ),
+      ),
+    );
+  }
+
+  _launchURL() async {
+    const url = 'https://flutter.io';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

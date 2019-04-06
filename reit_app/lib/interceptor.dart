@@ -4,6 +4,8 @@ import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'dart:io';
 import 'package:reit_app/services/shared_preferences_service.dart';
+import 'package:reit_app/functions/get_token.dart';
+import 'package:reit_app/services/login_service.dart';
 
 class CustomHttpClient extends IOClient {
   CustomHttpClient() : super();
@@ -19,17 +21,30 @@ class CustomHttpClient extends IOClient {
 
   @override
   Future<StreamedResponse> send(BaseRequest request) async {
-    return super.send(request..headers.addAll(await getHeader()));
+    print("------------------------- send interceptor -------------------------");
+    var response = super.send(request..headers.addAll(await getHeader()));
+    return response;
   }
 
   @override
   Future<Response> head(Object url, {Map<String, String> headers}) async {
+    print("------------------------- head interceptor -------------------------");
     return super.head(url, headers: headers..addAll(await getHeader()));
   }
 
   @override
   Future<Response> get(Object url, {Map<String, String> headers}) async {
-    return super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
+    print("------------------------- get interceptor -------------------------");
+    var response = await super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
+  
+    if(response.statusCode == 401) {
+      var refreshToken = await new LoginService().resfrehToken();
+      if(refreshToken.statusCode == 200) {
+        response = await super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
+      }
+    }
+  
+    return response;
   }
 }
 
@@ -43,8 +58,10 @@ class CustomMultipartRequest extends MultipartRequest {
   @override
   Future<StreamedResponse> send() async {
     try {
+      print("------------------------- CustomMultipartRequest -------------------------");
       var response = await client.send(this);
       var stream = onDone(response.stream, client.close);
+
       return new StreamedResponse(
         new ByteStream(stream),
         response.statusCode,

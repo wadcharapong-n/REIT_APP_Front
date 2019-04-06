@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
@@ -13,12 +14,13 @@ class Favorite extends StatefulWidget {
 }
 
 class FavoriteState extends State<Favorite> {
+  final favoriteService = Injector.getInjector().get<FavoriteService>();
   static List<ReitFavorite> reitsFavorite = List();
-
+  
   @override
   void initState() {
     super.initState();
-    getReitFavoriteByUserId().then((result) {
+    favoriteService.getReitFavoriteByUserId().then((result) {
       reitsFavorite = result;
       checkIsEmptyReit();
     });
@@ -67,6 +69,7 @@ class ReitRow extends StatefulWidget {
 }
 
 class ReitRowState extends State<ReitRow> {
+  final favoriteService = Injector.getInjector().get<FavoriteService>();
   bool isEllipsis = true;
   void toggleEllipsis() {
     setState(() {
@@ -154,7 +157,7 @@ class ReitRowState extends State<ReitRow> {
       ),
       tooltip: 'Delete Favorite',
       onPressed: () {
-        deleteReitFavorite(
+        favoriteService.deleteReitFavorite(
           widget.reitFavorite.symbol,
         ).then((result) {
           setState(() {

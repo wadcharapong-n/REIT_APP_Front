@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
-  // final ReitDetailService reitDetailService;
   DetailReit({Key key, this.reitSymbol});
 
   @override
@@ -17,7 +16,8 @@ class DetailReit extends StatefulWidget {
 }
 
 class DetailReitState extends State<DetailReit> {
-  final injector = Injector.getInjector();
+  var reitDetailService = Injector.getInjector().get<ReitDetailService>();
+  var favoriteService = Injector.getInjector().get<FavoriteService>();
   ReitDetail reitDetail;
   bool isEmptyFavorite;
   bool isEllipsis = true;
@@ -29,15 +29,10 @@ class DetailReitState extends State<DetailReit> {
 
   @override
   void initState() {
-    print("----------- initState --------------");
     super.initState();
-    print("----------- super.initState --------------");
-    ReitDetailService reitDetailService = injector.get<ReitDetailService>();
     reitDetailService.getReitDetailBySymbol(widget.reitSymbol).then((result) {
       setState(() {
         reitDetail = result;
-        print("----------- reitDetail trustNameTh --------------");
-        print(reitDetail.trustNameTh);
       });
       checkEmptyFavorite();
     });
@@ -108,7 +103,7 @@ class DetailReitState extends State<DetailReit> {
           size: 30,
         ),
         onPressed: () {
-          addReitFavorite(reitDetail.symbol).then((result) {
+          favoriteService.addReitFavorite(reitDetail.symbol).then((result) {
             setState(() {
               isEmptyFavorite = false;
             });
@@ -133,7 +128,7 @@ class DetailReitState extends State<DetailReit> {
         size: 30,
       ),
       onPressed: () {
-        deleteReitFavorite(reitDetail.symbol).then((result) {
+        favoriteService.deleteReitFavorite(reitDetail.symbol).then((result) {
           setState(() {
             isEmptyFavorite = true;
           });

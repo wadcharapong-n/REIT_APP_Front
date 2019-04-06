@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
           var accessToken = facebookLoginResult.accessToken.token;
           this.site = 'facebook';
           onLoginStatusChanged(true, profileData: null);
-          getToken(accessToken, this.site).then((isTrue) {
+          getAccessToken(accessToken, this.site).then((isTrue) {
             if (isTrue == true) {
               Navigator.of(context).pushReplacementNamed('/Dashboard');
             } else {

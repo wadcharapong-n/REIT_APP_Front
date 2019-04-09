@@ -10,7 +10,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  bool isEmptyReit = false;
+  bool isEmptyReit = true;
 
   checkIsEmptyReit(value) {
     setState(() {

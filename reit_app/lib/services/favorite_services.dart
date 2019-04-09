@@ -9,9 +9,11 @@ Future<List<ReitFavorite>> getReitFavoriteByUserId() async {
   final response = await httpClient.get(AppConfig.apiUrl + "/reitFavorite/");
   if (response.statusCode == 200) {
     List<ReitFavorite> allReitFavorite = List();
-    json.decode(response.body).forEach((reitFavorite) {
-      allReitFavorite.add(ReitFavorite.fromJson(reitFavorite));
-    });
+    if (json.decode(response.body) != null) {
+      json.decode(response.body).forEach((reitFavorite) {
+        allReitFavorite.add(ReitFavorite.fromJson(reitFavorite));
+      });
+    }
     return allReitFavorite;
   } else {
     throw Exception('Failed to load data');

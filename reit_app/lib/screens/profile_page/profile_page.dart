@@ -9,14 +9,24 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   User user = User();
+  var x = '';
 
   @override
   void initState() {
     super.initState();
+
     getProfileData().then((result) {
       setState(() {
         user = result;
+        x = user.fullName;
       });
+      print('image =======>' + user.image);
+      print('name ========>' + user.fullName);
+      print('email =======>' + user.email);
+      print('site =======>' + user.site);
+      print('userID =======>' + user.userID);
+      print('userName =======>' + user.userName);
+      
     });
   }
 
@@ -24,12 +34,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final ima = Center(
       child: Container(
-        width: 200,
-        height: 200,
+        width: 120,
+        height: 120,
         child: CircleAvatar(
           backgroundColor: Colors.red,
-          maxRadius: 80,
+          maxRadius: 40,
           backgroundImage: AssetImage(
+            // user.image
             'assets/alucard.jpg',
           ),
         ),
@@ -40,33 +51,15 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      user.fullName,
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-                // Container(
-                //   padding: const EdgeInsets.all(8),
-                //   child: Text(
-                //     'Fly',
-                //     style: TextStyle(
-                //         fontSize: 25,
-                //         fontWeight: FontWeight.bold,
-                //         color: Colors.white),
-                //   ),
-                // ),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                x,
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
             ),
           ),
         ],
@@ -80,24 +73,19 @@ class _ProfilePageState extends State<ProfilePage> {
         child: TextFormField(
           cursorColor: Colors.red,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                const Radius.circular(8.0),
-              ),
-            ),
             labelText: 'Email',
             labelStyle: TextStyle(
               color: Colors.blue,
             ),
           ),
-          initialValue: 'user.email',
-          style: TextStyle(fontSize: 20.0, color: Colors.white),
+          initialValue: user.email,
+          style: TextStyle(fontSize: 20.0, color: Colors.black),
         ),
       ),
     );
 
     final submitButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -118,10 +106,17 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange[600],
+        elevation: 2,
+        centerTitle: true,
+        title: Text(
+          'Profile',
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),
+        ),
       ),
       backgroundColor: Colors.orange[300],
       body: Container(
-        margin: EdgeInsets.only(top: 60),
+        margin: EdgeInsets.only(top: 15),
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),

@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     final logo = Hero(
       tag: 'hero',
@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
-    final loginButtonGoogle = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16),
+    final loginGoogle = Padding(
+      padding: EdgeInsets.symmetric(vertical: 16,horizontal: 20),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final loginFacebook = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 20),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.orange[600],
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -97,9 +97,9 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             logo,
             SizedBox(height: 100),
-            loginButtonGoogle,
+            loginGoogle,
             loginFacebook,
-            SizedBox(height: 300),
+            SizedBox(height: 120),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:reit_app/app_config.dart';
+import 'package:reit_app/services/map_search_service.dart';
 import "package:google_maps_webservice/places.dart";
 
 class MapSearch extends StatefulWidget {
@@ -12,8 +12,7 @@ class _MapSearchState extends State<MapSearch> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   List _suggestion = List();
-  final places =
-      new GoogleMapsPlaces(apiKey: "AIzaSyCD6fMRbaD5XE3ZbYsfVryOMxY-0viOk8Y");
+  final places = GoogleMapsPlaces(apiKey: AppConfig.googleApiKey);
 
   @override
   void initState() {
@@ -39,7 +38,6 @@ class _MapSearchState extends State<MapSearch> {
       body: Container(
         child: _buildList(),
       ),
-      // resizeToAvoidBottomPadding: false,
     );
   }
 
@@ -47,61 +45,51 @@ class _MapSearchState extends State<MapSearch> {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
-      title: TextField(
-        style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.black,
-            fontWeight: FontWeight.w300,
-            fontFamily: 'Poppins'),
-        autofocus: true,
-        controller: _filter,
-        textInputAction: TextInputAction.search,
-        decoration:
-            InputDecoration(border: InputBorder.none, hintText: 'Search'),
-      ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        color: Colors.black,
-        onPressed: () {
-          _filter.clear();
-          _suggestion.clear();
-          Navigator.pop(context);
-        },
-      ),
+      title: textFieldSearch(),
+      leading: buttonBackPage(),
       actions: <Widget>[
-        !(_filter.text.isEmpty)
-            ? IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  _filter.clear();
-                  _suggestion.clear();
-                },
-              )
-            : Text('')
+        !(_filter.text.isEmpty) ? buttonClearFilter() : Text('')
       ],
     );
   }
 
-  Future<List> placesSearch(String searchText) async {
-    List placesList = List();
-    List placesDetail = List();
-    PlacesAutocompleteResponse reponse =
-        await places.autocomplete(searchText, language: 'th');
-    if (reponse.isOkay) {
-      reponse.predictions.forEach((Prediction place) {
-        placesList.add(place);
-      });
-    }
+  TextField textFieldSearch() {
+    return TextField(
+      style: TextStyle(
+        fontSize: 20.0,
+        color: Colors.black,
+        fontWeight: FontWeight.w300,
+      ),
+      autofocus: true,
+      controller: _filter,
+      textInputAction: TextInputAction.search,
+      decoration: InputDecoration(border: InputBorder.none, hintText: 'Search'),
+    );
+  }
 
-    for (var place in placesList) {
-      PlacesDetailsResponse details =
-          await places.getDetailsByPlaceId(place.placeId, language: 'th');
-      placesDetail.add(details);
-    }
-    return placesDetail;
+  IconButton buttonBackPage() {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      color: Colors.black,
+      onPressed: () {
+        _filter.clear();
+        _suggestion.clear();
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  IconButton buttonClearFilter() {
+    return IconButton(
+      icon: Icon(
+        Icons.close,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        _filter.clear();
+        _suggestion.clear();
+      },
+    );
   }
 
   Widget _buildList() {
@@ -119,7 +107,7 @@ class _MapSearchState extends State<MapSearch> {
                     title: Text(_suggestion[index].result.name),
                     subtitle: Text(_suggestion[index].result.formattedAddress),
                     onTap: () {
-                      Navigator.pop(context,_suggestion[index]);
+                      Navigator.pop(context, _suggestion[index]);
                     },
                   ),
                 );

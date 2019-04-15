@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/services/getProfileData_service.dart';
+import 'package:reit_app/services/profile_service.dart';
 import 'package:reit_app/models/user.dart';
 
-class ProfilePage extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _ProfilePageState createState() => new _ProfilePageState();
+  _ProfileState createState() => new _ProfileState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileState extends State<Profile> {
   User user = User();
   var x = '';
 
@@ -26,7 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
       print('site =======>' + user.site);
       print('userID =======>' + user.userID);
       print('userName =======>' + user.userName);
-      
     });
   }
 

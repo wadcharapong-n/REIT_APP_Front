@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:reit_app/functions/get_token.dart';
+import 'package:reit_app/services/splash_service.dart';
+import 'package:reit_app/services/shared_preferences_service.dart';
 
-class SplashPage extends StatefulWidget {
+class Splash extends StatefulWidget {
   @override
-  SplashPageState createState() {
-    return SplashPageState();
+  SplashState createState() {
+    return SplashState();
   }
 }
 
-class SplashPageState extends State<SplashPage> {
+class SplashState extends State<Splash> {
   final int splashDuration = 2;
 
   @override
   void initState() {
     super.initState();
     getToken().then((resultToken) {
-      startTime(resultToken);
-    });
-  }
-
-  startTime(String token) async {
-    return Timer(Duration(seconds: splashDuration), () {
-      if (token != null) {
-        Navigator.of(context).pushReplacementNamed('/Dashboard');
-      } else {
-        Navigator.of(context).pushReplacementNamed('/Login');
-      }
+      startTime(resultToken, splashDuration, context);
     });
   }
 

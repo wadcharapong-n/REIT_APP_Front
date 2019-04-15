@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
-import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
+import 'package:reit_app/screens/dashboard/favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/models/reit_favorite.dart';
 import 'package:url_launcher/url_launcher.dart';

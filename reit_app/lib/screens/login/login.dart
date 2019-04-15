@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:reit_app/services/login_service.dart';
 
-class LoginPage extends StatefulWidget {
-  static String tag = 'login-page';
+class Login extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginState createState() => new _LoginState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginState extends State<Login> {
   bool isLoggedIn = false;
   var profileData;
   String site;

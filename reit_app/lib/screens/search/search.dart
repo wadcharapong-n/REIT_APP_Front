@@ -1,15 +1,13 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
-import 'package:reit_app/services/search_reit.dart';
-import 'package:reit_app/services/sync_elastic.dart';
+import 'package:reit_app/services/search_service.dart';
 
-class SearchReit extends StatefulWidget {
+class Search extends StatefulWidget {
   @override
-  _SearchReitState createState() => _SearchReitState();
+  _SearchState createState() => _SearchState();
 }
 
-class _SearchReitState extends State<SearchReit> {
+class _SearchState extends State<Search> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   List _suggestion = List();
@@ -44,51 +42,51 @@ class _SearchReitState extends State<SearchReit> {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
-      title: TextField(
-        style: TextStyle(
-          fontSize: 20.0,
-          color: Colors.black,
-          fontWeight: FontWeight.w300,
-        ),
-        autofocus: true,
-        controller: _filter,
-        textInputAction: TextInputAction.search,
-        decoration:
-            InputDecoration(border: InputBorder.none, hintText: 'Search'),
-      ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        color: Colors.black,
-        onPressed: () {
-          _filter.clear();
-          _suggestion.clear();
-          Navigator.pop(context);
-        },
-      ),
+      title: textFieldSearch(),
+      leading: buttonBackPage(),
       actions: <Widget>[
-        !(_filter.text.isEmpty)
-            ? IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  _filter.clear();
-                  _suggestion.clear();
-                },
-              )
-            : Text('')
+        !(_filter.text.isEmpty) ? buttonClearFilter() : Text('')
       ],
     );
   }
 
-  Future<List> reitSearch(String searchText) async {
-    List reitsDetail = List();
-    await getReitQuery(searchText).then((result) {
-      reitsDetail = result;
-    });
+  TextField textFieldSearch() {
+    return TextField(
+      style: TextStyle(
+        fontSize: 20.0,
+        color: Colors.black,
+        fontWeight: FontWeight.w300,
+      ),
+      autofocus: true,
+      controller: _filter,
+      textInputAction: TextInputAction.search,
+      decoration: InputDecoration(border: InputBorder.none, hintText: 'Search'),
+    );
+  }
 
-    return reitsDetail;
+  IconButton buttonBackPage() {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      color: Colors.black,
+      onPressed: () {
+        _filter.clear();
+        _suggestion.clear();
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  IconButton buttonClearFilter() {
+    return IconButton(
+      icon: Icon(
+        Icons.close,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        _filter.clear();
+        _suggestion.clear();
+      },
+    );
   }
 
   Widget _buildList() {

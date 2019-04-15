@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'dart:io';
-import 'package:reit_app/functions/get_token.dart';
+import 'package:reit_app/services/shared_preferences_service.dart';
 
 class CustomHttpClient extends IOClient {
   CustomHttpClient() : super();

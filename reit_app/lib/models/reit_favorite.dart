@@ -19,7 +19,8 @@ class ReitFavorite {
 
   factory ReitFavorite.fromJson(Map<String, dynamic> json) {
     var listReitItem = json['ReitItem'] as List;
-    List<ReitItem> reitItems = listReitItem.map((i) => ReitItem.fromJson(i)).toList();
+    List<ReitItem> reitItems =
+        listReitItem.map((i) => ReitItem.fromJson(i)).toList();
     return ReitFavorite(
       userId: json['UserId'],
       symbol: json['Symbol'],

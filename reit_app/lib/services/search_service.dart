@@ -4,6 +4,15 @@ import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/app_config.dart';
 import 'package:reit_app/interceptor.dart';
 
+Future<List> reitSearch(String searchText) async {
+  List reitsDetail = List();
+  await getReitQuery(searchText).then((result) {
+    reitsDetail = result;
+  });
+
+  return reitsDetail;
+}
+
 Future<List<ReitDetail>> getReitQuery(query) async {
   final List<ReitDetail> reitAll = List();
   final httpClient = new CustomHttpClient();

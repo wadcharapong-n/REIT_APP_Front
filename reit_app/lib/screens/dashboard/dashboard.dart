@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/screens/dashboard/widgets/favorite.dart';
-import 'package:reit_app/functions/save_logout.dart';
+import 'package:reit_app/screens/dashboard/favorite.dart';
+import 'package:reit_app/services/shared_preferences_service.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -47,6 +47,7 @@ class DashboardState extends State<Dashboard> {
       ),
       actions: <Widget>[
         PopupMenuButton(
+            icon: Icon(Icons.account_circle),
             itemBuilder: (_) => <PopupMenuItem<String>>[
                   PopupMenuItem<String>(
                       child: const Text('Profile'), value: 'Profile'),

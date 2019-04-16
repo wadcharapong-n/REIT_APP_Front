@@ -18,12 +18,12 @@ class ReitFavorite {
   });
 
   factory ReitFavorite.fromJson(Map<String, dynamic> json) {
-    var listReitItem = json['ReitItem'] as List;
+    var listReitItem = json['Reit'] as List;
     List<ReitItem> reitItems =
         listReitItem.map((i) => ReitItem.fromJson(i)).toList();
     return ReitFavorite(
-      userId: json['UserId'],
-      symbol: json['Symbol'],
+      userId: json['userId'],
+      symbol: json['symbol'],
       trustNameTh: reitItems[0].trustNameTh,
       trustNameEn: reitItems[0].trustNameEn,
       priceOfDay: reitItems[0].priceOfDay,
@@ -50,10 +50,10 @@ class ReitItem {
 
   factory ReitItem.fromJson(Map<String, dynamic> json) {
     return ReitItem(
-        trustNameTh: json['TrustNameTh'],
-        trustNameEn: json['TrustNameEn'],
-        priceOfDay: json['PriceOfDay'],
-        maxPriceOfDay: json['MaxPriceOfDay'],
-        minPriceOfDay: json['MinPriceOfDay']);
+        trustNameTh: json['trustNameTh'],
+        trustNameEn: json['trustNameEn'],
+        priceOfDay: json['priceOfDay'],
+        maxPriceOfDay: json['maxPriceOfDay'],
+        minPriceOfDay: json['minPriceOfDay']);
   }
 }

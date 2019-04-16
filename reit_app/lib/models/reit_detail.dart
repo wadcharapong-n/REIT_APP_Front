@@ -19,6 +19,7 @@ class ReitDetail {
   final String registrationDate;
   final String investmentAmount;
   final String establishmentDate;
+  final List<MajorShareholders> majorShareholders;
 
   const ReitDetail({
     this.id,
@@ -41,32 +42,64 @@ class ReitDetail {
     this.registrationDate,
     this.investmentAmount,
     this.establishmentDate,
+    this.majorShareholders,
   });
 
   String handledNullString(String value) => value == null ? "" : value;
 
   factory ReitDetail.fromJson(Map<String, dynamic> json) {
+    var jsonMajorShareholders = json['majorShareholders'] as List;
+    List<MajorShareholders> majorShareholdersItems = jsonMajorShareholders
+        .map((i) => MajorShareholders.fromJson(i))
+        .toList();
     return ReitDetail(
-      id: json['Id'],
-      symbol: json['Symbol'],
-      trustNameTh: json['TrustNameTh'],
-      trustNameEn: json['TrustNameEn'],
-      priceOfDay: json['PriceOfDay'],
-      maxPriceOfDay: json['MaxPriceOfDay'],
-      minPriceOfDay: json['MinPriceOfDay'],
-      parValue: json['ParValue'],
-      parNAV: json['ParNAV'],
-      peValue: json['PeValue'],
-      ceilingValue: json['CeilingValue'],
-      floorValue: json['FloorValue'],
-      policy: json['Policy'],
-      trustee: json['Trustee'],
-      nickName: json['NickName'],
-      reitManager: json['ReitManager'],
-      address: json['Address'],
-      registrationDate: json['RegistrationDate'],
-      investmentAmount: json['InvestmentAmount'],
-      establishmentDate: json['EstablishmentDate'],
+      id: json['id'],
+      symbol: json['symbol'],
+      trustNameTh: json['trustNameTh'],
+      trustNameEn: json['trustNameEn'],
+      priceOfDay: json['priceOfDay'],
+      maxPriceOfDay: json['maxPriceOfDay'],
+      minPriceOfDay: json['minPriceOfDay'],
+      parValue: json['parValue'],
+      parNAV: json['parNAV'],
+      peValue: json['peValue'],
+      ceilingValue: json['ceilingValue'],
+      floorValue: json['floorValue'],
+      policy: json['policy'],
+      trustee: json['trustee'],
+      nickName: json['nickName'],
+      reitManager: json['reitManager'],
+      address: json['address'],
+      registrationDate: json['registrationDate'],
+      investmentAmount: json['investmentAmount'],
+      establishmentDate: json['establishmentDate'],
+      majorShareholders: majorShareholdersItems,
     );
+  }
+}
+
+class MajorShareholders {
+  final String symbol;
+  final String nameTh;
+  final String nameEn;
+  final String shares;
+  final String sharesPercent;
+
+  MajorShareholders({
+    this.symbol,
+    this.nameTh,
+    this.nameEn,
+    this.shares,
+    this.sharesPercent,
+  });
+
+  factory MajorShareholders.fromJson(Map<String, dynamic> json) {
+    print('............................');
+    return MajorShareholders(
+        symbol: json['symbol'],
+        nameTh: json['nameTh'],
+        nameEn: json['nameEn'],
+        shares: json['shares'],
+        sharesPercent: json['sharesPercent']);
   }
 }

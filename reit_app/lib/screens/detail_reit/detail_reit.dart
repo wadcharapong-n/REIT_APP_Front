@@ -58,6 +58,9 @@ class DetailReitState extends State<DetailReit> {
     if (reitDetail == null) {
       return new Scaffold();
     }
+
+    if (reitDetail.majorShareholders.isEmpty) {}
+
     return new Scaffold(
       backgroundColor: Colors.white,
       appBar: new AppBar(
@@ -82,13 +85,16 @@ class DetailReitState extends State<DetailReit> {
       ),
       body: new Container(
         margin: EdgeInsets.all(10),
-        child: new Column(
-          children: <Widget>[
-            _getSection1(),
-            _getSection2(),
-            _getSection3(),
-            _getSection4()
-          ],
+        child: SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[
+              _getSection1(),
+              _getSection2(),
+              _getSection3(),
+              _getSection4(),
+              _getSection5(),
+            ],
+          ),
         ),
       ),
     );
@@ -319,6 +325,103 @@ class DetailReitState extends State<DetailReit> {
         ],
       ),
     );
+  }
+
+  Container _getSection5() {
+    if (!(reitDetail.majorShareholders.isEmpty)) {
+      print(reitDetail.majorShareholders.length);
+      print(reitDetail.majorShareholders[0].nameEn);
+      print(reitDetail.majorShareholders[1].nameEn);
+      return new Container(
+        padding: EdgeInsets.only(bottom: 10, top: 10),
+        decoration: borderBottom,
+        child: Row(
+          children: <Widget>[
+            new Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "ผู้ถือหุ้นรายใหญ่",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  child: Table(
+                    // border: TableBorder.lerp(1, 0, 1),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.top,
+                    columnWidths: {
+                      0: FractionColumnWidth(.10),
+                      1: FractionColumnWidth(.60),
+                      2: FractionColumnWidth(.15),
+                      3: FractionColumnWidth(.15),
+                    },
+                    children: [
+                      TableRow(
+                        children: [
+                          Text('No.'),
+                          Text('Name'),
+                          Text('Shares'),
+                          Text('Percent'),
+                        ],
+                      ),
+                      _tableRowSection5(0),
+                      _tableRowSection5(1),
+                      _tableRowSection5(2),
+                      _tableRowSection5(3),
+                      _tableRowSection5(4),
+                    ],
+                  ),
+                )
+              ],
+            ))
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  TableRow _tableRowSection5(int index) {
+    var no = index + 1;
+    if (reitDetail.majorShareholders.length > index) {
+      return TableRow(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
+            child: Text(no.toString()),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 1, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(reitDetail.majorShareholders[index].nameTh),
+                Text(reitDetail.majorShareholders[index].nameEn),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
+            child: Text(reitDetail.majorShareholders[index].shares),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
+            child: Text(reitDetail.majorShareholders[index].sharesPercent),
+          ),
+        ],
+      );
+    } else {
+      return TableRow(
+        children: [
+          Text(''),
+          Text(''),
+          Text(''),
+          Text(''),
+        ],
+      );
+    }
   }
 
   Container buttonBuy() {

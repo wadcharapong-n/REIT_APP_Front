@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () {},
+        onPressed: () {Navigator.of(context).pushReplacementNamed('/Dashboard');},
         padding: EdgeInsets.all(12),
         color: Colors.white,
         child: Text('Login With Google',

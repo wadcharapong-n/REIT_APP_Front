@@ -38,10 +38,11 @@ class _ProfileState extends State<Profile> {
         child: CircleAvatar(
           backgroundColor: Colors.red,
           maxRadius: 40,
-          backgroundImage: AssetImage(
-            // user.image
-            'assets/alucard.jpg',
-          ),
+          // backgroundImage: AssetImage(
+          //   // user.image
+          //   'assets/alucard.jpg',
+          // ),
+          backgroundImage: NetworkImage(user.image),
         ),
       ),
     );
@@ -53,7 +54,7 @@ class _ProfileState extends State<Profile> {
             child: Container(
               padding: const EdgeInsets.all(8),
               child: Text(
-                x,
+                user.fullName,
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -70,6 +71,7 @@ class _ProfileState extends State<Profile> {
       child: Container(
         padding: EdgeInsets.all(20),
         child: TextFormField(
+          enabled: false,
           cursorColor: Colors.red,
           decoration: InputDecoration(
             labelText: 'Email',

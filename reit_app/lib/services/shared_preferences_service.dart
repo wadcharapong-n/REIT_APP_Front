@@ -58,7 +58,7 @@ Future saveToken(String token) async {
   }
 }
 
-Future saveRefreshToken({String refreshToken}) async {
+Future saveRefreshToken(String refreshToken) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   if (refreshToken != null) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
-import 'package:reit_app/functions/save_logout.dart';
 import 'package:reit_app/services/favorite_services.dart';
+import 'package:reit_app/services/shared_preferences_service.dart';
 
 class DashboardWidget extends StatefulWidget {
   @override

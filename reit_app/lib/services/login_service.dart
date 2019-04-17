@@ -3,8 +3,6 @@ import 'dart:async' show Future;
 import 'dart:convert';
 import 'package:reit_app/app_config.dart';
 import 'package:reit_app/services/shared_preferences_service.dart';
-import 'package:reit_app/functions/get_token.dart';
-import 'package:reit_app/functions/save_token.dart';
 import 'package:http/http.dart' as http;
 
 Future getAccessToken(String token, String site) async {
@@ -32,11 +30,9 @@ class LoginService {
     });
     if (response.statusCode == 200) {
       Map<String, dynamic> newToken = jsonDecode(response.body);
-      print("------------- get new resfrehToken() -------------");
       saveToken(newToken['token']);
       return response;
     } else {
-      print("resfrehToken() Failed to Resfreh Token");
       throw Exception('Failed to Resfreh Token');
     } 
   }

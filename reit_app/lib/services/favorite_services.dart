@@ -7,7 +7,7 @@ import 'package:reit_app/interceptor.dart';
 class FavoriteService {
   Future<List<ReitFavorite>> getReitFavoriteByUserId() async {
     final httpClient = new CustomHttpClient();
-    final response = await httpClient.get(AppConfig.apiUrl + "/reitFavorite/");
+    final response = await httpClient.get(AppConfig.apiUrl + "/reitFavorite");
     if (response.statusCode == 200) {
       List<ReitFavorite> allReitFavorite = List();
       if (json.decode(response.body) != null) {

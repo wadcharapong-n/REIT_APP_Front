@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reit_app/dashboard_widget.dart';
 
 import 'package:reit_app/screens/dashboard/dashboard.dart';
 import 'package:reit_app/screens/login/login.dart';
@@ -10,11 +11,12 @@ import 'package:reit_app/screens/search/search.dart';
 
 class Routes {
   final routes = <String, WidgetBuilder>{
-    '/': (context) => Splash(),
-    '/Login': (context) => Login(),
-    '/Profile': (context) => Profile(),
+    '/': (context) => SplashPage(),
+    '/Login': (context) => LoginPage(),
+    '/Profile': (context) => ProfilePage(),
     '/Dashboard': (context) => Dashboard(),
-    '/Search': (context) => Search(),
+    // '/Dashboard': (context) => DashboardWidget(),
+    '/Search': (context) => SearchPage(),
     '/Location': (context) => LocationPage(),
     '/MapSearch': (context) => MapSearch(),
   };

@@ -6,4 +6,5 @@ class SharedPreferencesConfig {
   static String image = "LastImage";
   static String site = "LastSite";
   static String token = "LastToken";
+  static String refreshToken = "RefreshToken";  
 }

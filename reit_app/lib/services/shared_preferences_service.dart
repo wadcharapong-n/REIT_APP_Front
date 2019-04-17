@@ -10,6 +10,13 @@ Future<String> getToken() async {
   return getToken;
 }
 
+Future<String> getRefreshToken() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  String getToken = preferences.getString(SharedPreferencesConfig.refreshToken);
+  return getToken;
+}
+
 Future<User> getUser() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -48,5 +55,13 @@ Future saveToken(String token) async {
 
   if (token != null) {
     await preferences.setString(SharedPreferencesConfig.token, token);
+  }
+}
+
+Future saveRefreshToken({String refreshToken}) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  if (refreshToken != null) {
+    await preferences.setString(SharedPreferencesConfig.refreshToken, refreshToken);
   }
 }

@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'dart:io';
 import 'package:reit_app/services/shared_preferences_service.dart';
-import 'package:reit_app/functions/get_token.dart';
 import 'package:reit_app/services/login_service.dart';
 
 class CustomHttpClient extends IOClient {
@@ -41,6 +40,8 @@ class CustomHttpClient extends IOClient {
       var refreshToken = await new LoginService().resfrehToken();
       if(refreshToken.statusCode == 200) {
         response = await super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
+      } else {
+        
       }
     }
   

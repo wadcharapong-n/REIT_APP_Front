@@ -1,4 +1,4 @@
-class ReitFavorite {
+class FavoriteReit {
   final String userId;
   final String symbol;
   final String trustNameTh;
@@ -7,7 +7,7 @@ class ReitFavorite {
   final String maxPriceOfDay;
   final String minPriceOfDay;
 
-  const ReitFavorite({
+  const FavoriteReit({
     this.userId,
     this.symbol,
     this.trustNameTh,
@@ -17,11 +17,11 @@ class ReitFavorite {
     this.minPriceOfDay,
   });
 
-  factory ReitFavorite.fromJson(Map<String, dynamic> json) {
+  factory FavoriteReit.fromJson(Map<String, dynamic> json) {
     var listReitItem = json['Reit'] as List;
     List<ReitItem> reitItems =
         listReitItem.map((i) => ReitItem.fromJson(i)).toList();
-    return ReitFavorite(
+    return FavoriteReit(
       userId: json['userId'],
       symbol: json['symbol'],
       trustNameTh: reitItems[0].trustNameTh,

@@ -10,7 +10,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  bool isEmptyReit = true;
+  bool isEmptyReit = false;
 
   checkIsEmptyReit(value) {
     setState(() {
@@ -28,9 +28,7 @@ class DashboardState extends State<Dashboard> {
         children: <Widget>[
           inputSearch(),
           isEmptyReit == false ? headerFavorite() : Text(''),
-          isEmptyReit == false
-              ? Favorite(checkIsEmptyReit: checkIsEmptyReit)
-              : Text(''),
+          isEmptyReit == false ? Favorite() : Text(''),
         ],
       ),
     );
@@ -76,15 +74,7 @@ class DashboardState extends State<Dashboard> {
           padding: EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/Search').then((result) {
-                setState(() {
-                  if (FavoriteState.reitsFavorite.length == 0) {
-                    isEmptyReit = true;
-                  } else {
-                    isEmptyReit = false;
-                  }
-                });
-              });
+              Navigator.pushNamed(context, '/Search');
             },
             child: Container(
               height: 40.0,

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
-import 'package:reit_app/screens/dashboard/favorite.dart';
 import 'package:reit_app/services/favorite_services.dart';
-import 'package:reit_app/models/reit_favorite.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailReit extends StatefulWidget {
@@ -19,7 +17,7 @@ class DetailReitState extends State<DetailReit> {
   var reitDetailService = Injector.getInjector().get<ReitDetailService>();
   var favoriteService = Injector.getInjector().get<FavoriteService>();
   ReitDetail reitDetail;
-  bool isEmptyFavorite;
+  bool isFavoriteReit;
   bool isEllipsis = true;
   void toggleEllipsis() {
     setState(() {
@@ -30,23 +28,22 @@ class DetailReitState extends State<DetailReit> {
   @override
   void initState() {
     super.initState();
+    getReitDetailBySymbol();
+    checkFavoriteReitAndSetState(widget.reitSymbol);
+  }
+
+  getReitDetailBySymbol() {
     reitDetailService.getReitDetailBySymbol(widget.reitSymbol).then((result) {
       setState(() {
         reitDetail = result;
       });
-      checkEmptyFavorite();
     });
   }
 
-  checkEmptyFavorite() {
-    for (final reitFavorite in FavoriteState.reitsFavorite) {
-      if (reitFavorite.symbol == reitDetail.symbol) {
-        isEmptyFavorite = false;
-        break;
-      } else {
-        isEmptyFavorite = true;
-      }
-    }
+  checkFavoriteReitAndSetState(String symbol) {
+    setState(() {
+      isFavoriteReit = favoriteService.isFavoriteReit(symbol);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -68,7 +65,7 @@ class DetailReitState extends State<DetailReit> {
         ),
         backgroundColor: Colors.orange[600],
         actions: <Widget>[
-          isEmptyFavorite == false ? iconDeleteFavorite() : iconAddFavorite()
+          isFavoriteReit == false ? iconDeleteFavorite() : iconAddFavorite()
         ],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -105,17 +102,8 @@ class DetailReitState extends State<DetailReit> {
         onPressed: () {
           favoriteService.addReitFavorite(reitDetail.symbol).then((result) {
             setState(() {
-              isEmptyFavorite = false;
+              isFavoriteReit = false;
             });
-            FavoriteState.reitsFavorite.add(
-              ReitFavorite(
-                  symbol: reitDetail.symbol,
-                  trustNameTh: reitDetail.trustNameTh,
-                  trustNameEn: reitDetail.trustNameEn,
-                  priceOfDay: reitDetail.priceOfDay,
-                  maxPriceOfDay: reitDetail.maxPriceOfDay,
-                  minPriceOfDay: reitDetail.minPriceOfDay),
-            );
           });
         });
   }
@@ -130,10 +118,8 @@ class DetailReitState extends State<DetailReit> {
       onPressed: () {
         favoriteService.deleteReitFavorite(reitDetail.symbol).then((result) {
           setState(() {
-            isEmptyFavorite = true;
+            isFavoriteReit = true;
           });
-          FavoriteState.reitsFavorite
-              .removeWhere((item) => item.symbol == reitDetail.symbol);
         });
       },
     );

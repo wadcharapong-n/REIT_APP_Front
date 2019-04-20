@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:reit_app/models/user.dart';
-import 'package:reit_app/util/shared_preferences_config.dart';
+import 'package:reit_app/utils/shared_preferences_config.dart';
 
 Future<String> getToken() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();

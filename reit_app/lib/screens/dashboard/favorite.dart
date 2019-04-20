@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
-import 'package:reit_app/models/reit_favorite.dart';
+import 'package:reit_app/models/favorite_reit.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 
 class Favorite extends StatefulWidget {
-  final Function checkIsEmptyReit;
-  const Favorite({Key key, this.checkIsEmptyReit}) : super(key: key);
   @override
   FavoriteState createState() {
     return FavoriteState();
@@ -15,25 +13,23 @@ class Favorite extends StatefulWidget {
 
 class FavoriteState extends State<Favorite> {
   final favoriteService = Injector.getInjector().get<FavoriteService>();
-  static List<ReitFavorite> reitsFavorite = List();
-  
+  List<FavoriteReit> favoriteReitList = List<FavoriteReit>();
+
   @override
   void initState() {
     super.initState();
-    favoriteService.getReitFavoriteByUserId().then((result) {
-      reitsFavorite = result;
-      checkIsEmptyReit();
-    });
+    getFavoriteReitAndSetState();
   }
 
-  checkIsEmptyReit() {
-    bool value;
-    if (reitsFavorite.length == 0) {
-      value = true;
-    } else {
-      value = false;
-    }
-    widget.checkIsEmptyReit(value);
+  getFavoriteReitAndSetState() {
+    favoriteService.getFavoriteReitByUserId().then((result) {
+      setState(() {
+        favoriteReitList.clear();
+        result.forEach((data) {
+          favoriteReitList.add(data);
+        });
+      });
+    });
   }
 
   @override
@@ -45,10 +41,10 @@ class FavoriteState extends State<Favorite> {
       child: Expanded(
         child: ListView.builder(
             itemBuilder: (context, index) => ReitRow(
-                  reitFavorite: reitsFavorite[index],
-                  checkIsEmptyReit: checkIsEmptyReit,
-                ),
-            itemCount: reitsFavorite.length,
+              favoriteReit: favoriteReitList[index],
+              getFavoriteReitAndSetState: getFavoriteReitAndSetState
+            ),
+            itemCount: favoriteReitList.length,
             padding: EdgeInsets.symmetric(vertical: 16.0)),
       ),
     );
@@ -56,11 +52,10 @@ class FavoriteState extends State<Favorite> {
 }
 
 class ReitRow extends StatefulWidget {
-  final ReitFavorite reitFavorite;
-  final Function checkIsEmptyReit;
+  final FavoriteReit favoriteReit;
+  final Function getFavoriteReitAndSetState;
 
-  const ReitRow({Key key, this.reitFavorite, this.checkIsEmptyReit})
-      : super(key: key);
+  const ReitRow({Key key, this.favoriteReit, this.getFavoriteReitAndSetState}) : super(key: key);
 
   @override
   ReitRowState createState() {
@@ -76,19 +71,16 @@ class ReitRowState extends State<ReitRow> {
       isEllipsis = !isEllipsis;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DetailReit(
-                    reitSymbol: widget.reitFavorite.symbol,
-                  )),
+        Navigator.push(context,
+        MaterialPageRoute(
+              builder: (context) => DetailReit(reitSymbol: widget.favoriteReit.symbol,)),
         ).then((result) {
-          widget.checkIsEmptyReit();
+          widget.getFavoriteReitAndSetState();
         });
       },
       child: Container(
@@ -142,7 +134,7 @@ class ReitRowState extends State<ReitRow> {
 
   Text reitSymbol() {
     return Text(
-      widget.reitFavorite.symbol,
+      widget.favoriteReit.symbol,
       style: TextStyle(
           color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
     );
@@ -157,15 +149,8 @@ class ReitRowState extends State<ReitRow> {
       ),
       tooltip: 'Delete Favorite',
       onPressed: () {
-        favoriteService.deleteReitFavorite(
-          widget.reitFavorite.symbol,
-        ).then((result) {
-          setState(() {
-            FavoriteState.reitsFavorite.removeWhere(
-              (item) => item.symbol == widget.reitFavorite.symbol,
-            );
-          });
-          widget.checkIsEmptyReit();
+        favoriteService.deleteReitFavorite(widget.favoriteReit.symbol).then((result) {
+          widget.getFavoriteReitAndSetState();
         });
       },
     );
@@ -189,13 +174,13 @@ class ReitRowState extends State<ReitRow> {
     return GestureDetector(
         onTap: toggleEllipsis,
         child: isEllipsis
-            ? Text(widget.reitFavorite.trustNameTh,
+            ? Text(widget.favoriteReit.trustNameTh,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400),
                 overflow: TextOverflow.ellipsis)
-            : Text(widget.reitFavorite.trustNameTh,
+            : Text(widget.favoriteReit.trustNameTh,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
@@ -215,14 +200,14 @@ class ReitRowState extends State<ReitRow> {
                 children: <Widget>[
                   _reitPriceMaxMin(
                       text: 'Max : ',
-                      value: widget.reitFavorite.maxPriceOfDay,
+                      value: widget.favoriteReit.maxPriceOfDay,
                       color: Colors.blue),
                   _reitPriceMaxMin(
                       text: 'Min : ',
-                      value: widget.reitFavorite.minPriceOfDay,
+                      value: widget.favoriteReit.minPriceOfDay,
                       color: Colors.red),
                   _reitPriceOfDay(
-                      value: widget.reitFavorite.priceOfDay,
+                      value: widget.favoriteReit.priceOfDay,
                       color: Colors.green),
                 ]),
           ),

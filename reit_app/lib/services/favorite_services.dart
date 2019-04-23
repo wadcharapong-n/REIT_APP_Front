@@ -5,16 +5,19 @@ import 'package:reit_app/app_config.dart';
 import 'package:reit_app/interceptor.dart';
 
 class FavoriteService {
-
-  bool isFavoriteReit(String symbol) {
-    var isFavoriteReit = false;
-    this.getFavoriteReitByUserId().then((result) {
-      for (final favoriteReit in result) {
-        if (favoriteReit.symbol == symbol) {
-          isFavoriteReit = true;
-        } else {
-          isFavoriteReit = false;
+  Future<bool> isFavoriteReit(String symbol) async {
+    bool isFavoriteReit = true;
+    await getFavoriteReitByUserId().then((result) {
+      if (!(result.isEmpty)) {
+        for (var favoriteReit in result) {
+          if (favoriteReit.symbol == symbol) {
+            isFavoriteReit = false;
+          } else {
+            isFavoriteReit = true;
+          }
         }
+      } else {
+        isFavoriteReit = true;
       }
     });
     return isFavoriteReit;
@@ -35,6 +38,7 @@ class FavoriteService {
       throw Exception('Failed to load data');
     }
   }
+
   Future addReitFavorite(String ticker) async {
     var uri = Uri.parse(AppConfig.apiUrl + "/reitFavorite");
     var request = new CustomMultipartRequest("POST", uri);
@@ -60,5 +64,4 @@ class FavoriteService {
       }
     });
   }
-
 }

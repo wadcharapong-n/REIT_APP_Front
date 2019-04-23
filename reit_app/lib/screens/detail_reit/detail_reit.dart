@@ -40,9 +40,11 @@ class DetailReitState extends State<DetailReit> {
     });
   }
 
-  checkFavoriteReitAndSetState(String symbol) {
-    setState(() {
-      isFavoriteReit = favoriteService.isFavoriteReit(symbol);
+  checkFavoriteReitAndSetState(String symbol) async {
+    await favoriteService.isFavoriteReit(symbol).then((result) {
+      setState(() {
+        isFavoriteReit = result;
+      });
     });
   }
 
@@ -71,7 +73,8 @@ class DetailReitState extends State<DetailReit> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pop(context, false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/Dashboard', (Route<dynamic> route) => false);
           },
         ),
       ),

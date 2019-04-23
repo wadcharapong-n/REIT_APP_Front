@@ -133,7 +133,7 @@ class FavoriteReitWidgetState extends State<FavoriteReitWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   getFavoriteReitAndSetState() {
-    favoriteService.getReitFavoriteByUserId().then((result) {
+    favoriteService.getFavoriteReitByUserId().then((result) {
       setState(() {
         _favoriteReit.clear();
         result.forEach((data) {

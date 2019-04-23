@@ -20,20 +20,17 @@ class CustomHttpClient extends IOClient {
 
   @override
   Future<StreamedResponse> send(BaseRequest request) async {
-    print("------------------------- send interceptor -------------------------");
     var response = super.send(request..headers.addAll(await getHeader()));
     return response;
   }
 
   @override
   Future<Response> head(Object url, {Map<String, String> headers}) async {
-    print("------------------------- head interceptor -------------------------");
     return super.head(url, headers: headers..addAll(await getHeader()));
   }
 
   @override
   Future<Response> get(Object url, {Map<String, String> headers}) async {
-    print("------------------------- get interceptor -------------------------");
     var response = await super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
   
     if(response.statusCode == 401) {
@@ -59,8 +56,14 @@ class CustomMultipartRequest extends MultipartRequest {
   @override
   Future<StreamedResponse> send() async {
     try {
-      print("------------------------- CustomMultipartRequest -------------------------");
       var response = await client.send(this);
+      if(response.statusCode == 401) {
+        var refreshToken = await new LoginService().resfrehToken();
+        if(refreshToken.statusCode == 200) {
+          response = await client.send(this);
+        } else {
+        }
+      }
       var stream = onDone(response.stream, client.close);
 
       return new StreamedResponse(

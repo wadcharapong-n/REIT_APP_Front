@@ -6,18 +6,19 @@ import 'package:reit_app/interceptor.dart';
 
 class FavoriteService {
   Future<bool> isFavoriteReit(String symbol) async {
-    bool isFavoriteReit = true;
+    bool isFavoriteReit = false;
     await getFavoriteReitByUserId().then((result) {
       if (!(result.isEmpty)) {
         for (var favoriteReit in result) {
           if (favoriteReit.symbol == symbol) {
-            isFavoriteReit = false;
-          } else {
             isFavoriteReit = true;
-          }
+          } 
+          // else {
+          //   isFavoriteReit = false;
+          // }
         }
       } else {
-        isFavoriteReit = true;
+        isFavoriteReit = false;
       }
     });
     return isFavoriteReit;

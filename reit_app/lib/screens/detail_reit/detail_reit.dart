@@ -67,7 +67,7 @@ class DetailReitState extends State<DetailReit> {
         ),
         backgroundColor: Colors.orange[600],
         actions: <Widget>[
-          isFavoriteReit == false ? iconDeleteFavorite() : iconAddFavorite()
+          isFavoriteReit == true ? iconDeleteFavorite() : iconAddFavorite()
         ],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -105,7 +105,7 @@ class DetailReitState extends State<DetailReit> {
         onPressed: () {
           favoriteService.addReitFavorite(reitDetail.symbol).then((result) {
             setState(() {
-              isFavoriteReit = false;
+              isFavoriteReit = true;
             });
           });
         });
@@ -121,7 +121,7 @@ class DetailReitState extends State<DetailReit> {
       onPressed: () {
         favoriteService.deleteReitFavorite(reitDetail.symbol).then((result) {
           setState(() {
-            isFavoriteReit = true;
+            isFavoriteReit = false;
           });
         });
       },

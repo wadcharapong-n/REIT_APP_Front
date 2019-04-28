@@ -8,30 +8,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  User user = User();
-  var x = '';
 
   @override
   void initState() {
     super.initState();
-
-    getProfileData().then((result) {
-      setState(() {
-        user = result;
-        x = user.fullName;
-      });
-      print('image =======>' + user.image);
-      print('name ========>' + user.fullName);
-      print('email =======>' + user.email);
-      print('site =======>' + user.site);
-      print('userID =======>' + user.userID);
-      print('userName =======>' + user.userName);
-    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final ima = Center(
+  Center img(String imgUrl) {
+    return Center(
       child: Container(
         width: 120,
         height: 120,
@@ -42,19 +26,21 @@ class _ProfileState extends State<Profile> {
           //   // user.image
           //   'assets/alucard.jpg',
           // ),
-          backgroundImage: NetworkImage(user.image),
+          backgroundImage: NetworkImage(imgUrl),
         ),
       ),
     );
+  }
 
-    final detail = Container(
+  Container name(String name) {
+    return Container(
       child: Column(
         children: <Widget>[
           Container(
             child: Container(
               padding: const EdgeInsets.all(8),
               child: Text(
-                user.fullName,
+                name,
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -65,8 +51,10 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
+  }
 
-    final email = Padding(
+  Padding userId(String id) {
+    return Padding(
       padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: Container(
         padding: EdgeInsets.all(20),
@@ -74,18 +62,33 @@ class _ProfileState extends State<Profile> {
           enabled: false,
           cursorColor: Colors.red,
           decoration: InputDecoration(
-            labelText: 'Email',
-            labelStyle: TextStyle(
-              color: Colors.blue,
-            ),
+            hintText: 'userID: ' + id,
+            hintStyle: TextStyle(color: Colors.black),
           ),
-          initialValue: user.email,
-          style: TextStyle(fontSize: 20.0, color: Colors.black),
         ),
       ),
     );
+  }
 
-    final submitButton = Padding(
+  Padding email(String email) {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 100),
+        child: TextFormField(
+          enabled: false,
+          cursorColor: Colors.red,
+          decoration: InputDecoration(
+            hintText: 'email: ' + email,
+            hintStyle: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding submitButton() {
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
@@ -99,36 +102,52 @@ class _ProfileState extends State<Profile> {
         elevation: 12,
         onPressed: () {
           Navigator.pop(context);
-          // Perform some action
         },
       ),
     );
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange[600],
-        elevation: 2,
-        centerTitle: true,
-        title: Text(
-          'Profile',
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),
-        ),
-      ),
-      backgroundColor: Colors.orange[300],
-      body: Container(
-        margin: EdgeInsets.only(top: 15),
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            ima,
-            detail,
-            email,
-            submitButton,
-          ],
-        ),
-      ),
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<User>(
+      future: getProfileData(),
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.fullName != null) {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.orange[600],
+                elevation: 2,
+                centerTitle: true,
+                title: Text(
+                  'Profile',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.0),
+                ),
+              ),
+              backgroundColor: Colors.orange[300],
+              body: Container(
+                margin: EdgeInsets.only(top: 15),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0),
+                  children: <Widget>[
+                    img(snapshot.data.image),
+                    name(snapshot.data.fullName),
+                    userId(snapshot.data.userID),
+                    email(snapshot.data.email),
+                    submitButton(),
+                  ],
+                ),
+              ),
+            );
+          }
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

@@ -12,10 +12,7 @@ class FavoriteService {
         for (var favoriteReit in result) {
           if (favoriteReit.symbol == symbol) {
             isFavoriteReit = true;
-          } 
-          // else {
-          //   isFavoriteReit = false;
-          // }
+          }
         }
       } else {
         isFavoriteReit = false;
@@ -44,25 +41,23 @@ class FavoriteService {
     var uri = Uri.parse(AppConfig.apiUrl + "/reitFavorite");
     var request = new CustomMultipartRequest("POST", uri);
     request.fields['Ticker'] = ticker;
-    request.send().then((response) {
-      if (response.statusCode == 200) {
-        return 'success';
-      } else {
-        throw Exception('Failed to load data');
-      }
-    });
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      return 'success';
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   Future deleteReitFavorite(String ticker) async {
     var uri = Uri.parse(AppConfig.apiUrl + "/reitFavorite");
     var request = new CustomMultipartRequest("DELETE", uri);
     request.fields['Ticker'] = ticker;
-    request.send().then((response) {
-      if (response.statusCode == 200) {
-        return 'success';
-      } else {
-        throw Exception('Failed to load data');
-      }
-    });
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      return 'success';
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 }

@@ -592,7 +592,7 @@ class DetailReitState extends State<DetailReit> {
   }
 
   _launchURL() async {
-    const url = 'https://flutter.io';
+    var url = 'https://'+reitDetail.urlAddress;
     if (await canLaunch(url)) {
       await launch(url);
     } else {

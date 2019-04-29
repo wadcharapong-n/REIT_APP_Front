@@ -19,6 +19,7 @@ class ReitDetail {
   final String registrationDate;
   final String investmentAmount;
   final String establishmentDate;
+  final String urlAddress;
   final List<MajorShareholders> majorShareholders;
 
   const ReitDetail({
@@ -42,6 +43,7 @@ class ReitDetail {
     this.registrationDate,
     this.investmentAmount,
     this.establishmentDate,
+    this.urlAddress,
     this.majorShareholders,
   });
 
@@ -73,6 +75,7 @@ class ReitDetail {
       registrationDate: json['registrationDate'],
       investmentAmount: json['investmentAmount'],
       establishmentDate: json['establishmentDate'],
+      urlAddress: json['url'],
       majorShareholders: majorShareholdersItems,
     );
   }

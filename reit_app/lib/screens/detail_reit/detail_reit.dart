@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_detail.dart';
+import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,7 @@ class DetailReit extends StatefulWidget {
 class DetailReitState extends State<DetailReit> {
   var reitDetailService = Injector.getInjector().get<ReitDetailService>();
   var favoriteService = Injector.getInjector().get<FavoriteService>();
+  final authenService = Injector.getInjector().get<AuthenService>();
   ReitDetail reitDetail;
   bool isFavoriteReit;
   bool isEllipsis = true;
@@ -37,6 +39,8 @@ class DetailReitState extends State<DetailReit> {
       setState(() {
         reitDetail = result;
       });
+    }).catchError((_) => {
+      authenService.LogoutAndNavigateToLogin(context)
     });
   }
 
@@ -45,6 +49,8 @@ class DetailReitState extends State<DetailReit> {
       setState(() {
         isFavoriteReit = result;
       });
+    }).catchError((_) => {
+      authenService.LogoutAndNavigateToLogin(context)
     });
   }
 
@@ -105,9 +111,13 @@ class DetailReitState extends State<DetailReit> {
         ),
         onPressed: () {
           favoriteService.addReitFavorite(reitDetail.symbol).then((result) {
-            setState(() {
-              isFavoriteReit = true;
-            });
+            if(result) {
+              setState(() {
+                isFavoriteReit = true;
+              });
+            }
+          }).catchError((_) => {
+            authenService.LogoutAndNavigateToLogin(context)
           });
         });
   }
@@ -121,9 +131,13 @@ class DetailReitState extends State<DetailReit> {
       ),
       onPressed: () {
         favoriteService.deleteReitFavorite(reitDetail.symbol).then((result) {
-          setState(() {
-            isFavoriteReit = false;
-          });
+          if(result) {
+            setState(() {
+              isFavoriteReit = false;
+            });
+          }
+        }).catchError((_) => {
+          authenService.LogoutAndNavigateToLogin(context)
         });
       },
     );

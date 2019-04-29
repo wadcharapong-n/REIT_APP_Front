@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/services/splash_service.dart';
 import 'package:reit_app/services/shared_preferences_service.dart';
 
@@ -10,12 +11,13 @@ class Splash extends StatefulWidget {
 }
 
 class SplashState extends State<Splash> {
+  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
   final int splashDuration = 2;
 
   @override
   void initState() {
     super.initState();
-    getToken().then((resultToken) {
+    sharedPreferencesService.getToken().then((resultToken) {
       startTime(resultToken, splashDuration, context);
     });
   }

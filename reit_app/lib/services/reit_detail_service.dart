@@ -15,8 +15,9 @@ class ReitDetailService {
     if (response.statusCode == 200) {
       return ReitDetail.fromJson(json.decode(response.body));
     }
-    else {
+    else if (response.statusCode == 401) {
       throw Exception('Failed to load data');
     }
+    return null;
   }
 }

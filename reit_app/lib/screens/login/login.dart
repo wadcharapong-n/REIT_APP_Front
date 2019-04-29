@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:reit_app/services/login_service.dart';
 import 'package:reit_app/loader.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
+import 'package:reit_app/services/authen_service.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -13,6 +14,8 @@ class _LoginState extends State<Login> {
   bool isLoading = false;
   String site;
   var facebookLogin = FacebookLogin();
+  final loginService = Injector.getInjector().get<AuthenService>();
+  
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
@@ -36,7 +39,7 @@ class _LoginState extends State<Login> {
         var accessToken = facebookLoginResult.accessToken.token;
         this.site = 'facebook';
         onLoginStatusChanged(true);
-        getAccessToken(accessToken, this.site).then((isTrue) {
+        loginService.getAccessToken(accessToken, this.site).then((isTrue) {
           if (isTrue == true) {
             Navigator.of(context).pushReplacementNamed('/Dashboard');
           } else {

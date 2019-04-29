@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/favorite_reit.dart';
+import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
+import 'package:reit_app/services/shared_preferences_service.dart';
 
 class Favorite extends StatefulWidget {
   Function chaekIsEmptyReitAndSetState;
@@ -17,6 +19,7 @@ class Favorite extends StatefulWidget {
 class FavoriteState extends State<Favorite> {
   final favoriteService = Injector.getInjector().get<FavoriteService>();
   List<FavoriteReit> favoriteReitList = List<FavoriteReit>();
+  final authenService = Injector.getInjector().get<AuthenService>();
 
   @override
   void initState() {
@@ -37,6 +40,8 @@ class FavoriteState extends State<Favorite> {
       } else {
         widget.chaekIsEmptyReitAndSetState(true);
       }
+    }).catchError((_) => {
+      authenService.LogoutAndNavigateToLogin(context)
     });
   }
 
@@ -73,6 +78,8 @@ class ReitRow extends StatefulWidget {
 
 class ReitRowState extends State<ReitRow> {
   final favoriteService = Injector.getInjector().get<FavoriteService>();
+  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
+  final authenService = Injector.getInjector().get<AuthenService>();
   bool isEllipsis = true;
   void toggleEllipsis() {
     setState(() {
@@ -86,7 +93,7 @@ class ReitRowState extends State<ReitRow> {
       onTap: () {
         Navigator.push(context,
         MaterialPageRoute(
-              builder: (context) => DetailReit(reitSymbol: widget.favoriteReit.symbol,)),
+          builder: (context) => DetailReit(reitSymbol: widget.favoriteReit.symbol,)),
         ).then((result) {
           widget.getFavoriteReitAndSetState();
         });
@@ -159,6 +166,8 @@ class ReitRowState extends State<ReitRow> {
       onPressed: () {
         favoriteService.deleteReitFavorite(widget.favoriteReit.symbol).then((result) {
           widget.getFavoriteReitAndSetState();
+        }).catchError((_) => {
+          authenService.LogoutAndNavigateToLogin(context)
         });
       },
     );

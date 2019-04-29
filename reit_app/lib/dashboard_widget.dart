@@ -12,6 +12,7 @@ class DashboardWidget extends StatefulWidget {
 
 class DashboardState extends State<DashboardWidget> {
   bool isEmptyFavoriteReit = false;
+  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class DashboardState extends State<DashboardWidget> {
                 ],
             onSelected: (value) {
               if (value == 'Logout') {
-                saveLogout().then((_) {
+                sharedPreferencesService.saveLogout().then((_) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/Login', (Route<dynamic> route) => false);
                 });

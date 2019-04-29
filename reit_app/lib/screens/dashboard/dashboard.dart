@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/screens/dashboard/favorite.dart';
+import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/services/shared_preferences_service.dart';
 
@@ -14,6 +15,9 @@ class Dashboard extends StatefulWidget {
 class DashboardState extends State<Dashboard> {
   bool isEmptyReit = true;
   final favoriteService = Injector.getInjector().get<FavoriteService>();
+  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
+  final authenService = Injector.getInjector().get<AuthenService>();
+
 
   @override
   void initState() {
@@ -28,6 +32,8 @@ class DashboardState extends State<Dashboard> {
           chaekIsEmptyReitAndSetState(false);
         });
       }
+    }).catchError((_) => {
+      authenService.LogoutAndNavigateToLogin(context)
     });
   }
 
@@ -73,9 +79,9 @@ class DashboardState extends State<Dashboard> {
                 ],
             onSelected: (value) {
               if (value == 'Logout') {
-                saveLogout().then((_) {
+                sharedPreferencesService.saveLogout().then((_) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/Login', (Route<dynamic> route) => false);
+                    '/Login', (Route<dynamic> route) => false);
                 });
               } else if (value == 'Profile') {
                 Navigator.of(context).pushNamed('/Profile');

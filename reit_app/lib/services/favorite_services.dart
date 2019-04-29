@@ -24,40 +24,42 @@ class FavoriteService {
   Future<List<FavoriteReit>> getFavoriteReitByUserId() async {
     final httpClient = new CustomHttpClient();
     final response = await httpClient.get(AppConfig.apiUrl + "/reitFavorite");
+    List<FavoriteReit> favoriteReitList = List();
     if (response.statusCode == 200) {
-      List<FavoriteReit> favoriteReitList = List();
       if (json.decode(response.body) != null) {
         json.decode(response.body).forEach((favoriteReit) {
           favoriteReitList.add(FavoriteReit.fromJson(favoriteReit));
         });
       }
-      return favoriteReitList;
-    } else {
-      throw Exception('Failed to load data');
+    } else if(response.statusCode == 401) {
+      throw Exception('Failed to load data, Unauthorized');
     }
+    return favoriteReitList;
   }
 
-  Future addReitFavorite(String ticker) async {
+  Future<bool> addReitFavorite(String ticker) async {
     var uri = Uri.parse(AppConfig.apiUrl + "/reitFavorite");
     var request = new CustomMultipartRequest("POST", uri);
     request.fields['Ticker'] = ticker;
     var response = await request.send();
     if (response.statusCode == 200) {
-      return 'success';
-    } else {
-      throw Exception('Failed to load data');
+      return true;
+    } else if(response.statusCode == 401) {
+      throw Exception('Failed to add Favorite Reit');
     }
+    return false;
   }
 
-  Future deleteReitFavorite(String ticker) async {
+  Future<bool> deleteReitFavorite(String ticker) async {
     var uri = Uri.parse(AppConfig.apiUrl + "/reitFavorite");
     var request = new CustomMultipartRequest("DELETE", uri);
     request.fields['Ticker'] = ticker;
     var response = await request.send();
     if (response.statusCode == 200) {
-      return 'success';
-    } else {
-      throw Exception('Failed to load data');
+      return true;
+    } else if(response.statusCode == 401) {
+      throw Exception('Failed to remove Favorite Reit');
     }
+    return false;
   }
 }

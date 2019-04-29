@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:reit_app/services/login_service.dart';
+import 'package:reit_app/loader.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,20 +10,46 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isLoggedIn = false;
-  var profileData;
+  bool isLoading = false;
   String site;
   var facebookLogin = FacebookLogin();
 
-  void onLoginStatusChanged(bool isLoggedIn, {profileData}) {
+  void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {
       this.isLoggedIn = isLoggedIn;
-      this.profileData = profileData;
     });
   }
 
-  @override 
-  Widget build(BuildContext context) {
-    final logo = Hero(
+  void initiateFacebookLogin() async {
+    var facebookLoginResult =
+        await facebookLogin.logInWithReadPermissions(['email']);
+
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        this.isLoading = true;
+        var accessToken = facebookLoginResult.accessToken.token;
+        this.site = 'facebook';
+        onLoginStatusChanged(true);
+        getAccessToken(accessToken, this.site).then((isTrue) {
+          if (isTrue == true) {
+            Navigator.of(context).pushReplacementNamed('/Dashboard');
+          } else {
+            this.isLoading = false;
+            initiateFacebookLogin();
+          }
+        });
+        break;
+    }
+  }
+
+  Hero logo() {
+    return Hero(
       tag: 'hero',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
@@ -30,51 +57,29 @@ class _LoginState extends State<Login> {
         child: Image.asset('assets/logo.png'),
       ),
     );
+  }
 
-    final loginGoogle = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16,horizontal: 20),
+  Padding loginGoogle() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () {Navigator.of(context).pushReplacementNamed('/Dashboard');},
+        onPressed: () {
+          Navigator.of(context).pushReplacementNamed('/Dashboard');
+        },
         padding: EdgeInsets.all(12),
         color: Colors.white,
         child: Text('Login With Google',
             style: TextStyle(color: Colors.black, fontSize: 15)),
       ),
     );
+  }
 
-    
-
-    void initiateFacebookLogin() async {
-      var facebookLoginResult =
-          await facebookLogin.logInWithReadPermissions(['email']);
-
-      switch (facebookLoginResult.status) {
-        case FacebookLoginStatus.error:
-          onLoginStatusChanged(false);
-          break;
-        case FacebookLoginStatus.cancelledByUser:
-          onLoginStatusChanged(false);
-          break;
-        case FacebookLoginStatus.loggedIn:
-          var accessToken = facebookLoginResult.accessToken.token;
-          this.site = 'facebook';
-          onLoginStatusChanged(true, profileData: null);
-          getAccessToken(accessToken, this.site).then((isTrue) {
-            if (isTrue == true) {
-              Navigator.of(context).pushReplacementNamed('/Dashboard');
-            } else {
-              initiateFacebookLogin();
-            }
-          });
-          break;
-      }
-    }
-
-    final loginFacebook = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 20),
+  Padding loginFacebook() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -86,22 +91,35 @@ class _LoginState extends State<Login> {
             style: TextStyle(color: Colors.white, fontSize: 15)),
       ),
     );
+  }
 
-    return Scaffold(
-      backgroundColor: Colors.orange[600],
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24, right: 24),
-          children: <Widget>[
-            logo,
-            SizedBox(height: 100),
-            loginGoogle,
-            loginFacebook,
-            SizedBox(height: 120),
-          ],
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        body: Center(
+          child: Loader(),
         ),
-      ),
-    );
+      );
+    }
+
+    if (!isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.orange[600],
+        body: Center(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(left: 24, right: 24),
+            children: <Widget>[
+              logo(),
+              SizedBox(height: 100),
+              loginGoogle(),
+              loginFacebook(),
+              SizedBox(height: 120),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

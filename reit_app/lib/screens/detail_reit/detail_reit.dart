@@ -144,7 +144,6 @@ class DetailReitState extends State<DetailReit> {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: 20,
-          fontWeight: FontWeight.bold,
         ),
       );
     }
@@ -152,7 +151,6 @@ class DetailReitState extends State<DetailReit> {
       reitDetail.trustNameTh,
       style: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -164,7 +162,6 @@ class DetailReitState extends State<DetailReit> {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: 20,
-          fontWeight: FontWeight.bold,
         ),
       );
     }
@@ -172,7 +169,6 @@ class DetailReitState extends State<DetailReit> {
       reitDetail.trustNameEn,
       style: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.bold,
       ),
     );
   }

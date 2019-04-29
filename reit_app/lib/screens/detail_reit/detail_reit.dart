@@ -314,9 +314,6 @@ class DetailReitState extends State<DetailReit> {
 
   Container _getSection5() {
     if (!(reitDetail.majorShareholders.isEmpty)) {
-      print(reitDetail.majorShareholders.length);
-      print(reitDetail.majorShareholders[0].nameEn);
-      print(reitDetail.majorShareholders[1].nameEn);
       return new Container(
         padding: EdgeInsets.only(bottom: 10, top: 10),
         decoration: borderBottom,

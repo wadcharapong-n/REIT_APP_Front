@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/screens/dashboard/favorite.dart';
+import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/services/shared_preferences_service.dart';
 
 class Dashboard extends StatefulWidget {
@@ -11,12 +13,29 @@ class Dashboard extends StatefulWidget {
 
 class DashboardState extends State<Dashboard> {
   bool isEmptyReit = true;
+  final favoriteService = Injector.getInjector().get<FavoriteService>();
 
-  // checkIsEmptyReit(value) {
-  //   setState(() {
-  //     isEmptyReit = value;
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    getFavoriteReitAndSetState();
+  }
+
+  getFavoriteReitAndSetState() {
+    favoriteService.getFavoriteReitByUserId().then((result) {
+      if(result.length > 0) {
+        setState(() {
+          chaekIsEmptyReitAndSetState(false);
+        });
+      }
+    });
+  }
+
+  chaekIsEmptyReitAndSetState(value) {
+    setState(() {
+      isEmptyReit = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +47,7 @@ class DashboardState extends State<Dashboard> {
         children: <Widget>[
           inputSearch(),
           isEmptyReit == false ? headerFavorite() : Text(''),
-          isEmptyReit == false ? Favorite() : Text(''),
+          isEmptyReit == false ? Favorite(chaekIsEmptyReitAndSetState: chaekIsEmptyReitAndSetState) : Text(''),
         ],
       ),
     );

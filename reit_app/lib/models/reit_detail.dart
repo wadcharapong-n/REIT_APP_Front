@@ -94,7 +94,6 @@ class MajorShareholders {
   });
 
   factory MajorShareholders.fromJson(Map<String, dynamic> json) {
-    print('............................');
     return MajorShareholders(
         symbol: json['symbol'],
         nameTh: json['nameTh'],

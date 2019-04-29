@@ -5,6 +5,9 @@ import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 
 class Favorite extends StatefulWidget {
+  Function chaekIsEmptyReitAndSetState;
+  Favorite({Key key, this.chaekIsEmptyReitAndSetState});
+
   @override
   FavoriteState createState() {
     return FavoriteState();
@@ -29,6 +32,11 @@ class FavoriteState extends State<Favorite> {
           favoriteReitList.add(data);
         });
       });
+      if(favoriteReitList.length > 0){
+        widget.chaekIsEmptyReitAndSetState(false);
+      } else {
+        widget.chaekIsEmptyReitAndSetState(true);
+      }
     });
   }
 

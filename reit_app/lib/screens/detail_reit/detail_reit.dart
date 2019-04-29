@@ -139,16 +139,42 @@ class DetailReitState extends State<DetailReit> {
 
   Text getTrustNameTh() {
     if (isEllipsis) {
-      return Text(reitDetail.trustNameTh, overflow: TextOverflow.ellipsis);
+      return Text(
+        reitDetail.trustNameTh,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      );
     }
-    return Text(reitDetail.trustNameTh);
+    return Text(
+      reitDetail.trustNameTh,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   Text getTrustNameEn() {
     if (isEllipsis) {
-      return Text(reitDetail.trustNameEn, overflow: TextOverflow.ellipsis);
+      return Text(
+        reitDetail.trustNameEn,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      );
     }
-    return Text(reitDetail.trustNameEn);
+    return Text(
+      reitDetail.trustNameEn,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   Container _getSection1() {
@@ -187,11 +213,23 @@ class DetailReitState extends State<DetailReit> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(reitDetail.priceOfDay,
-                      style: TextStyle(fontSize: 40, color: Colors.green)),
+                      style: TextStyle(
+                        fontSize: 35,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      )),
                   Text(reitDetail.maxPriceOfDay,
-                      style: TextStyle(fontSize: 16, color: Colors.blue)),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      )),
                   Text(reitDetail.minPriceOfDay,
-                      style: TextStyle(fontSize: 16, color: Colors.red)),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ],
               ),
             )
@@ -208,17 +246,50 @@ class DetailReitState extends State<DetailReit> {
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("ราคา Par"),
-              Text("P/E"),
-              Text("ราคา Floor"),
+              Text(
+                "ราคา Par",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "P/E",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "ราคา Floor",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(reitDetail.parValue),
-              Text(reitDetail.peValue),
-              Text(reitDetail.floorValue),
+              Text(
+                reitDetail.parValue,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                reitDetail.peValue,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                reitDetail.floorValue,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
             ],
           )
         ],
@@ -234,13 +305,45 @@ class DetailReitState extends State<DetailReit> {
         children: <Widget>[
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[Text("P/Nav"), Text("ราคา Ceiling"), Text("")],
+            children: <Widget>[
+              Text(
+                "P/Nav",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "ราคา Ceiling",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(reitDetail.parNAV),
-              Text(reitDetail.ceilingValue),
+              Text(
+                reitDetail.parNAV,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                reitDetail.ceilingValue,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
               Text("")
             ],
           )
@@ -280,9 +383,17 @@ class DetailReitState extends State<DetailReit> {
             children: <Widget>[
               Text(
                 "นโยบายเงินปันผล",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-              Text(reitDetail.policy),
+              Text(
+                reitDetail.policy,
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
             ],
           ))
         ],
@@ -302,9 +413,17 @@ class DetailReitState extends State<DetailReit> {
             children: <Widget>[
               Text(
                 "ทรัสตี (Trustee)",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-              Text(reitDetail.trustee),
+              Text(
+                reitDetail.trustee,
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
             ],
           ))
         ],
@@ -328,7 +447,10 @@ class DetailReitState extends State<DetailReit> {
               children: <Widget>[
                 Text(
                   "ผู้ถือหุ้นรายใหญ่",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
@@ -338,16 +460,35 @@ class DetailReitState extends State<DetailReit> {
                     columnWidths: {
                       0: FractionColumnWidth(.10),
                       1: FractionColumnWidth(.60),
-                      2: FractionColumnWidth(.15),
+                      // 2: FractionColumnWidth(.15),
                       3: FractionColumnWidth(.15),
                     },
                     children: [
                       TableRow(
                         children: [
-                          Text('No.'),
-                          Text('Name'),
-                          Text('Shares'),
-                          Text('Percent'),
+                          Text(
+                            'No.',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Name',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // Text('Shares'),
+                          Text(
+                            'Percent',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
                         ],
                       ),
                       _tableRowSection5(0),
@@ -375,25 +516,46 @@ class DetailReitState extends State<DetailReit> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
-            child: Text(no.toString()),
+            child: Text(
+              no.toString(),
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 1, 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(reitDetail.majorShareholders[index].nameTh),
-                Text(reitDetail.majorShareholders[index].nameEn),
+                Text(
+                  reitDetail.majorShareholders[index].nameTh,
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                // Text(
+                //   reitDetail.majorShareholders[index].nameEn,
+                //   style: TextStyle(
+                //     fontSize: 15,
+                //   ),
+                // ),
               ],
             ),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
+          //   child: Text(reitDetail.majorShareholders[index].shares),
+          // ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
-            child: Text(reitDetail.majorShareholders[index].shares),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
-            child: Text(reitDetail.majorShareholders[index].sharesPercent),
+            child: Text(
+              reitDetail.majorShareholders[index].sharesPercent,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
           ),
         ],
       );
@@ -402,7 +564,7 @@ class DetailReitState extends State<DetailReit> {
         children: [
           Text(''),
           Text(''),
-          Text(''),
+          // Text(''),
           Text(''),
         ],
       );

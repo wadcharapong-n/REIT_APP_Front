@@ -79,9 +79,9 @@ class DetailReitState extends State<DetailReit> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/Dashboard');
-            //  .pushNamedAndRemoveUntil(
-            //     '/Dashboard', (Route<dynamic> route) => false);
+            // Navigator.of(context).pushReplacementNamed('/Dashboard');
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/Dashboard', (Route<dynamic> route) => false);
           },
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/services/search_service.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -8,6 +9,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final searchService = Injector.getInjector().get<SearchService>();
+
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   List _suggestion = List();
@@ -91,7 +94,7 @@ class _SearchState extends State<Search> {
 
   Widget _buildList() {
     return FutureBuilder(
-        future: reitSearch(_searchText),
+        future: searchService.reitSearch(_searchText),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             _suggestion = snapshot.data;

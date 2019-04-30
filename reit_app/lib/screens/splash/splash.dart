@@ -11,14 +11,16 @@ class Splash extends StatefulWidget {
 }
 
 class SplashState extends State<Splash> {
-  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
+  final splashService = Injector.getInjector().get<SplashService>();
+  final sharedPreferencesService =
+      Injector.getInjector().get<SharedPreferencesService>();
   final int splashDuration = 2;
 
   @override
   void initState() {
     super.initState();
     sharedPreferencesService.getToken().then((resultToken) {
-      startTime(resultToken, splashDuration, context);
+      splashService.startTime(resultToken, splashDuration, context);
     });
   }
 

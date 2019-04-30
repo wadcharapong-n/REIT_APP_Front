@@ -50,10 +50,15 @@ class ReitDetail {
   String handledNullString(String value) => value == null ? "" : value;
 
   factory ReitDetail.fromJson(Map<String, dynamic> json) {
-    var jsonMajorShareholders = json['majorShareholders'] as List;
-    List<MajorShareholders> majorShareholdersItems = jsonMajorShareholders
-        .map((i) => MajorShareholders.fromJson(i))
-        .toList();
+    List<MajorShareholders> majorShareholdersItems;
+    if (json['majorShareholders'] != null) {
+      var jsonMajorShareholders = json['majorShareholders'] as List;
+      majorShareholdersItems = jsonMajorShareholders
+          .map((i) => MajorShareholders.fromJson(i))
+          .toList();
+    } else {
+      majorShareholdersItems = null;
+    }
     return ReitDetail(
       id: json['id'],
       symbol: json['symbol'],

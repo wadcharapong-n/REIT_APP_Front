@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/services/profile_service.dart';
 import 'package:reit_app/models/user.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final profileService = Injector.getInjector().get<ProfileService>();
 
   @override
   void initState() {
@@ -110,7 +112,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
-      future: getProfileData(),
+      future: profileService.getProfileData(),
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.fullName != null) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/app_config.dart';
 import 'package:reit_app/services/map_search_service.dart';
+import 'package:flutter_simple_dependency_injection/injector.dart';
 import "package:google_maps_webservice/places.dart";
 
 class MapSearch extends StatefulWidget {
@@ -9,6 +10,8 @@ class MapSearch extends StatefulWidget {
 }
 
 class _MapSearchState extends State<MapSearch> {
+  final mapSearchService = Injector.getInjector().get<MapSearchService>();
+
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   List _suggestion = List();
@@ -94,7 +97,7 @@ class _MapSearchState extends State<MapSearch> {
 
   Widget _buildList() {
     return FutureBuilder(
-        future: placesSearch(_searchText),
+        future: mapSearchService.placesSearch(_searchText),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             _suggestion = snapshot.data;

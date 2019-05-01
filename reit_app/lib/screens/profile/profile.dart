@@ -55,28 +55,11 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Padding userId(String id) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-      child: Container(
-        padding: EdgeInsets.all(20),
-        child: TextFormField(
-          enabled: false,
-          cursorColor: Colors.red,
-          decoration: InputDecoration(
-            hintText: 'userID: ' + id,
-            hintStyle: TextStyle(color: Colors.black),
-          ),
-        ),
-      ),
-    );
-  }
-
   Padding email(String email) {
     return Padding(
       padding: const EdgeInsets.all(0),
       child: Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 100),
+        padding: EdgeInsets.fromLTRB(20, 90, 20, 50),
         child: TextFormField(
           enabled: false,
           cursorColor: Colors.red,
@@ -131,14 +114,13 @@ class _ProfileState extends State<Profile> {
               ),
               backgroundColor: Colors.orange[300],
               body: Container(
-                margin: EdgeInsets.only(top: 15),
+                margin: EdgeInsets.only(top: 100),
                 child: ListView(
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 24.0, right: 24.0),
                   children: <Widget>[
                     img(snapshot.data.image),
                     name(snapshot.data.fullName),
-                    userId(snapshot.data.userID),
                     email(snapshot.data.email),
                     submitButton(),
                   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/services/splash_service.dart';
 import 'package:reit_app/services/shared_preferences_service.dart';
@@ -19,6 +20,10 @@ class SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     sharedPreferencesService.getToken().then((resultToken) {
       splashService.startTime(resultToken, splashDuration, context);
     });

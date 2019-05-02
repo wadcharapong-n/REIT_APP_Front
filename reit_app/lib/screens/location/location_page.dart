@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reit_app/app_config.dart';
 import 'package:reit_app/models/place.dart';
+import 'package:reit_app/loader.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/services/location_page_service.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
@@ -171,7 +172,11 @@ class _LocationPageState extends State<LocationPage> {
   Text showTextAppBar(String text) {
     return Text(
       text,
-      style: TextStyle(color: Colors.black),
+      style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 22.0,
+          fontFamily: 'Prompt'),
     );
   }
 
@@ -326,7 +331,8 @@ class _LocationPageState extends State<LocationPage> {
                           child: Text(
                             'View Information',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 15),
+                            style:
+                                TextStyle(fontSize: 14, fontFamily: 'Prompt'),
                           ),
                           color: Colors.green,
                           elevation: 4.0,
@@ -416,7 +422,9 @@ class _LocationPageState extends State<LocationPage> {
         ]),
         builder: (BuildContext context, AsyncSnapshot<List<bool>> snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: Loader(),
+            );
           }
 
           if (snapshot.hasData) {
@@ -435,10 +443,14 @@ class _LocationPageState extends State<LocationPage> {
                 ),
                 body: Center(
                   child: RaisedButton(
-                    child: const Text("Connect GPS",
-                        style: TextStyle(
-                          fontSize: 18,
-                        )),
+                    child: const Text(
+                      "Connect GPS",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          fontFamily: 'Prompt'),
+                    ),
                     color: Theme.of(context).accentColor,
                     elevation: 4.0,
                     splashColor: Colors.blueGrey,
@@ -470,7 +482,9 @@ class _LocationPageState extends State<LocationPage> {
                       columnButton(),
                     ],
                   )
-                : Center(child: CircularProgressIndicator()),
+                : Center(
+                    child: Loader(),
+                  ),
           );
         });
   }

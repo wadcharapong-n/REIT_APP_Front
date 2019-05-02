@@ -42,7 +42,10 @@ class SplashState extends State<Splash> {
                 alignment: FractionalOffset(0.5, 0.3),
                 child: Text(
                   "Reit App",
-                  style: TextStyle(fontSize: 40.0, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 40.0,
+                      color: Colors.white,
+                      fontFamily: 'Quicksand'),
                 ),
               ),
             ),

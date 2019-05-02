@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:reit_app/loader.dart';
 import 'package:reit_app/services/authen_service.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -105,9 +105,7 @@ class _LoginState extends State<Login> {
             child: Text(
               "Welcome",
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.0,
-              ),
+                  color: Colors.white, fontSize: 16.0, fontFamily: "Prompt"),
             ),
           ),
           Container(
@@ -164,9 +162,7 @@ class _LoginState extends State<Login> {
         child: Text(
           "Login With Facebook",
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
+              color: Colors.white, fontSize: 20.0, fontFamily: "Prompt"),
         ),
       ),
     );
@@ -176,23 +172,25 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     if (!isLoading) {
       return new Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [const Color(0xFFFFF3E0), const Color(0xFFEF6c00)],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 1.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              logoReit(),
-              _buildLogin(),
-            ],
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [const Color(0xFFFFF3E0), const Color(0xFFEF6c00)],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 1.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                logoReit(),
+                _buildLogin(),
+              ],
+            ),
           ),
         ),
       );

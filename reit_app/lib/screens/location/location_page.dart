@@ -5,6 +5,7 @@ import 'package:reit_app/app_config.dart';
 import 'package:reit_app/models/place.dart';
 import 'package:reit_app/loader.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
+import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/location_page_service.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:location/location.dart';
@@ -18,7 +19,8 @@ class LocationPage extends StatefulWidget {
 
 class _LocationPageState extends State<LocationPage> {
   final locationPageService = Injector.getInjector().get<LocationPageService>();
-
+  final authenService = Injector.getInjector().get<AuthenService>();
+  
   LocationData _startLocation;
   LocationData _currentLocation;
 
@@ -108,11 +110,10 @@ class _LocationPageState extends State<LocationPage> {
           title: 'Marker Tap',
           snippet: 'Find Reit Around',
           onTap: () {
-            locationPageService
-                .getSearchAroundReit(
-                    point.latitude.toString(), point.longitude.toString())
-                .then((result) {
+            locationPageService.getSearchAroundReit(point.latitude.toString(), point.longitude.toString()).then((result) {
               _showModalSheet(result);
+            }).catchError((_) => {
+              authenService.LogoutAndNavigateToLogin(context)
             });
           }),
       icon: BitmapDescriptor.defaultMarker,
@@ -263,11 +264,11 @@ class _LocationPageState extends State<LocationPage> {
               ),
             ),
           );
-          locationPageService
-              .getSearchAroundReit(_currentLocation.latitude.toString(),
-                  _currentLocation.longitude.toString())
-              .then((result) {
+          locationPageService.getSearchAroundReit(_currentLocation.latitude.toString(),
+          _currentLocation.longitude.toString()).then((result) {
             _showModalSheet(result);
+          }).catchError((_) => {
+            authenService.LogoutAndNavigateToLogin(context)
           });
         },
         materialTapTargetSize: MaterialTapTargetSize.padded,
@@ -291,13 +292,12 @@ class _LocationPageState extends State<LocationPage> {
                 ),
               ),
             );
-            locationPageService
-                .getSearchAroundReit(
-                    _markers[_isMarker].position.latitude.toString(),
-                    _markers[_isMarker].position.longitude.toString())
-                .then((result) {
+            locationPageService.getSearchAroundReit(_markers[_isMarker].position.latitude.toString(),
+            _markers[_isMarker].position.longitude.toString()).then((result) {
               _onMarkerTapped(_isMarker);
               _showModalSheet(result);
+            }).catchError((_) => {
+              authenService.LogoutAndNavigateToLogin(context)
             });
           }
         },

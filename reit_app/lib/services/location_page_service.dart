@@ -14,9 +14,10 @@ class LocationPageService {
           HttpHeaders.contentTypeHeader: 'application/json',
         });
     if (response.statusCode == 200) {
-      return Place.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load data');
-    }
+      Place.fromJson(json.decode(response.body));
+    } else if(response.statusCode == 401) {
+      throw Exception('Failed to load data, Unauthorized');
+    } 
+    return new Place();
   }
 }

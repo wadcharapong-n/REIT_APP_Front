@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reit_app/services/profile_service.dart';
 import 'package:reit_app/models/user.dart';
+import 'package:reit_app/loader.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
 class Profile extends StatefulWidget {
@@ -16,79 +17,55 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
-  Center img(String imgUrl) {
-    return Center(
-      child: Container(
-        width: 120,
-        height: 120,
-        child: CircleAvatar(
-          backgroundColor: Colors.red,
-          maxRadius: 40,
-          // backgroundImage: AssetImage(
-          //   // user.image
-          //   'assets/alucard.jpg',
-          // ),
-          backgroundImage: NetworkImage(imgUrl),
-        ),
-      ),
-    );
-  }
-
-  Container name(String name) {
+  Container buttonBack() {
     return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: Container(
-              padding: const EdgeInsets.all(8),
+        height: 30.0,
+        width: 120.0,
+        child: Material(
+          borderRadius: BorderRadius.circular(20.0),
+          shadowColor: Colors.redAccent,
+          color: Colors.red,
+          elevation: 7.0,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Center(
               child: Text(
-                name,
+                'Back',
                 style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                    color: Colors.white, fontFamily: 'Prompt', fontSize: 16),
               ),
             ),
           ),
-        ],
-      ),
+        ));
+  }
+
+  Container showImage(String imageUrl) {
+    return Container(
+        width: 150.0,
+        height: 150.0,
+        decoration: BoxDecoration(
+            color: Colors.red,
+            image: DecorationImage(
+                image: NetworkImage(imageUrl), fit: BoxFit.cover),
+            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]));
+  }
+
+  Text showName(String name) {
+    return Text(
+      name,
+      style: TextStyle(
+          fontSize: 30.0, fontWeight: FontWeight.bold, fontFamily: 'Prompt'),
     );
   }
 
-  Padding email(String email) {
-    return Padding(
-      padding: const EdgeInsets.all(0),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(20, 90, 20, 50),
-        child: TextFormField(
-          enabled: false,
-          cursorColor: Colors.red,
-          decoration: InputDecoration(
-            hintText: 'email: ' + email,
-            hintStyle: TextStyle(color: Colors.black),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding submitButton() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: const Text(
-          'ย้อนกลับ',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        color: Colors.white,
-        elevation: 12,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+  Text showEmail(String email) {
+    return Text(
+      'Email : ' + email,
+      style: TextStyle(
+          fontSize: 18.0, fontStyle: FontStyle.italic, fontFamily: 'Prompt'),
     );
   }
 
@@ -101,37 +78,79 @@ class _ProfileState extends State<Profile> {
           if (snapshot.data.fullName != null) {
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.orange[600],
-                elevation: 2,
+                backgroundColor: Color(0xFFEF6c00),
                 centerTitle: true,
+                elevation: 0,
                 title: Text(
                   'Profile',
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 22.0),
+                      fontSize: 22.0,
+                      fontFamily: 'Prompt'),
                 ),
               ),
-              backgroundColor: Colors.orange[300],
-              body: Container(
-                margin: EdgeInsets.only(top: 100),
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(left: 24.0, right: 24.0),
-                  children: <Widget>[
-                    img(snapshot.data.image),
-                    name(snapshot.data.fullName),
-                    email(snapshot.data.email),
-                    submitButton(),
-                  ],
-                ),
+              body: new Stack(
+                children: <Widget>[
+                  ClipPath(
+                    clipBehavior: Clip.antiAlias,
+                    child: Container(
+                        decoration: new BoxDecoration(
+                      gradient: new LinearGradient(
+                          colors: [
+                            const Color(0xFFFFF3E0),
+                            const Color(0xFFEF6c00)
+                          ],
+                          begin: const FractionalOffset(0.0, 0.5),
+                          end: const FractionalOffset(0.1, 0.0),
+                          stops: [0.0, 5.0],
+                          tileMode: TileMode.clamp),
+                    )),
+                    clipper: GetClipper(),
+                  ),
+                  Positioned(
+                      width: MediaQuery.of(context).size.width,
+                      top: MediaQuery.of(context).size.height / 10,
+                      child: Column(
+                        children: <Widget>[
+                          showImage(snapshot.data.image),
+                          SizedBox(height: 90.0),
+                          showName(snapshot.data.fullName),
+                          SizedBox(height: 15.0),
+                          showEmail(snapshot.data.email),
+                          SizedBox(height: 100.0),
+                          buttonBack(),
+                        ],
+                      ))
+                ],
               ),
             );
           }
         } else {
-          return Center(child: CircularProgressIndicator());
+          return Scaffold(
+            body: Center(
+              child: Loader(),
+            ),
+          );
         }
       },
     );
+  }
+}
+
+class GetClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+
+    path.lineTo(0.0, size.height / 1.9);
+    path.lineTo(size.width + 500, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
   }
 }

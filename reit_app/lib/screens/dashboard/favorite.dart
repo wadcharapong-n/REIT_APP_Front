@@ -35,14 +35,12 @@ class FavoriteState extends State<Favorite> {
           favoriteReitList.add(data);
         });
       });
-      if(favoriteReitList.length > 0){
+      if (favoriteReitList.length > 0) {
         widget.chaekIsEmptyReitAndSetState(false);
       } else {
         widget.chaekIsEmptyReitAndSetState(true);
       }
-    }).catchError((_) => {
-      authenService.LogoutAndNavigateToLogin(context)
-    });
+    }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
   }
 
   @override
@@ -54,9 +52,8 @@ class FavoriteState extends State<Favorite> {
       child: Expanded(
         child: ListView.builder(
             itemBuilder: (context, index) => ReitRow(
-              favoriteReit: favoriteReitList[index],
-              getFavoriteReitAndSetState: getFavoriteReitAndSetState
-            ),
+                favoriteReit: favoriteReitList[index],
+                getFavoriteReitAndSetState: getFavoriteReitAndSetState),
             itemCount: favoriteReitList.length,
             padding: EdgeInsets.symmetric(vertical: 16.0)),
       ),
@@ -68,7 +65,8 @@ class ReitRow extends StatefulWidget {
   final FavoriteReit favoriteReit;
   final Function getFavoriteReitAndSetState;
 
-  const ReitRow({Key key, this.favoriteReit, this.getFavoriteReitAndSetState}) : super(key: key);
+  const ReitRow({Key key, this.favoriteReit, this.getFavoriteReitAndSetState})
+      : super(key: key);
 
   @override
   ReitRowState createState() {
@@ -78,7 +76,8 @@ class ReitRow extends StatefulWidget {
 
 class ReitRowState extends State<ReitRow> {
   final favoriteService = Injector.getInjector().get<FavoriteService>();
-  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
+  final sharedPreferencesService =
+      Injector.getInjector().get<SharedPreferencesService>();
   final authenService = Injector.getInjector().get<AuthenService>();
   bool isEllipsis = true;
   void toggleEllipsis() {
@@ -86,14 +85,17 @@ class ReitRowState extends State<ReitRow> {
       isEllipsis = !isEllipsis;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-        MaterialPageRoute(
-          builder: (context) => DetailReit(reitSymbol: widget.favoriteReit.symbol,)),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailReit(
+                    reitSymbol: widget.favoriteReit.symbol,
+                  )),
         ).then((result) {
           widget.getFavoriteReitAndSetState();
         });
@@ -151,7 +153,10 @@ class ReitRowState extends State<ReitRow> {
     return Text(
       widget.favoriteReit.symbol,
       style: TextStyle(
-          color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
+          color: Colors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Quicksand'),
     );
   }
 
@@ -164,11 +169,11 @@ class ReitRowState extends State<ReitRow> {
       ),
       tooltip: 'Delete Favorite',
       onPressed: () {
-        favoriteService.deleteReitFavorite(widget.favoriteReit.symbol).then((result) {
+        favoriteService
+            .deleteReitFavorite(widget.favoriteReit.symbol)
+            .then((result) {
           widget.getFavoriteReitAndSetState();
-        }).catchError((_) => {
-          authenService.LogoutAndNavigateToLogin(context)
-        });
+        }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
       },
     );
   }
@@ -238,7 +243,10 @@ class ReitRowState extends State<ReitRow> {
       flex: 3,
       child: Text(text + value,
           style: TextStyle(
-              color: color, fontSize: 16.0, fontWeight: FontWeight.w400),
+              color: color,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Quicksand'),
           textAlign: TextAlign.left),
     );
   }
@@ -247,9 +255,11 @@ class ReitRowState extends State<ReitRow> {
     return Expanded(
         flex: 4,
         child: Text(value,
-            style:
-                TextStyle(
-              color: color, fontSize: 22.0, fontWeight: FontWeight.w400),
+            style: TextStyle(
+                color: color,
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Quicksand'),
             textAlign: TextAlign.right));
   }
 }

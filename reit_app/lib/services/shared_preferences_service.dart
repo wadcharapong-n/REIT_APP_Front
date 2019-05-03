@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:reit_app/models/user.dart';
 import 'package:reit_app/utils/shared_preferences_config.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class SharedPreferencesService {
+  var facebookLogin = FacebookLogin();
   Future<String> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -14,7 +16,8 @@ class SharedPreferencesService {
   Future<String> getRefreshToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    String getToken = preferences.getString(SharedPreferencesConfig.refreshToken);
+    String getToken =
+        preferences.getString(SharedPreferencesConfig.refreshToken);
     return getToken;
   }
 
@@ -40,6 +43,7 @@ class SharedPreferencesService {
   }
 
   Future saveLogout() async {
+    await facebookLogin.logOut();
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     await preferences.remove(SharedPreferencesConfig.userId);
@@ -63,7 +67,8 @@ class SharedPreferencesService {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     if (refreshToken != null) {
-      await preferences.setString(SharedPreferencesConfig.refreshToken, refreshToken);
+      await preferences.setString(
+          SharedPreferencesConfig.refreshToken, refreshToken);
     }
   }
 }

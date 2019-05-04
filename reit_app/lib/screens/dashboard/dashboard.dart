@@ -120,9 +120,9 @@ class DashboardState extends State<Dashboard> {
             },
             child: Container(
               height: 40.0,
-              width: 310.0,
+              width: MediaQuery.of(context).size.width - 100.0  ,
               margin: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-              padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(30, 0, 5, 0),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
                 border: Border.all(color: Colors.black38),

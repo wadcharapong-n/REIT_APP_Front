@@ -1,3 +1,5 @@
+import 'package:reit_app/models/place.dart' as PlaceInfo;
+
 class ReitDetail {
   final String id;
   final String symbol;
@@ -20,7 +22,11 @@ class ReitDetail {
   final String investmentAmount;
   final String establishmentDate;
   final String urlAddress;
+  final String investmentPolicy;
+  final String propertyManager;
+  final String dvdYield;
   final List<MajorShareholders> majorShareholders;
+  final List<Place> places;
 
   const ReitDetail({
     this.id,
@@ -44,7 +50,11 @@ class ReitDetail {
     this.investmentAmount,
     this.establishmentDate,
     this.urlAddress,
+    this.investmentPolicy,
     this.majorShareholders,
+    this.places,
+    this.propertyManager,
+    this.dvdYield,
   });
 
   String handledNullString(String value) => value == null ? "" : value;
@@ -59,6 +69,15 @@ class ReitDetail {
     } else {
       majorShareholdersItems = null;
     }
+
+    List<Place> placeItems;
+    if (json['place'] != null) {
+      var jsonPlace = json['place'] as List;
+      placeItems = jsonPlace.map((i) => Place.fromJson(i)).toList();
+    } else {
+      placeItems = null;
+    }
+
     return ReitDetail(
       id: json['id'],
       symbol: json['symbol'],
@@ -81,7 +100,11 @@ class ReitDetail {
       investmentAmount: json['investmentAmount'],
       establishmentDate: json['establishmentDate'],
       urlAddress: json['url'],
+      investmentPolicy: json['investmentPolicy'],
+      propertyManager: json['propertyManager'],
+      dvdYield: json['dvdYield'],
       majorShareholders: majorShareholdersItems,
+      places: placeItems,
     );
   }
 }
@@ -108,5 +131,30 @@ class MajorShareholders {
         nameEn: json['nameEn'],
         shares: json['shares'],
         sharesPercent: json['sharesPercent']);
+  }
+}
+
+class Place {
+  final String name;
+  final String address;
+  final String symbol;
+  final PlaceInfo.Coordinates location;
+
+  Place({
+    this.name,
+    this.address,
+    this.symbol,
+    this.location,
+  });
+
+  factory Place.fromJson(Map<String, dynamic> json) {
+    PlaceInfo.Coordinates location =
+        PlaceInfo.Coordinates.fromJson(json['location']);
+    return Place(
+      name: json['name'],
+      address: json['address'],
+      symbol: json['symbol'],
+      location: location,
+    );
   }
 }

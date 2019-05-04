@@ -20,7 +20,7 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
   final locationPageService = Injector.getInjector().get<LocationPageService>();
   final authenService = Injector.getInjector().get<AuthenService>();
-  
+
   LocationData _startLocation;
   LocationData _currentLocation;
 
@@ -110,11 +110,13 @@ class _LocationPageState extends State<LocationPage> {
           title: 'Marker Tap',
           snippet: 'Find Reit Around',
           onTap: () {
-            locationPageService.getSearchAroundReit(point.latitude.toString(), point.longitude.toString()).then((result) {
+            locationPageService
+                .getSearchAroundReit(
+                    point.latitude.toString(), point.longitude.toString())
+                .then((result) {
               _showModalSheet(result);
-            }).catchError((_) => {
-              authenService.LogoutAndNavigateToLogin(context)
-            });
+            }).catchError(
+                    (_) => {authenService.LogoutAndNavigateToLogin(context)});
           }),
       icon: BitmapDescriptor.defaultMarker,
       onTap: () {
@@ -264,12 +266,13 @@ class _LocationPageState extends State<LocationPage> {
               ),
             ),
           );
-          locationPageService.getSearchAroundReit(_currentLocation.latitude.toString(),
-          _currentLocation.longitude.toString()).then((result) {
+          locationPageService
+              .getSearchAroundReit(_currentLocation.latitude.toString(),
+                  _currentLocation.longitude.toString())
+              .then((result) {
             _showModalSheet(result);
-          }).catchError((_) => {
-            authenService.LogoutAndNavigateToLogin(context)
-          });
+          }).catchError(
+                  (_) => {authenService.LogoutAndNavigateToLogin(context)});
         },
         materialTapTargetSize: MaterialTapTargetSize.padded,
         child: Text('Find Reit Current Location'));
@@ -292,13 +295,15 @@ class _LocationPageState extends State<LocationPage> {
                 ),
               ),
             );
-            locationPageService.getSearchAroundReit(_markers[_isMarker].position.latitude.toString(),
-            _markers[_isMarker].position.longitude.toString()).then((result) {
+            locationPageService
+                .getSearchAroundReit(
+                    _markers[_isMarker].position.latitude.toString(),
+                    _markers[_isMarker].position.longitude.toString())
+                .then((result) {
               _onMarkerTapped(_isMarker);
               _showModalSheet(result);
-            }).catchError((_) => {
-              authenService.LogoutAndNavigateToLogin(context)
-            });
+            }).catchError(
+                    (_) => {authenService.LogoutAndNavigateToLogin(context)});
           }
         },
         child: Text('Find Reit Around Marker'));
@@ -310,88 +315,140 @@ class _LocationPageState extends State<LocationPage> {
         builder: (builder) {
           if (place.reit != null) {
             return Container(
-              height: 200,
+              height: 300,
               margin: EdgeInsets.all(15),
               color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(place.symbol,
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      ButtonTheme(
-                        padding: const EdgeInsets.all(5),
-                        minWidth: 50.0,
-                        height: 25.0,
-                        child: RaisedButton(
-                          child: Text(
-                            'View Information',
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(fontSize: 14, fontFamily: 'Prompt'),
-                          ),
-                          color: Colors.green,
-                          elevation: 4.0,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailReit(
-                                        reitSymbol: place.reit[0].symbol,
-                                      )),
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  )),
-                  Container(
-                    height: 110,
-                    child: Column(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          place.reit[0].trustNameTh,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
+                        Text(place.symbol,
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Prompt',
+                            )),
+                        ButtonTheme(
+                          padding: const EdgeInsets.all(4),
+                          minWidth: 50.0,
+                          height: 25.0,
+                          child: RaisedButton(
+                            child: Text(
+                              'View Information',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Prompt',
+                              ),
+                            ),
+                            color: Colors.green,
+                            elevation: 4.0,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailReit(
+                                          reitSymbol: place.reit[0].symbol,
+                                        )),
+                              );
+                            },
                           ),
-                        ),
-                        Text(
-                          place.reit[0].trustNameEn,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
+                        )
                       ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        "LAT/LONG : " +
-                            place.location.latitude.toString() +
-                            " " +
-                            place.location.longitude.toString(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
+                    )),
+                    Container(
+                      height: 200,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "ชื่อสินทรัพย์",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            place.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            "ชื่อ Reit",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            "TH : " + place.reit[0].trustNameTh,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            "EN : " + place.reit[0].trustNameEn,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            "ที่อยู่",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            place.address,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                ],
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          "LAT/LONG : " +
+                              place.location.latitude.toString() +
+                              " " +
+                              place.location.longitude.toString(),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Sarabun',
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           } else {
             return Container(
-              height: 200,
+              height: 100,
               margin: EdgeInsets.all(15),
               color: Colors.white,
               child: Column(
@@ -403,7 +460,10 @@ class _LocationPageState extends State<LocationPage> {
                     children: <Widget>[
                       Text("Not Found Reit",
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Prompt',
+                          )),
                     ],
                   )),
                 ],

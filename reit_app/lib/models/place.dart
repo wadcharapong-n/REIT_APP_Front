@@ -2,11 +2,15 @@ import 'package:reit_app/models/reit_detail.dart';
 
 class Place {
   final String symbol;
+  final String name;
+  final String address;
   final Coordinates location;
   final List<ReitDetail> reit;
 
   const Place({
     this.symbol,
+    this.name,
+    this.address,
     this.location,
     this.reit,
   });
@@ -17,12 +21,13 @@ class Place {
     if (json['Reit'] != null) {
       var jsonReit = json['Reit'] as List;
       reitItem = jsonReit.map((i) => ReitDetail.fromJson(i)).toList();
-      print(reitItem.first);
     } else {
       reitItem = null;
     }
     return Place(
       symbol: json['symbol'],
+      name: json['name'],
+      address: json['address'],
       location: location,
       reit: reitItem,
     );

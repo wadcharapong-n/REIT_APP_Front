@@ -54,8 +54,9 @@ class SplashState extends State<Splash> {
               child: Text(
                 "© Copyright Statement 2019",
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: 18.0,
                   color: Colors.white,
+                  fontFamily: 'Quicksand',
                 ),
               ),
             ),

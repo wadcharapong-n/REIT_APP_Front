@@ -3,6 +3,7 @@ import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
+import 'package:reit_app/loader.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,9 +40,7 @@ class DetailReitState extends State<DetailReit> {
       setState(() {
         reitDetail = result;
       });
-    }).catchError((_) => {
-      authenService.LogoutAndNavigateToLogin(context)
-    });
+    }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
   }
 
   checkFavoriteReitAndSetState(String symbol) async {
@@ -49,18 +48,19 @@ class DetailReitState extends State<DetailReit> {
       setState(() {
         isFavoriteReit = result;
       });
-    }).catchError((_) => {
-      authenService.LogoutAndNavigateToLogin(context)
-    });
+    }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
   }
 
   Widget build(BuildContext context) {
     if (reitDetail == null) {
-      return new Scaffold();
+      return Scaffold(
+        body: Center(
+          child: Loader(),
+        ),
+      );
     }
 
     if (reitDetail.majorShareholders.isEmpty) {}
-
     return new Scaffold(
       backgroundColor: Colors.white,
       appBar: new AppBar(
@@ -69,7 +69,11 @@ class DetailReitState extends State<DetailReit> {
         title: Text(
           "Reit Detail",
           style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22.0),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22.0,
+            fontFamily: 'Prompt',
+          ),
         ),
         backgroundColor: Colors.orange[600],
         actions: <Widget>[
@@ -79,7 +83,6 @@ class DetailReitState extends State<DetailReit> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            // Navigator.of(context).pushReplacementNamed('/Dashboard');
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/Dashboard', (Route<dynamic> route) => false);
           },
@@ -111,14 +114,13 @@ class DetailReitState extends State<DetailReit> {
         ),
         onPressed: () {
           favoriteService.addReitFavorite(reitDetail.symbol).then((result) {
-            if(result) {
+            if (result) {
               setState(() {
                 isFavoriteReit = true;
               });
             }
-          }).catchError((_) => {
-            authenService.LogoutAndNavigateToLogin(context)
-          });
+          }).catchError(
+              (_) => {authenService.LogoutAndNavigateToLogin(context)});
         });
   }
 
@@ -127,18 +129,16 @@ class DetailReitState extends State<DetailReit> {
       icon: Icon(
         Icons.star,
         color: Colors.blue,
-        size: 30,
+        size: 34,
       ),
       onPressed: () {
         favoriteService.deleteReitFavorite(reitDetail.symbol).then((result) {
-          if(result) {
+          if (result) {
             setState(() {
               isFavoriteReit = false;
             });
           }
-        }).catchError((_) => {
-          authenService.LogoutAndNavigateToLogin(context)
-        });
+        }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
       },
     );
   }
@@ -157,14 +157,16 @@ class DetailReitState extends State<DetailReit> {
         reitDetail.trustNameTh,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 18,
+          fontFamily: 'Sarabun',
         ),
       );
     }
     return Text(
       reitDetail.trustNameTh,
       style: TextStyle(
-        fontSize: 20,
+        fontSize: 18,
+        fontFamily: 'Sarabun',
       ),
     );
   }
@@ -175,14 +177,16 @@ class DetailReitState extends State<DetailReit> {
         reitDetail.trustNameEn,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 18,
+          fontFamily: 'Sarabun',
         ),
       );
     }
     return Text(
       reitDetail.trustNameEn,
       style: TextStyle(
-        fontSize: 20,
+        fontSize: 18,
+        fontFamily: 'Sarabun',
       ),
     );
   }
@@ -192,55 +196,69 @@ class DetailReitState extends State<DetailReit> {
         padding: EdgeInsets.only(bottom: 10),
         decoration: borderBottom,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             new Expanded(
               flex: 7,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: <Widget>[
-                      Text(reitDetail.symbol,
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold)),
-                      buttonBuy(),
-                    ],
-                  ),
-                  GestureDetector(
-                      onTap: toggleEllipsis,
-                      child: Column(children: <Widget>[
-                        getTrustNameTh(),
-                        getTrustNameEn()
-                      ])),
-                ],
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: <Widget>[
+                        Text(reitDetail.symbol,
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Prompt',
+                            )),
+                        buttonBuy(),
+                      ],
+                    ),
+                    GestureDetector(
+                        onTap: toggleEllipsis,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              getTrustNameTh(),
+                              getTrustNameEn()
+                            ])),
+                  ],
+                ),
               ),
             ),
             new Expanded(
               flex: 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(reitDetail.priceOfDay,
-                      style: TextStyle(
-                        fontSize: 35,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Text(reitDetail.maxPriceOfDay,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Text(reitDetail.minPriceOfDay,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ],
+              child: Container(
+                padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(reitDetail.priceOfDay,
+                        style: TextStyle(
+                          fontSize: 35,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Prompt',
+                        )),
+                    Text(reitDetail.maxPriceOfDay,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Prompt',
+                        )),
+                    Text(reitDetail.minPriceOfDay,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Prompt',
+                        )),
+                  ],
+                ),
               ),
             )
           ],
@@ -257,24 +275,27 @@ class DetailReitState extends State<DetailReit> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "ราคา Par",
+                "Par(Baht)",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Prompt',
                 ),
               ),
               Text(
-                "P/E",
+                "Ceiling",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Prompt',
                 ),
               ),
               Text(
-                "ราคา Floor",
+                "Floor",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Prompt',
                 ),
               ),
             ],
@@ -284,21 +305,15 @@ class DetailReitState extends State<DetailReit> {
             children: <Widget>[
               Text(
                 reitDetail.parValue,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
               ),
               Text(
-                reitDetail.peValue,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                reitDetail.ceilingValue,
+                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
               ),
               Text(
                 reitDetail.floorValue,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
               ),
             ],
           )
@@ -317,25 +332,25 @@ class DetailReitState extends State<DetailReit> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "P/Nav",
+                "P/NAV",
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Prompt'),
               ),
               Text(
-                "ราคา Ceiling",
+                "P/E",
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Prompt'),
               ),
               Text(
-                "",
+                "Dvd.Yield(%)",
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Prompt'),
               ),
             ],
           ),
@@ -344,17 +359,16 @@ class DetailReitState extends State<DetailReit> {
             children: <Widget>[
               Text(
                 reitDetail.parNAV,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
               ),
               Text(
-                reitDetail.ceilingValue,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                reitDetail.peValue,
+                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
               ),
-              Text("")
+              Text(
+                reitDetail.dvdYield,
+                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+              )
             ],
           )
         ],
@@ -392,18 +406,101 @@ class DetailReitState extends State<DetailReit> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "นโยบายเงินปันผล",
+                "ผู้จัดการกองทรัสต์",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
+                  fontFamily: 'Sarabun',
                 ),
               ),
               Text(
-                reitDetail.policy,
+                reitDetail.reitManager,
                 style: TextStyle(
                   fontSize: 15,
+                  fontFamily: 'Sarabun',
                 ),
               ),
+              SizedBox(height: 2),
+              Text(
+                "ผู้บริหารอสังหาริมทรัพย์",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.propertyManager,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                "ผู้ดูแลผลประโยชน์ (Trustee)",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.trustee,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                "นโยบายการลงทุน",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.investmentPolicy,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                "ที่อยู่",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.address,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                "หุ้นสามัญ (ทุนจดทะเบียน)",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.investmentAmount,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              SizedBox(height: 2),
             ],
           ))
         ],
@@ -411,34 +508,62 @@ class DetailReitState extends State<DetailReit> {
     );
   }
 
-  Container _getSection4() {
+  Widget _getSection4() {
+    if (reitDetail.places.isEmpty) {
+      return Container();
+    }
     return new Container(
       padding: EdgeInsets.only(bottom: 10, top: 10),
       decoration: borderBottom,
       child: Row(
         children: <Widget>[
           new Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "ทรัสตี (Trustee)",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                reitDetail.trustee,
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ))
+            child: loopWidgetPlace(reitDetail.places),
+          )
         ],
       ),
     );
+  }
+
+  Widget loopWidgetPlace(List<Place> places) {
+    if (places == null) {
+      return Container();
+    }
+    List<Widget> listPlaceWidget = List<Widget>();
+    for (var i = 0; i < places.length; i++) {
+      if (i == 0) {
+        listPlaceWidget.add(Text(
+          'สินทรัพย์ที่ลงทุน',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            fontFamily: 'Sarabun',
+          ),
+        ));
+        listPlaceWidget.add(SizedBox(height: 5));
+      }
+      listPlaceWidget.add(Text(
+        places[i].name,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+          fontFamily: 'Sarabun',
+        ),
+      ));
+      listPlaceWidget.add(Text(
+        reitDetail.address,
+        style: TextStyle(
+          fontSize: 15,
+          fontFamily: 'Sarabun',
+        ),
+      ));
+      listPlaceWidget.add(SizedBox(height: 2));
+    }
+
+    return new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: listPlaceWidget);
+    ;
   }
 
   Container _getSection5() {
@@ -457,18 +582,17 @@ class DetailReitState extends State<DetailReit> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    fontFamily: 'Sarabun',
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
                   child: Table(
-                    // border: TableBorder.lerp(1, 0, 1),
                     defaultVerticalAlignment: TableCellVerticalAlignment.top,
                     columnWidths: {
                       0: FractionColumnWidth(.10),
-                      1: FractionColumnWidth(.60),
-                      // 2: FractionColumnWidth(.15),
-                      3: FractionColumnWidth(.15),
+                      1: FractionColumnWidth(.70),
+                      2: FractionColumnWidth(.20),
                     },
                     children: [
                       TableRow(
@@ -478,6 +602,7 @@ class DetailReitState extends State<DetailReit> {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
                             ),
                           ),
                           Text(
@@ -485,14 +610,15 @@ class DetailReitState extends State<DetailReit> {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
                             ),
                           ),
-                          // Text('Shares'),
                           Text(
                             'Percent',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
                             ),
                             textAlign: TextAlign.right,
                           ),
@@ -527,6 +653,7 @@ class DetailReitState extends State<DetailReit> {
               no.toString(),
               style: TextStyle(
                 fontSize: 15,
+                fontFamily: 'Sarabun',
               ),
             ),
           ),
@@ -539,21 +666,12 @@ class DetailReitState extends State<DetailReit> {
                   reitDetail.majorShareholders[index].nameTh,
                   style: TextStyle(
                     fontSize: 15,
+                    fontFamily: 'Sarabun',
                   ),
                 ),
-                // Text(
-                //   reitDetail.majorShareholders[index].nameEn,
-                //   style: TextStyle(
-                //     fontSize: 15,
-                //   ),
-                // ),
               ],
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
-          //   child: Text(reitDetail.majorShareholders[index].shares),
-          // ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
             child: Text(
@@ -561,6 +679,7 @@ class DetailReitState extends State<DetailReit> {
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 15,
+                fontFamily: 'Sarabun',
               ),
             ),
           ),
@@ -571,7 +690,6 @@ class DetailReitState extends State<DetailReit> {
         children: [
           Text(''),
           Text(''),
-          // Text(''),
           Text(''),
         ],
       );
@@ -589,7 +707,10 @@ class DetailReitState extends State<DetailReit> {
           child: Text(
             'Buy',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Prompt',
+            ),
           ),
           color: Colors.blue,
           elevation: 4.0,
@@ -602,7 +723,7 @@ class DetailReitState extends State<DetailReit> {
   }
 
   _launchURL() async {
-    var url = 'https://'+reitDetail.urlAddress;
+    var url = 'http://' + reitDetail.urlAddress;
     if (await canLaunch(url)) {
       await launch(url);
     } else {

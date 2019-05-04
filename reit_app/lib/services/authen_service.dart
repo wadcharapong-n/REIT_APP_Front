@@ -20,6 +20,7 @@ class AuthenService  {
     Map<String, dynamic> newToken = jsonDecode(response.body);
     sharedPreferencesService.saveToken(newToken['token']);
     sharedPreferencesService.saveRefreshToken(newToken['refreshToken']);
+    print(newToken['token']);
     return true;
   } else {
     throw Exception('Login fail');

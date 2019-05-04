@@ -73,6 +73,12 @@ flutter:
         - asset: assets/fonts/Quicksand/Quicksand-Regular.ttf
         - asset: assets/fonts/Quicksand/Quicksand-Bold.ttf
           weight: 700
+    - family: BaiJamjuree
+      fonts:
+        - asset: assets/fonts/Bai_Jamjuree/BaiJamjuree-Regular.ttf
+    - family: Sarabun
+      fonts:
+        - asset: assets/fonts/Sarabun/Sarabun-Regular.ttf
           
   #
   # For details regarding fonts from package dependencies,

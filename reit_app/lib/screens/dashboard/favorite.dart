@@ -199,14 +199,18 @@ class ReitRowState extends State<ReitRow> {
             ? Text(widget.favoriteReit.trustNameTh,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Baijamjuree'
+                    
+                   ),
                 overflow: TextOverflow.ellipsis)
             : Text(widget.favoriteReit.trustNameTh,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400)));
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Baijamjuree')));
   }
 
   Row _getSection3() {

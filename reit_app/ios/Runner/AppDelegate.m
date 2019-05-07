@@ -10,18 +10,23 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [GMSServices provideAPIKey:@"AIzaSyCD6fMRbaD5XE3ZbYsfVryOMxY-0viOk8Y"];
   [GeneratedPluginRegistrant registerWithRegistry:self];
+
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+    didFinishLaunchingWithOptions:launchOptions];
+
+
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-//  AppDelegate.m
-- (BOOL)application:(UIApplication *)application 
-    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+// //  AppDelegate.m
+// - (BOOL)application:(UIApplication *)application 
+//     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-    didFinishLaunchingWithOptions:launchOptions];
-  // Add any custom logic here.
-  return YES;
-}
+//   [[FBSDKApplicationDelegate sharedInstance] application:application
+//     didFinishLaunchingWithOptions:launchOptions];
+//   // Add any custom logic here.
+//   return YES;
+// }
 
 - (BOOL)application:(UIApplication *)application 
             openURL:(NSURL *)url 

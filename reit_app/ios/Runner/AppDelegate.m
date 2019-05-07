@@ -2,6 +2,8 @@
 #include "GeneratedPluginRegistrant.h"
 #import "GoogleMaps/GoogleMaps.h"
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
@@ -12,8 +14,6 @@
 }
 
 //  AppDelegate.m
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-
 - (BOOL)application:(UIApplication *)application 
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
@@ -25,16 +25,15 @@
 
 - (BOOL)application:(UIApplication *)application 
             openURL:(NSURL *)url 
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
 
   BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
     openURL:url
-    sourceApplication:sourceApplication
-    annotation:annotation
+    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
   ];
   // Add any custom logic here.
   return handled;
-} 
+}
 
 @end

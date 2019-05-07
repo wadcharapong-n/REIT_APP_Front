@@ -9,3 +9,7 @@ target 'Runner' do
     pod 'FBSDKCoreKit', '4.39.1'
     pod 'FBSDKLoginKit', '4.39.1'
 end
+
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'

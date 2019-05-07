@@ -10,8 +10,8 @@ import 'package:reit_app/screens/search/search.dart';
 
 class Routes {
   final routes = <String, WidgetBuilder>{
-    '/': (context) => Splash(),
-    '/Login': (context) => Login(),
+    '/': (context) => Dashboard(),
+    // '/Login': (context) => Login(),
     '/Profile': (context) => Profile(),
     '/Dashboard': (context) => Dashboard(),
     // '/Dashboard': (context) => DashboardWidget(),

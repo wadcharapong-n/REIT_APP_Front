@@ -25,15 +25,16 @@
 
 - (BOOL)application:(UIApplication *)application 
             openURL:(NSURL *)url 
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
 
   BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
     openURL:url
-    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+    sourceApplication:sourceApplication
+    annotation:annotation
   ];
   // Add any custom logic here.
   return handled;
-}
+} 
 
 @end

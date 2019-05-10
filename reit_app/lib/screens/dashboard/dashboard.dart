@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/screens/dashboard/favorite.dart';
+import 'package:reit_app/screens/search/search.dart';
 import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/favorite_services.dart';
 import 'package:reit_app/services/shared_preferences_service.dart';
@@ -83,8 +84,11 @@ class DashboardState extends State<Dashboard> {
         Container(
           padding: EdgeInsets.all(8.0),
           child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/Search');
+            onTap: () async {
+              await showSearch(
+                context: context,
+                delegate: Search(),
+              );
             },
             child: Container(
               height: 40.0,

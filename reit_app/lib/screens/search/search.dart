@@ -3,124 +3,109 @@ import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/services/search_service.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
-class Search extends StatefulWidget {
-  @override
-  _SearchState createState() => _SearchState();
-}
-
-class _SearchState extends State<Search> {
+class Search extends SearchDelegate {
   final searchService = Injector.getInjector().get<SearchService>();
 
-  final TextEditingController _filter = TextEditingController();
-  String _searchText = "";
-  List _suggestion = List();
-
   @override
-  void initState() {
-    super.initState();
-    _filter.addListener(() {
-      if (_filter.text.isEmpty) {
-        setState(() {
-          _searchText = "";
-        });
-      } else {
-        setState(() {
-          _searchText = _filter.text;
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: Container(
-        child: _buildList(),
-      ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      centerTitle: true,
-      title: textFieldSearch(),
-      leading: buttonBackPage(),
-      actions: <Widget>[
-        !(_filter.text.isEmpty) ? buttonClearFilter() : Text('')
-      ],
-    );
-  }
-
-  TextField textFieldSearch() {
-    return TextField(
-      style: TextStyle(
-        fontSize: 20.0,
-        color: Colors.black,
-        fontWeight: FontWeight.w300,
-      ),
-      autofocus: true,
-      controller: _filter,
-      textInputAction: TextInputAction.search,
-      decoration: InputDecoration(border: InputBorder.none, hintText: 'Search'),
-    );
-  }
-
-  IconButton buttonBackPage() {
+  Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
-      color: Colors.black,
+      tooltip: 'Back',
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
       onPressed: () {
-        _filter.clear();
-        _suggestion.clear();
-        Navigator.pop(context);
+        close(context, null);
       },
     );
   }
 
-  IconButton buttonClearFilter() {
-    return IconButton(
-      icon: Icon(
-        Icons.close,
-        color: Colors.black,
-      ),
-      onPressed: () {
-        _filter.clear();
-        _suggestion.clear();
-      },
-    );
-  }
-
-  Widget _buildList() {
+  @override
+  Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-        future: searchService.reitSearch(_searchText),
+        future: searchService.reitSearch(query),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            _suggestion = snapshot.data;
-            return ListView.builder(
-              itemCount: _suggestion.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(8, 5, 0, 0),
-                  child: ListTile(
-                    title: Text(_suggestion[index].symbol),
-                    subtitle: Text(_suggestion[index].trustNameTh),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailReit(
-                                  reitSymbol: _suggestion[index].symbol,
-                                )),
-                      );
-                    },
-                  ),
+            return _SuggestionList(
+              query: query,
+              suggestions: snapshot.data,
+              onSelected: (String symbol) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailReit(
+                            reitSymbol: symbol,
+                          )),
                 );
               },
             );
           }
           return const Center(child: CircularProgressIndicator());
         });
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return <Widget>[
+      query.isEmpty
+          ? Text('')
+          : IconButton(
+              tooltip: 'Clear',
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                query = '';
+                showSuggestions(context);
+              },
+            )
+    ];
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return FutureBuilder(
+        future: searchService.reitSearch(query),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return _SuggestionList(
+              query: query,
+              suggestions: snapshot.data,
+              onSelected: (String symbol) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailReit(
+                            reitSymbol: symbol,
+                          )),
+                );
+              },
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
+  }
+}
+
+class _SuggestionList extends StatelessWidget {
+  const _SuggestionList({this.suggestions, this.query, this.onSelected});
+
+  final List<dynamic> suggestions;
+  final String query;
+  final ValueChanged<String> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(20, 5, 5, 0),
+          title: Text(suggestions[index].symbol),
+          subtitle: Text(suggestions[index].trustNameTh),
+          onTap: () {
+            onSelected(suggestions[index].symbol);
+          },
+        );
+      },
+    );
   }
 }

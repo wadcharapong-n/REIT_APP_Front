@@ -5,6 +5,7 @@ import 'package:reit_app/app_config.dart';
 import 'package:reit_app/models/place.dart';
 import 'package:reit_app/loader.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
+import 'package:reit_app/screens/location/map_search.dart';
 import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/location_page_service.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
@@ -187,22 +188,42 @@ class _LocationPageState extends State<LocationPage> {
     return IconButton(
       icon: Icon(Icons.search),
       color: Colors.black,
-      onPressed: () {
-        Navigator.pushNamed(context, '/MapSearch').then((result) {
-          googleService.PlacesDetailsResponse place = result;
-          mapController.moveCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                bearing: 270.0,
-                target: LatLng(place.result.geometry.location.lat,
-                    place.result.geometry.location.lng),
-                tilt: 30.0,
-                zoom: 17.0,
+      onPressed: () async {
+        await showSearch(
+          context: context,
+          delegate: MapSearch(),
+        ).then((result) {
+          if (result is googleService.PlacesDetailsResponse) {
+            googleService.PlacesDetailsResponse place = result;
+            mapController.moveCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  bearing: 270.0,
+                  target: LatLng(place.result.geometry.location.lat,
+                      place.result.geometry.location.lng),
+                  tilt: 30.0,
+                  zoom: 17.0,
+                ),
               ),
-            ),
-          );
-          _addMarkerTap(LatLng(place.result.geometry.location.lat,
-              place.result.geometry.location.lng));
+            );
+            _addMarkerTap(LatLng(place.result.geometry.location.lat,
+                place.result.geometry.location.lng));
+          } else if (result is googleService.PlacesSearchResult) {
+            googleService.PlacesSearchResult place = result;
+            mapController.moveCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  bearing: 270.0,
+                  target: LatLng(
+                      place.geometry.location.lat, place.geometry.location.lng),
+                  tilt: 30.0,
+                  zoom: 17.0,
+                ),
+              ),
+            );
+            _addMarkerTap(LatLng(
+                place.geometry.location.lat, place.geometry.location.lng));
+          }
         });
       },
     );
@@ -236,11 +257,9 @@ class _LocationPageState extends State<LocationPage> {
               alignment: Alignment.topRight,
               child: Column(
                 children: <Widget>[
-                  SizedBox(
-                      width: 120, child: buttonFindReitLocation()),
+                  SizedBox(width: 120, child: buttonFindReitLocation()),
                   (_markers[_isMarker] != null)
-                      ? SizedBox(
-                          width: 120, child: buttonFindReitMarker())
+                      ? SizedBox(width: 120, child: buttonFindReitMarker())
                       : SizedBox(),
                 ],
               )),

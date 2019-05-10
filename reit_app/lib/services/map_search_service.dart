@@ -23,4 +23,10 @@ class MapSearchService {
     }
     return placesDetail;
   }
+
+  Future<PlacesSearchResponse> textSearch(String searchText) async {
+    PlacesSearchResponse reponse =
+        await places.searchByText(searchText, language: 'th');
+    return reponse;
+  }
 }

@@ -1,123 +1,120 @@
 import 'package:flutter/material.dart';
-import 'package:reit_app/app_config.dart';
 import 'package:reit_app/services/map_search_service.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import "package:google_maps_webservice/places.dart";
 
-class MapSearch extends StatefulWidget {
-  @override
-  _MapSearchState createState() => _MapSearchState();
-}
-
-class _MapSearchState extends State<MapSearch> {
+class MapSearch extends SearchDelegate {
   final mapSearchService = Injector.getInjector().get<MapSearchService>();
 
-  final TextEditingController _filter = TextEditingController();
-  String _searchText = "";
-  List _suggestion = List();
-  final places = GoogleMapsPlaces(apiKey: AppConfig.googleApiKey);
-
   @override
-  void initState() {
-    super.initState();
-
-    _filter.addListener(() {
-      if (_filter.text.isEmpty) {
-        setState(() {
-          _searchText = "";
-        });
-      } else {
-        setState(() {
-          _searchText = _filter.text;
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: Container(
-        child: _buildList(),
-      ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      centerTitle: true,
-      title: textFieldSearch(),
-      leading: buttonBackPage(),
-      actions: <Widget>[
-        !(_filter.text.isEmpty) ? buttonClearFilter() : Text('')
-      ],
-    );
-  }
-
-  TextField textFieldSearch() {
-    return TextField(
-      style: TextStyle(
-        fontSize: 20.0,
-        color: Colors.black,
-        fontWeight: FontWeight.w300,
-      ),
-      autofocus: true,
-      controller: _filter,
-      textInputAction: TextInputAction.search,
-      decoration: InputDecoration(border: InputBorder.none, hintText: 'Search'),
-    );
-  }
-
-  IconButton buttonBackPage() {
+  Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
-      color: Colors.black,
+      tooltip: 'Back',
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
       onPressed: () {
-        _filter.clear();
-        _suggestion.clear();
-        Navigator.pop(context);
+        close(context, null);
       },
     );
   }
 
-  IconButton buttonClearFilter() {
-    return IconButton(
-      icon: Icon(
-        Icons.close,
-        color: Colors.black,
-      ),
-      onPressed: () {
-        _filter.clear();
-        _suggestion.clear();
-      },
-    );
-  }
-
-  Widget _buildList() {
+  @override
+  Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-        future: mapSearchService.placesSearch(_searchText),
+        future: mapSearchService.placesSearch(query),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            _suggestion = snapshot.data;
-            return ListView.builder(
-              itemCount: _suggestion.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(8, 5, 0, 0),
-                  child: ListTile(
-                    title: Text(_suggestion[index].result.name),
-                    subtitle: Text(_suggestion[index].result.formattedAddress),
-                    onTap: () {
-                      Navigator.pop(context, _suggestion[index]);
-                    },
-                  ),
-                );
+            return _SuggestionList(
+              query: query,
+              suggestions: snapshot.data,
+              onSelected: (PlacesDetailsResponse suggestion) {
+                Navigator.pop(context, suggestion);
               },
             );
           }
           return const Center(child: CircularProgressIndicator());
         });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return FutureBuilder(
+        future: mapSearchService.textSearch(query),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.results.length != 0) {
+              print(snapshot.data.results.length);
+              return ListView.builder(
+                itemCount: snapshot.data.results.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    contentPadding: EdgeInsets.fromLTRB(20, 5, 5, 0),
+                    title: Text(snapshot.data.results[index].name),
+                    subtitle:
+                        Text(snapshot.data.results[index].formattedAddress),
+                    onTap: () {
+                      Navigator.pop(context, snapshot.data.results[index]);
+                    },
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'Maps not found \n"$query"\n',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Prompt',
+                  ),
+                ),
+              );
+            }
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return <Widget>[
+      query.isEmpty
+          ? Text('')
+          : IconButton(
+              tooltip: 'Clear',
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                query = '';
+                showSuggestions(context);
+              },
+            )
+    ];
+  }
+}
+
+class _SuggestionList extends StatelessWidget {
+  const _SuggestionList({this.suggestions, this.query, this.onSelected});
+
+  final List<dynamic> suggestions;
+  final String query;
+  final ValueChanged<PlacesDetailsResponse> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(20, 5, 5, 0),
+          title: Text(suggestions[index].result.name),
+          subtitle: Text(suggestions[index].result.formattedAddress),
+          onTap: () {
+            onSelected(suggestions[index]);
+          },
+        );
+      },
+    );
   }
 }

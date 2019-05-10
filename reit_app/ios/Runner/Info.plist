@@ -45,5 +45,38 @@
     <string>Needed to access location</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Needed to access location</string>
+
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!--
+				Replace "000000000000" with your Facebook App ID here.
+				**NOTE**: The scheme needs to start with `fb` and then your ID.
+				-->
+				<string>fb326974667945689</string>
+			</array>
+		</dict>
+	</array>
+
+	<key>FacebookAppID</key>
+
+	<!-- Replace "000000000000" with your Facebook App ID here. -->
+	<string>326974667945689</string>
+	<key>FacebookDisplayName</key>
+
+	<!-- Replace "YOUR_APP_NAME" with your Facebook App name. -->
+	<string>Reit App</string>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

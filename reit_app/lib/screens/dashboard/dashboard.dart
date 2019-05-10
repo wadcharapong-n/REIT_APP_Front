@@ -41,38 +41,6 @@ class DashboardState extends State<Dashboard> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarDashbord(),
-      body: Stack(children: <Widget>[
-        ClipPath(
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-              decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [const Color(0xFFFFF3E0), const Color(0xFFFB8c00)],
-                begin: const FractionalOffset(1.0, 1.0),
-                end: const FractionalOffset(0.6, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-          )),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            inputSearch(),
-            isEmptyReit == false ? headerFavorite() : Text(''),
-            isEmptyReit == false
-                ? Favorite(
-                    chaekIsEmptyReitAndSetState: chaekIsEmptyReitAndSetState)
-                : Text(''),
-          ],
-        ),
-      ]),
-    );
-  }
-
   Widget appBarDashbord() {
     return AppBar(
       backgroundColor: Color(0xFFFB8c00),
@@ -120,7 +88,7 @@ class DashboardState extends State<Dashboard> {
             },
             child: Container(
               height: 40.0,
-              width: MediaQuery.of(context).size.width - 100.0  ,
+              width: MediaQuery.of(context).size.width - 100.0,
               margin: const EdgeInsets.fromLTRB(15, 10, 5, 10),
               padding: const EdgeInsets.fromLTRB(30, 0, 5, 0),
               decoration: BoxDecoration(
@@ -184,6 +152,38 @@ class DashboardState extends State<Dashboard> {
             width: 400.0,
             color: Colors.black),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBarDashbord(),
+      body: Stack(children: <Widget>[
+        ClipPath(
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+              decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [const Color(0xFFFFF3E0), const Color(0xFFFB8c00)],
+                begin: const FractionalOffset(1.0, 1.0),
+                end: const FractionalOffset(0.6, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          )),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            inputSearch(),
+            isEmptyReit == false ? headerFavorite() : Text(''),
+            isEmptyReit == false
+                ? Favorite(
+                    chaekIsEmptyReitAndSetState: chaekIsEmptyReitAndSetState)
+                : Text(''),
+          ],
+        ),
+      ]),
     );
   }
 }

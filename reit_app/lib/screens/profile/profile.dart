@@ -31,10 +31,17 @@ class _ProfileState extends State<Profile> {
               Navigator.pop(context);
             },
             child: Center(
-              child: Text(
-                'Back',
-                style: TextStyle(
-                    color: Colors.white, fontFamily: 'Prompt', fontSize: 16),
+              child: MaterialButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                height: 30.0,
+                child: new Text(
+                  'Back',
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: 'Prompt', fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
           ),
@@ -110,15 +117,21 @@ class _ProfileState extends State<Profile> {
                   ),
                   Positioned(
                       width: MediaQuery.of(context).size.width,
-                      top: MediaQuery.of(context).size.height / 10,
+                      top: MediaQuery.of(context).size.height * 0.10,
                       child: Column(
                         children: <Widget>[
                           showImage(snapshot.data.image),
-                          SizedBox(height: 90.0),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.10),
                           showName(snapshot.data.fullName),
-                          SizedBox(height: 15.0),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.02),
                           showEmail(snapshot.data.email),
-                          SizedBox(height: 100.0),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.20),
                           buttonBack(),
                         ],
                       ))

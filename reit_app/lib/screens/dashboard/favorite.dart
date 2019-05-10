@@ -130,7 +130,7 @@ class ReitRowState extends State<ReitRow> {
 
   Container reitCardContent() {
     return Container(
-      margin: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 16.0),
+      margin: EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 10.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         _getSection1(),
         _getSection2(),
@@ -201,9 +201,7 @@ class ReitRowState extends State<ReitRow> {
                     color: Colors.black,
                     fontSize: 18.0,
                     fontWeight: FontWeight.w500,
-                    fontFamily: 'Baijamjuree'
-                    
-                   ),
+                    fontFamily: 'Baijamjuree'),
                 overflow: TextOverflow.ellipsis)
             : Text(widget.favoriteReit.trustNameTh,
                 style: TextStyle(
@@ -220,18 +218,26 @@ class ReitRowState extends State<ReitRow> {
           child: Container(
             padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  _reitPriceMaxMin(
-                      text: 'Max : ',
-                      value: widget.favoriteReit.maxPriceOfDay,
-                      color: Colors.blue),
-                  _reitPriceMaxMin(
-                      text: 'Min : ',
-                      value: widget.favoriteReit.minPriceOfDay,
-                      color: Colors.red),
+                  Expanded(
+                    flex: 6,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _reitPriceMaxMin(
+                            text: 'Max : ',
+                            value: widget.favoriteReit.maxPriceOfDay,
+                            color: Colors.blue),
+                        _reitPriceMaxMin(
+                            text: 'Min : ',
+                            value: widget.favoriteReit.minPriceOfDay,
+                            color: Colors.red),
+                      ],
+                    ),
+                  ),
                   _reitPriceOfDay(
                       value: widget.favoriteReit.priceOfDay,
                       color: Colors.green),
@@ -245,13 +251,25 @@ class ReitRowState extends State<ReitRow> {
   Expanded _reitPriceMaxMin({String text, String value, Color color}) {
     return Expanded(
       flex: 3,
-      child: Text(text + value,
-          style: TextStyle(
-              color: color,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Quicksand'),
-          textAlign: TextAlign.left),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(text,
+              style: TextStyle(
+                  color: color,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Quicksand'),
+              textAlign: TextAlign.left),
+          Text(value,
+              style: TextStyle(
+                  color: color,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Quicksand'),
+              textAlign: TextAlign.left),
+        ],
+      ),
     );
   }
 
@@ -261,7 +279,7 @@ class ReitRowState extends State<ReitRow> {
         child: Text(value,
             style: TextStyle(
                 color: color,
-                fontSize: 22.0,
+                fontSize: 26.0,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Quicksand'),
             textAlign: TextAlign.right));

@@ -202,6 +202,7 @@ class DetailReitState extends State<DetailReit> {
             new Expanded(
               flex: 7,
               child: Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -231,14 +232,14 @@ class DetailReitState extends State<DetailReit> {
             new Expanded(
               flex: 3,
               child: Container(
-                padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(reitDetail.priceOfDay,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: 36,
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Prompt',
@@ -648,7 +649,7 @@ class DetailReitState extends State<DetailReit> {
       return TableRow(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
+            padding: const EdgeInsets.fromLTRB(0, 4, 2, 10),
             child: Text(
               no.toString(),
               style: TextStyle(
@@ -658,7 +659,7 @@ class DetailReitState extends State<DetailReit> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 1, 10),
+            padding: const EdgeInsets.fromLTRB(0, 4, 2, 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -673,7 +674,7 @@ class DetailReitState extends State<DetailReit> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 3, 1, 10),
+            padding: const EdgeInsets.fromLTRB(0, 4, 2, 10),
             child: Text(
               reitDetail.majorShareholders[index].sharesPercent,
               textAlign: TextAlign.right,
@@ -698,7 +699,7 @@ class DetailReitState extends State<DetailReit> {
 
   Container buttonBuy() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
+      padding: const EdgeInsets.fromLTRB(10, 0, 0, 6),
       child: ButtonTheme(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         minWidth: 50.0,
@@ -708,7 +709,7 @@ class DetailReitState extends State<DetailReit> {
             'Buy',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 16,
               fontFamily: 'Prompt',
             ),
           ),

@@ -237,11 +237,10 @@ class _LocationPageState extends State<LocationPage> {
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                      width: 120, height: 40, child: buttonFindReitLocation()),
-                  SizedBox(height: 10.0),
+                      width: 120, child: buttonFindReitLocation()),
                   (_markers[_isMarker] != null)
                       ? SizedBox(
-                          width: 120, height: 40, child: buttonFindReitMarker())
+                          width: 120, child: buttonFindReitMarker())
                       : SizedBox(),
                 ],
               )),
@@ -315,7 +314,7 @@ class _LocationPageState extends State<LocationPage> {
         builder: (builder) {
           if (place.reit != null) {
             return Container(
-              height: 300,
+              height: MediaQuery.of(context).size.height * 0.40,
               margin: EdgeInsets.all(15),
               color: Colors.white,
               child: SingleChildScrollView(

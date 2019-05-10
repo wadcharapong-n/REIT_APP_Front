@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
 
   Padding logoReit() {
     return Padding(
-      padding: EdgeInsets.only(top: 75.0),
+      padding: EdgeInsets.only(top: 5.0),
       child: new Image(
           width: 250.0,
           height: 250.0,
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
 
   Container _buildLogin() {
     return Container(
-      padding: EdgeInsets.only(top: 23.0),
+      padding: EdgeInsets.only(top: 5.0),
       child: Column(
         children: <Widget>[
           Stack(
@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
 
   Padding showWelcomeText() {
     return Padding(
-      padding: EdgeInsets.only(top: 160.0),
+      padding: EdgeInsets.only(top: 5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -130,7 +130,7 @@ class _LoginState extends State<Login> {
 
   Container colorButtonLoginFacebook() {
     return Container(
-        margin: EdgeInsets.only(top: 200.0),
+        margin: EdgeInsets.only(top: 40.0),
         decoration: new BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           boxShadow: <BoxShadow>[
@@ -187,7 +187,9 @@ class _LoginState extends State<Login> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * 0.10),
                 logoReit(),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.30),
                 _buildLogin(),
               ],
             ),

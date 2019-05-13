@@ -60,7 +60,6 @@ class DetailReitState extends State<DetailReit> {
       );
     }
 
-    if (reitDetail.majorShareholders.isEmpty) {}
     return new Scaffold(
       backgroundColor: Colors.white,
       appBar: new AppBar(
@@ -207,14 +206,19 @@ class DetailReitState extends State<DetailReit> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(reitDetail.symbol,
-                            style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Prompt',
-                            )),
-                        buttonBuy(),
+                        Flexible(
+                          flex: 8,
+                          child: Text(reitDetail.symbol,
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Prompt',
+                              )),
+                        ),
+                        Flexible(flex: 2, child: buttonBuy()),
                       ],
                     ),
                     GestureDetector(
@@ -270,53 +274,60 @@ class DetailReitState extends State<DetailReit> {
     return new Container(
       padding: EdgeInsets.only(left: 0, right: 5),
       child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Par(Baht)",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Prompt',
+          Expanded(
+            flex: 4,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Par(Baht)",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Prompt',
+                  ),
                 ),
-              ),
-              Text(
-                "Ceiling",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Prompt',
+                Text(
+                  "Ceiling",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Prompt',
+                  ),
                 ),
-              ),
-              Text(
-                "Floor",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Prompt',
+                Text(
+                  "Floor",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Prompt',
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                reitDetail.parValue,
-                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
-              ),
-              Text(
-                reitDetail.ceilingValue,
-                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
-              ),
-              Text(
-                reitDetail.floorValue,
-                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
-              ),
-            ],
+          Expanded(
+            flex: 6,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  reitDetail.parValue,
+                  style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+                ),
+                Text(
+                  reitDetail.ceilingValue,
+                  style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+                ),
+                Text(
+                  reitDetail.floorValue,
+                  style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+                ),
+              ],
+            ),
           )
         ],
       ),
@@ -327,50 +338,57 @@ class DetailReitState extends State<DetailReit> {
     return new Container(
       padding: EdgeInsets.only(left: 5, right: 5),
       child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "P/NAV",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Prompt'),
-              ),
-              Text(
-                "P/E",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Prompt'),
-              ),
-              Text(
-                "Dvd.Yield(%)",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Prompt'),
-              ),
-            ],
+          Expanded(
+            flex: 6,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "P/NAV",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Prompt'),
+                ),
+                Text(
+                  "P/E",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Prompt'),
+                ),
+                Text(
+                  "Dvd.Yield(%)",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Prompt'),
+                ),
+              ],
+            ),
           ),
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                reitDetail.parNAV,
-                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
-              ),
-              Text(
-                reitDetail.peValue,
-                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
-              ),
-              Text(
-                reitDetail.dvdYield,
-                style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
-              )
-            ],
+          Expanded(
+            flex: 4,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  reitDetail.parNAV,
+                  style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+                ),
+                Text(
+                  reitDetail.peValue,
+                  style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+                ),
+                Text(
+                  reitDetail.dvdYield,
+                  style: TextStyle(fontSize: 16, fontFamily: 'Prompt'),
+                )
+              ],
+            ),
           )
         ],
       ),
@@ -699,7 +717,7 @@ class DetailReitState extends State<DetailReit> {
 
   Container buttonBuy() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 0, 0, 6),
+      padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
       child: ButtonTheme(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         minWidth: 50.0,

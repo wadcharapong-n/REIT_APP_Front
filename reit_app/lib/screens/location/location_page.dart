@@ -331,8 +331,8 @@ class _LocationPageState extends State<LocationPage> {
         builder: (builder) {
           if (place.reit != null) {
             return Container(
+              padding: EdgeInsets.all(15),
               height: MediaQuery.of(context).size.height * 0.40,
-              margin: EdgeInsets.all(15),
               color: Colors.white,
               child: SingleChildScrollView(
                 child: Column(
@@ -340,44 +340,50 @@ class _LocationPageState extends State<LocationPage> {
                   children: <Widget>[
                     Container(
                         child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(place.symbol,
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Prompt',
-                            )),
-                        ButtonTheme(
-                          padding: const EdgeInsets.all(4),
-                          minWidth: 50.0,
-                          height: 25.0,
-                          child: RaisedButton(
-                            child: Text(
-                              'View Information',
-                              textAlign: TextAlign.center,
+                        Expanded(
+                          flex: 6,
+                          child: Text(place.symbol,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
                                 fontFamily: 'Prompt',
+                              )),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: ButtonTheme(
+                            padding: const EdgeInsets.all(4),
+                            minWidth: 50.0,
+                            height: 25.0,
+                            child: RaisedButton(
+                              child: Text(
+                                'View Information',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Prompt',
+                                ),
                               ),
+                              color: Colors.green,
+                              elevation: 4.0,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailReit(
+                                            reitSymbol: place.reit[0].symbol,
+                                          )),
+                                );
+                              },
                             ),
-                            color: Colors.green,
-                            elevation: 4.0,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailReit(
-                                          reitSymbol: place.reit[0].symbol,
-                                        )),
-                              );
-                            },
                           ),
                         )
                       ],
                     )),
                     Container(
-                      height: 200,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,

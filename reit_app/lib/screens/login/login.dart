@@ -189,7 +189,7 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height * 0.10),
                 logoReit(),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.30),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.15),
                 _buildLogin(),
               ],
             ),

@@ -113,7 +113,7 @@ class _ProfileState extends State<Profile> {
                           stops: [0.0, 5.0],
                           tileMode: TileMode.clamp),
                     )),
-                    clipper: GetClipper(),
+                    // clipper: GetClipper(),
                   ),
                   Positioned(
                       width: MediaQuery.of(context).size.width,

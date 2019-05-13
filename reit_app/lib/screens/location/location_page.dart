@@ -251,20 +251,18 @@ class _LocationPageState extends State<LocationPage> {
   Padding columnButton() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 60, 12, 0),
-      child: Column(
-        children: <Widget>[
-          Align(
-              alignment: Alignment.topRight,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(width: 120, child: buttonFindReitLocation()),
-                  (_markers[_isMarker] != null)
-                      ? SizedBox(width: 120, child: buttonFindReitMarker())
-                      : SizedBox(),
-                ],
-              )),
-        ],
-      ),
+      child: Align(
+          alignment: Alignment.topRight,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(width: 120, child: buttonFindReitLocation()),
+                (_markers[_isMarker] != null)
+                    ? SizedBox(width: 120, child: buttonFindReitMarker())
+                    : SizedBox(),
+              ],
+            ),
+          )),
     );
   }
 

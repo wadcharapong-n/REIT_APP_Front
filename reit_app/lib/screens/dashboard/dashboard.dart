@@ -57,12 +57,24 @@ class DashboardState extends State<Dashboard> {
       ),
       actions: <Widget>[
         PopupMenuButton(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle , size: 30,),
             itemBuilder: (_) => <PopupMenuItem<String>>[
                   PopupMenuItem<String>(
-                      child: const Text('Profile'), value: 'Profile'),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.account_circle),
+                          Text('  Profile'),
+                        ],
+                      ),
+                      value: 'Profile'),
                   PopupMenuItem<String>(
-                      child: const Text('Logout'), value: 'Logout'),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.reply),
+                          Text('  Logout'),
+                        ],
+                      ),
+                      value: 'Logout'),
                 ],
             onSelected: (value) {
               if (value == 'Logout') {

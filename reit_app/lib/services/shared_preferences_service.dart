@@ -53,6 +53,7 @@ class SharedPreferencesService {
     await preferences.remove(SharedPreferencesConfig.image);
     await preferences.remove(SharedPreferencesConfig.site);
     await preferences.remove(SharedPreferencesConfig.token);
+    preferences.clear();
   }
 
   Future saveToken(String token) async {

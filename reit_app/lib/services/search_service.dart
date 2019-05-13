@@ -28,4 +28,20 @@ class SearchService {
     }
     return reitAll;
   }
+
+  Future<List<ReitDetail>> getReitAll() async {
+    final httpClient = new CustomHttpClient();
+    final response = await httpClient.get(AppConfig.apiUrl + "/reit");
+    List<ReitDetail> reitAll = List();
+    if (response.statusCode == 200) {
+      if (json.decode(response.body) != null) {
+        json.decode(response.body).forEach((reit) {
+          reitAll.add(ReitDetail.fromJson(reit));
+        });
+      }
+    } else if (response.statusCode == 401) {
+      throw Exception('Failed to load data, Unauthorized');
+    }
+    return reitAll;
+  }
 }

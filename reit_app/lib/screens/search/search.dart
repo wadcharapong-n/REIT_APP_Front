@@ -22,26 +22,49 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(
-        future: searchService.reitSearch(query),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return _SuggestionList(
-              query: query,
-              suggestions: snapshot.data,
-              onSelected: (String symbol) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailReit(
-                            reitSymbol: symbol,
-                          )),
-                );
-              },
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        });
+    if (query.isEmpty) {
+      return FutureBuilder(
+          future: searchService.getReitAll(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return _SuggestionList(
+                query: query,
+                suggestions: snapshot.data,
+                onSelected: (String symbol) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailReit(
+                              reitSymbol: symbol,
+                            )),
+                  );
+                },
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          });
+    } else {
+      return FutureBuilder(
+          future: searchService.reitSearch(query),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return _SuggestionList(
+                query: query,
+                suggestions: snapshot.data,
+                onSelected: (String symbol) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailReit(
+                              reitSymbol: symbol,
+                            )),
+                  );
+                },
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          });
+    }
   }
 
   @override
@@ -62,26 +85,49 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FutureBuilder(
-        future: searchService.reitSearch(query),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return _SuggestionList(
-              query: query,
-              suggestions: snapshot.data,
-              onSelected: (String symbol) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailReit(
-                            reitSymbol: symbol,
-                          )),
-                );
-              },
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        });
+    if (query.isEmpty) {
+      return FutureBuilder(
+          future: searchService.getReitAll(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return _SuggestionList(
+                query: query,
+                suggestions: snapshot.data,
+                onSelected: (String symbol) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailReit(
+                              reitSymbol: symbol,
+                            )),
+                  );
+                },
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          });
+    } else {
+      return FutureBuilder(
+          future: searchService.reitSearch(query),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return _SuggestionList(
+                query: query,
+                suggestions: snapshot.data,
+                onSelected: (String symbol) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailReit(
+                              reitSymbol: symbol,
+                            )),
+                  );
+                },
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          });
+    }
   }
 }
 

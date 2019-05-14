@@ -63,7 +63,7 @@ class MapSearch extends SearchDelegate {
             } else {
               return Center(
                 child: Text(
-                  'Maps not found \n"$query"\n',
+                  'Maps ไม่พบ \n"$query"\n',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,

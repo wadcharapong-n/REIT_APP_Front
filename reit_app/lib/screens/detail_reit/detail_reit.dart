@@ -278,7 +278,7 @@ class DetailReitState extends State<DetailReit> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Expanded(
-            flex: 4,
+            flex: 5,
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -310,7 +310,7 @@ class DetailReitState extends State<DetailReit> {
             ),
           ),
           Expanded(
-            flex: 6,
+            flex: 5,
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[

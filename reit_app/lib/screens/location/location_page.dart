@@ -105,21 +105,28 @@ class _LocationPageState extends State<LocationPage> {
     final Marker marker = Marker(
       markerId: markerId,
       position: point,
-      infoWindow: InfoWindow(
-          title: 'Marker Tap',
-          snippet: 'Find Reit Around',
-          onTap: () {
-            locationPageService
+      // infoWindow: InfoWindow(
+      //     title: '',
+      //     // snippet: '',
+      //     onTap: () {
+      //       locationPageService
+      //           .getSearchAroundReit(
+      //               point.latitude.toString(), point.longitude.toString())
+      //           .then((result) {
+      //         _showModalSheet(result);
+      //       }).catchError(
+      //               (_) => {authenService.LogoutAndNavigateToLogin(context)});
+      //     }),
+      icon: BitmapDescriptor.defaultMarker,
+      onTap: () {
+        _onMarkerTapped(markerId);
+         locationPageService
                 .getSearchAroundReit(
                     point.latitude.toString(), point.longitude.toString())
                 .then((result) {
               _showModalSheet(result);
             }).catchError(
                     (_) => {authenService.LogoutAndNavigateToLogin(context)});
-          }),
-      icon: BitmapDescriptor.defaultMarker,
-      onTap: () {
-        _onMarkerTapped(markerId);
       },
     );
 
@@ -358,7 +365,7 @@ class _LocationPageState extends State<LocationPage> {
                             height: 25.0,
                             child: RaisedButton(
                               child: Text(
-                                'View Information',
+                                'ข้อมูลเพิ่มเติม',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,
@@ -386,62 +393,62 @@ class _LocationPageState extends State<LocationPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            "ชื่อสินทรัพย์",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
+                          // Text(
+                          //   "ชื่อสินทรัพย์",
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeight.bold,
+                          //     fontFamily: 'Sarabun',
+                          //   ),
+                          // ),
                           Text(
                             place.name,
                             style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
-                          Text(
-                            "ชื่อ Reit",
-                            style: TextStyle(
-                              fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
-                          Text(
-                            "TH : " + place.reit[0].trustNameTh,
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
-                          Text(
-                            "EN : " + place.reit[0].trustNameEn,
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
-                          Text(
-                            "ที่อยู่",
-                            style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
                               fontFamily: 'Sarabun',
                             ),
                           ),
+                          // Text(
+                          //   "ชื่อ Reit",
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeight.bold,
+                          //     fontFamily: 'Sarabun',
+                          //   ),
+                          // ),
                           Text(
-                            place.address,
+                            place.reit[0].trustNameTh,
                             style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 16,
                               fontFamily: 'Sarabun',
                             ),
                           ),
+                          Text(
+                            place.reit[0].trustNameEn,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          // Text(
+                          //   "ที่อยู่",
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeight.bold,
+                          //     fontFamily: 'Sarabun',
+                          //   ),
+                          // ),
+                          // Text(
+                          //   place.address,
+                          //   style: TextStyle(
+                          //     fontWeight: FontWeight.normal,
+                          //     fontSize: 16,
+                          //     fontFamily: 'Sarabun',
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -478,7 +485,7 @@ class _LocationPageState extends State<LocationPage> {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Not Found Reit",
+                      Text("ไม่พบอสังหาริมทรัพย์",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -561,7 +568,7 @@ class _LocationPageState extends State<LocationPage> {
                 ? Stack(
                     children: <Widget>[
                       googleMap(),
-                      columnButton(),
+                      // columnButton(),
                     ],
                   )
                 : Center(

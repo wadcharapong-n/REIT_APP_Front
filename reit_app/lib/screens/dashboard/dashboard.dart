@@ -57,7 +57,7 @@ class DashboardState extends State<Dashboard> {
       ),
       actions: <Widget>[
         PopupMenuButton(
-            icon: Icon(Icons.account_circle , size: 30,),
+            icon: Icon(Icons.account_circle , size: 38,),
             itemBuilder: (_) => <PopupMenuItem<String>>[
                   PopupMenuItem<String>(
                       child: Row(

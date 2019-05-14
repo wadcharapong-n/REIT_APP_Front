@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Reit App</string>
-    <string name="facebook_app_id">326974667945689</string>
-    <string name="fb_login_protocol_scheme">fb326974667945689</string>
+    <string name="facebook_app_id">359327591370946</string>
+    <string name="fb_login_protocol_scheme">fb359327591370946</string>
 </resources>

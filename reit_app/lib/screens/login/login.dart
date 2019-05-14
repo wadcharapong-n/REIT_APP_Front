@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
           Padding(
             padding: EdgeInsets.only(left: 15.0, right: 15.0),
             child: Text(
-              "Welcome",
+              "ยินดีต้อนรับ",
               style: TextStyle(
                   color: Colors.white, fontSize: 16.0, fontFamily: "Prompt"),
             ),
@@ -160,7 +160,7 @@ class _LoginState extends State<Login> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
         child: Text(
-          "Login With Facebook",
+          "เข้าสู่ระบบด้วย Facebook",
           style: TextStyle(
               color: Colors.white, fontSize: 20.0, fontFamily: "Prompt"),
         ),

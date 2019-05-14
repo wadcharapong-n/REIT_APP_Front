@@ -120,13 +120,12 @@ class _LocationPageState extends State<LocationPage> {
       icon: BitmapDescriptor.defaultMarker,
       onTap: () {
         _onMarkerTapped(markerId);
-         locationPageService
-                .getSearchAroundReit(
-                    point.latitude.toString(), point.longitude.toString())
-                .then((result) {
-              _showModalSheet(result);
-            }).catchError(
-                    (_) => {authenService.LogoutAndNavigateToLogin(context)});
+        locationPageService
+            .getSearchAroundReit(
+                point.latitude.toString(), point.longitude.toString())
+            .then((result) {
+          _showModalSheet(result);
+        }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
       },
     );
 
@@ -519,9 +518,7 @@ class _LocationPageState extends State<LocationPage> {
               return Scaffold(
                 appBar: AppBar(
                   centerTitle: true,
-                  title: (snapshot.data[0] == false)
-                      ? showTextAppBar('GPS Disabled')
-                      : showTextAppBar('GPS Denied'),
+                  title: showTextAppBar('ค้นหาด้วยแผนที่'),
                   leading: buttonBackPage(),
                   backgroundColor: Colors.white,
                   actions: <Widget>[
@@ -556,7 +553,7 @@ class _LocationPageState extends State<LocationPage> {
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: showTextAppBar('Map'),
+              title: showTextAppBar('ค้นหาด้วยแผนที่'),
               leading: buttonBackPage(),
               backgroundColor: Colors.orange[600],
               actions: <Widget>[

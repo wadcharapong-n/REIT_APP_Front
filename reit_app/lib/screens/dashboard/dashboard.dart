@@ -48,7 +48,7 @@ class DashboardState extends State<Dashboard> {
       elevation: 0,
       centerTitle: true,
       title: Text(
-        'Dashboard',
+        'หน้าหลัก',
         style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -63,7 +63,7 @@ class DashboardState extends State<Dashboard> {
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.account_circle),
-                          Text('  Profile'),
+                          Text('  ข้อมูลผู้ใช้'),
                         ],
                       ),
                       value: 'Profile'),
@@ -71,7 +71,7 @@ class DashboardState extends State<Dashboard> {
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.reply),
-                          Text('  Logout'),
+                          Text('  ออกจากระบบ'),
                         ],
                       ),
                       value: 'Logout'),
@@ -116,7 +116,7 @@ class DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   Icon(Icons.search),
                   Text(
-                    '  Search',
+                    '  ค้นหา',
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.black,
@@ -153,7 +153,7 @@ class DashboardState extends State<Dashboard> {
         Container(
           padding: EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 5.0),
           child: Text(
-            'Favorite',
+            'รายการที่สนใจ',
             style: TextStyle(
                 fontSize: 22.0,
                 color: Colors.black,

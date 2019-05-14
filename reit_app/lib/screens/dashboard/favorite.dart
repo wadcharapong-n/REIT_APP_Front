@@ -228,11 +228,11 @@ class ReitRowState extends State<ReitRow> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         _reitPriceMaxMin(
-                            text: 'Max : ',
+                            text: 'สูงสุด : ',
                             value: widget.favoriteReit.maxPriceOfDay,
                             color: Colors.blue),
                         _reitPriceMaxMin(
-                            text: 'Min : ',
+                            text: 'ต่ำสุด : ',
                             value: widget.favoriteReit.minPriceOfDay,
                             color: Colors.red),
                       ],

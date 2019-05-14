@@ -19,8 +19,8 @@ class _ProfileState extends State<Profile> {
 
   Container buttonBack() {
     return Container(
-        height: 30.0,
-        width: 120.0,
+        height: 45.0,
+        width: 150.0,
         child: Material(
           borderRadius: BorderRadius.circular(20.0),
           shadowColor: Colors.redAccent,
@@ -35,9 +35,12 @@ class _ProfileState extends State<Profile> {
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 height: 30.0,
                 child: new Text(
-                  'Back',
+                  'กลับ',
                   style: TextStyle(
-                      color: Colors.white, fontFamily: 'Prompt', fontSize: 16),
+                      color: Colors.white,
+                      fontFamily: 'Prompt',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -72,7 +75,7 @@ class _ProfileState extends State<Profile> {
 
   Text showEmail(String email) {
     return Text(
-      'Email : ' + email,
+      'อีเมล : ' + email,
       style: TextStyle(
           fontSize: 18.0, fontStyle: FontStyle.normal, fontFamily: 'Prompt'),
     );
@@ -91,7 +94,7 @@ class _ProfileState extends State<Profile> {
                 centerTitle: true,
                 elevation: 0,
                 title: Text(
-                  'Profile',
+                  'ข้อมูลผู้ใช้',
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -131,7 +134,7 @@ class _ProfileState extends State<Profile> {
                       showEmail(snapshot.data.email),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.15),
-                      buttonBack(),
+                      // buttonBack(),
                     ],
                   ),
                 ),

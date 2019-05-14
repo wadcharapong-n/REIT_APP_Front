@@ -66,7 +66,7 @@ class DetailReitState extends State<DetailReit> {
         elevation: 2,
         centerTitle: true,
         title: Text(
-          "Reit Detail",
+          "รายละเอียด",
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -617,7 +617,7 @@ class DetailReitState extends State<DetailReit> {
                       TableRow(
                         children: [
                           Text(
-                            'No.',
+                            '',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -625,7 +625,7 @@ class DetailReitState extends State<DetailReit> {
                             ),
                           ),
                           Text(
-                            'Name',
+                            'ชื่อ',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -633,7 +633,7 @@ class DetailReitState extends State<DetailReit> {
                             ),
                           ),
                           Text(
-                            'Percent',
+                            'เปอร์เซ็นต์',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -724,7 +724,7 @@ class DetailReitState extends State<DetailReit> {
         height: 25.0,
         child: RaisedButton(
           child: Text(
-            'Buy',
+            'ซื้อ',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,

@@ -60,11 +60,13 @@ class _ProfileState extends State<Profile> {
             boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]));
   }
 
-  Text showName(String name) {
-    return Text(
-      name,
-      style: TextStyle(
-          fontSize: 30.0, fontWeight: FontWeight.bold, fontFamily: 'Prompt'),
+  Container showName(String name) {
+    return Container(
+      child: Text(
+        name,
+        style: TextStyle(
+            fontSize: 30.0, fontWeight: FontWeight.bold, fontFamily: 'Prompt'),
+      ),
     );
   }
 
@@ -72,7 +74,7 @@ class _ProfileState extends State<Profile> {
     return Text(
       'Email : ' + email,
       style: TextStyle(
-          fontSize: 18.0, fontStyle: FontStyle.italic, fontFamily: 'Prompt'),
+          fontSize: 18.0, fontStyle: FontStyle.normal, fontFamily: 'Prompt'),
     );
   }
 
@@ -97,45 +99,41 @@ class _ProfileState extends State<Profile> {
                       fontFamily: 'Prompt'),
                 ),
               ),
-              body: new Stack(
-                children: <Widget>[
-                  ClipPath(
-                    clipBehavior: Clip.antiAlias,
-                    child: Container(
-                        decoration: new BoxDecoration(
-                      gradient: new LinearGradient(
-                          colors: [
-                            const Color(0xFFFFF3E0),
-                            const Color(0xFFEF6c00)
-                          ],
-                          begin: const FractionalOffset(0.0, 0.5),
-                          end: const FractionalOffset(0.1, 0.0),
-                          stops: [0.0, 5.0],
-                          tileMode: TileMode.clamp),
-                    )),
-                    // clipper: GetClipper(),
+              body: Container(
+                padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                      colors: [
+                        const Color(0xFFFFF3E0),
+                        const Color(0xFFEF6c00)
+                      ],
+                      begin: const FractionalOffset(0.0, 0.5),
+                      end: const FractionalOffset(0.1, 0.0),
+                      stops: [0.0, 5.0],
+                      tileMode: TileMode.clamp),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.10),
+                      showImage(snapshot.data.image),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05),
+                      showName(snapshot.data.fullName),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      showEmail(snapshot.data.email),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.15),
+                      buttonBack(),
+                    ],
                   ),
-                  Positioned(
-                      width: MediaQuery.of(context).size.width,
-                      top: MediaQuery.of(context).size.height * 0.10,
-                      child: Column(
-                        children: <Widget>[
-                          showImage(snapshot.data.image),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.10),
-                          showName(snapshot.data.fullName),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.02),
-                          showEmail(snapshot.data.email),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.20),
-                          buttonBack(),
-                        ],
-                      ))
-                ],
+                ),
               ),
             );
           }
@@ -148,22 +146,5 @@ class _ProfileState extends State<Profile> {
         }
       },
     );
-  }
-}
-
-class GetClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = new Path();
-
-    path.lineTo(0.0, size.height / 1.9);
-    path.lineTo(size.width + 500, 0.0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
   }
 }

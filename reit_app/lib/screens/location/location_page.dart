@@ -246,8 +246,8 @@ class _LocationPageState extends State<LocationPage> {
     );
   }
 
-  Padding columnButton() {
-    return Padding(
+  Container columnButton() {
+    return Container(
       padding: EdgeInsets.fromLTRB(0, 60, 12, 0),
       child: Align(
           alignment: Alignment.topRight,

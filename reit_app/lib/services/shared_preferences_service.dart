@@ -45,14 +45,6 @@ class SharedPreferencesService {
   Future saveLogout() async {
     await facebookLogin.logOut();
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    await preferences.remove(SharedPreferencesConfig.userId);
-    await preferences.remove(SharedPreferencesConfig.userName);
-    await preferences.remove(SharedPreferencesConfig.fullName);
-    await preferences.remove(SharedPreferencesConfig.email);
-    await preferences.remove(SharedPreferencesConfig.image);
-    await preferences.remove(SharedPreferencesConfig.site);
-    await preferences.remove(SharedPreferencesConfig.token);
     preferences.clear();
   }
 

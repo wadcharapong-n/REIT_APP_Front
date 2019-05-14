@@ -116,11 +116,12 @@ class _ProfileState extends State<Profile> {
                 ),
                 child: SingleChildScrollView(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.10),
+                          height: MediaQuery.of(context).size.height * 0.05),
                       showImage(snapshot.data.image),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.05),

@@ -522,23 +522,25 @@ class _LocationPageState extends State<LocationPage> {
                   ],
                 ),
                 body: Center(
-                  child: RaisedButton(
-                    child: const Text(
-                      "Connect GPS",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          fontFamily: 'Prompt'),
-                    ),
-                    color: Theme.of(context).accentColor,
-                    elevation: 4.0,
-                    splashColor: Colors.blueGrey,
-                    onPressed: () {
-                      _locationSubscription.cancel();
-                      initPlatformState();
-                    },
-                  ),
+                  child: (snapshot.data[0] == false)
+                      ? Center(
+                          child: Text(
+                            "กรุณาเปิดการเข้าถึงตำแหน่ง",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontFamily: "Prompt"),
+                          ),
+                        )
+                      : Center(
+                          child: Text(
+                            "กรุณาเปิดสัญญาณ GPS",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontFamily: "Prompt"),
+                          ),
+                        ),
                 ),
               );
             }

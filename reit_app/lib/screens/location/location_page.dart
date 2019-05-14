@@ -46,9 +46,6 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   initPlatformState() async {
-    await _locationService.changeSettings(
-        accuracy: LocationAccuracy.HIGH, interval: 1000);
-
     LocationData location;
 
     try {
@@ -57,7 +54,8 @@ class _LocationPageState extends State<LocationPage> {
         _permission = await _locationService.requestPermission();
         if (_permission) {
           location = await _locationService.getLocation();
-
+          await _locationService.changeSettings(
+              accuracy: LocationAccuracy.HIGH, interval: 1000);
           _locationSubscription = _locationService
               .onLocationChanged()
               .listen((LocationData result) async {
@@ -126,8 +124,8 @@ class _LocationPageState extends State<LocationPage> {
     );
 
     setState(() {
-      _isMarker = MarkerId(markerIdVal);
       _markers.clear();
+      _isMarker = MarkerId(markerIdVal);
       _markers[markerId] = marker;
     });
   }

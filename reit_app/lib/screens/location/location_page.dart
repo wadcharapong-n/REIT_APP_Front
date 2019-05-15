@@ -35,7 +35,6 @@ class _LocationPageState extends State<LocationPage> {
 
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   MarkerId _selectedMarker;
-  MarkerId _isMarker;
 
   final places = googleService.GoogleMapsPlaces(apiKey: AppConfig.googleApiKey);
 
@@ -131,7 +130,7 @@ class _LocationPageState extends State<LocationPage> {
 
     setState(() {
       _markers.clear();
-      _isMarker = MarkerId(markerIdVal);
+      _selectedMarker = MarkerId(markerIdVal);
       _markers[markerId] = marker;
     });
   }
@@ -140,12 +139,6 @@ class _LocationPageState extends State<LocationPage> {
     final Marker tappedMarker = _markers[markerId];
     if (tappedMarker != null) {
       setState(() {
-        if (_markers.containsKey(_selectedMarker)) {
-          final Marker resetOld = _markers[_selectedMarker]
-              .copyWith(iconParam: BitmapDescriptor.defaultMarker);
-          _markers[_selectedMarker] = resetOld;
-        }
-        _selectedMarker = markerId;
         final Marker newMarker = tappedMarker.copyWith(
           iconParam: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueGreen,
@@ -261,7 +254,7 @@ class _LocationPageState extends State<LocationPage> {
             child: Column(
               children: <Widget>[
                 SizedBox(width: 120, child: buttonFindReitLocation()),
-                (_markers[_isMarker] != null)
+                (_markers[_selectedMarker] != null)
                     ? SizedBox(width: 120, child: buttonFindReitMarker())
                     : SizedBox(),
               ],
@@ -303,13 +296,13 @@ class _LocationPageState extends State<LocationPage> {
         padding: const EdgeInsets.all(4.0),
         color: Colors.white.withOpacity(0.9),
         onPressed: () {
-          if (_markers[_isMarker] != null) {
+          if (_markers[_selectedMarker] != null) {
             mapController.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
                   bearing: 270.0,
-                  target: LatLng(_markers[_isMarker].position.latitude,
-                      _markers[_isMarker].position.longitude),
+                  target: LatLng(_markers[_selectedMarker].position.latitude,
+                      _markers[_selectedMarker].position.longitude),
                   tilt: 30.0,
                   zoom: 15.0,
                 ),
@@ -317,10 +310,10 @@ class _LocationPageState extends State<LocationPage> {
             );
             locationPageService
                 .getSearchAroundReit(
-                    _markers[_isMarker].position.latitude.toString(),
-                    _markers[_isMarker].position.longitude.toString())
+                    _markers[_selectedMarker].position.latitude.toString(),
+                    _markers[_selectedMarker].position.longitude.toString())
                 .then((result) {
-              _onMarkerTapped(_isMarker);
+              _onMarkerTapped(_selectedMarker);
               _showModalSheet(result);
             }).catchError(
                     (_) => {authenService.LogoutAndNavigateToLogin(context)});
@@ -329,8 +322,8 @@ class _LocationPageState extends State<LocationPage> {
         child: Text('Find Reit Around Marker'));
   }
 
-  _showModalSheet(Place place) {
-    showModalBottomSheet(
+  _showModalSheet(Place place) async {
+    final checkModel = await showModalBottomSheet(
         context: context,
         builder: (builder) {
           if (place.reit != null) {
@@ -497,6 +490,15 @@ class _LocationPageState extends State<LocationPage> {
             );
           }
         });
+
+    if (checkModel == null) {
+      final Marker tappedMarker = _markers[_selectedMarker];
+      final Marker newMarker =
+          tappedMarker.copyWith(iconParam: BitmapDescriptor.defaultMarker);
+      setState(() {
+        _markers[_selectedMarker] = newMarker;
+      });
+    }
   }
 
   @override

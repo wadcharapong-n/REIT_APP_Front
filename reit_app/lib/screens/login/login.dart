@@ -10,11 +10,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final loginService = Injector.getInjector().get<AuthenService>();
+  final facebookLogin = FacebookLogin();
   bool isLoggedIn = false;
   bool isLoading = false;
   String site;
-  var facebookLogin = FacebookLogin();
-  final loginService = Injector.getInjector().get<AuthenService>();
 
   void onLoginStatusChanged(bool isLoggedIn) {
     setState(() {

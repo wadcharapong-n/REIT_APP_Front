@@ -5,7 +5,6 @@ import 'package:reit_app/utils/shared_preferences_config.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class SharedPreferencesService {
-  var facebookLogin = FacebookLogin();
   Future<String> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -43,6 +42,7 @@ class SharedPreferencesService {
   }
 
   Future saveLogout() async {
+    final facebookLogin = FacebookLogin();
     await facebookLogin.logOut();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.clear();

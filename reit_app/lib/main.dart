@@ -26,8 +26,6 @@ class ModuleContainer {
     injector.map<SearchService>((i) => new SearchService(), isSingleton: true);
     injector.map<SplashService>((i) => new SplashService(), isSingleton: true);
     injector.map<ProfileService>((i) => new ProfileService(), isSingleton: true);
-    // injector.map<List<ReitFavorite>>((i) => new List<ReitFavorite>(), isSingleton: true);
-    // injector.map<DetailReit>((i) => DetailReit(reitDetailService: i.get<ReitDetailService>()));
     return injector;
   }
 }

@@ -3,21 +3,22 @@ import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/reit_detail_service.dart';
-import 'package:reit_app/loader.dart';
 import 'package:reit_app/services/favorite_services.dart';
+import 'package:reit_app/loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailReit extends StatefulWidget {
   final String reitSymbol;
-  DetailReit({Key key, this.reitSymbol});
+  final String comeForm;
+  DetailReit({Key key, this.reitSymbol, this.comeForm});
 
   @override
   DetailReitState createState() => DetailReitState();
 }
 
 class DetailReitState extends State<DetailReit> {
-  var reitDetailService = Injector.getInjector().get<ReitDetailService>();
-  var favoriteService = Injector.getInjector().get<FavoriteService>();
+  final reitDetailService = Injector.getInjector().get<ReitDetailService>();
+  final favoriteService = Injector.getInjector().get<FavoriteService>();
   final authenService = Injector.getInjector().get<AuthenService>();
   ReitDetail reitDetail;
   bool isFavoriteReit;
@@ -82,8 +83,14 @@ class DetailReitState extends State<DetailReit> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/Dashboard', (Route<dynamic> route) => false);
+            if (widget.comeForm == '/Location') {
+              Navigator.pop(context);
+            } else if (widget.comeForm == '/ReitAll') {
+              Navigator.pop(context);
+            } else {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/Dashboard', (Route<dynamic> route) => false);
+            }
           },
         ),
       ),
@@ -97,6 +104,7 @@ class DetailReitState extends State<DetailReit> {
               _getSection3(),
               _getSection4(),
               _getSection5(),
+              _getSection6(),
             ],
           ),
         ),
@@ -218,7 +226,10 @@ class DetailReitState extends State<DetailReit> {
                                 fontFamily: 'Prompt',
                               )),
                         ),
-                        Flexible(flex: 2, child: buttonBuy()),
+                        Flexible(
+                          flex: 2,
+                          child: buttonBuy(),
+                        ),
                       ],
                     ),
                     GestureDetector(
@@ -342,7 +353,7 @@ class DetailReitState extends State<DetailReit> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Expanded(
-            flex: 6,
+            flex: 7,
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -371,7 +382,7 @@ class DetailReitState extends State<DetailReit> {
             ),
           ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
@@ -424,6 +435,36 @@ class DetailReitState extends State<DetailReit> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text(
+                "วันที่ก่อตั้งบริษัท",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.establishmentDate,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                "วันที่จดทะเบียน",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.registrationDate,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
               Text(
                 "ผู้จัดการกองทรัสต์",
                 style: TextStyle(
@@ -586,7 +627,7 @@ class DetailReitState extends State<DetailReit> {
   }
 
   Container _getSection5() {
-    if (!(reitDetail.majorShareholders.isEmpty)) {
+    if (reitDetail.majorShareholders.isNotEmpty) {
       return new Container(
         padding: EdgeInsets.only(bottom: 10, top: 10),
         decoration: borderBottom,
@@ -659,6 +700,38 @@ class DetailReitState extends State<DetailReit> {
     } else {
       return Container();
     }
+  }
+
+  Container _getSection6() {
+    return new Container(
+      padding: EdgeInsets.only(bottom: 10, top: 10),
+      decoration: borderBottom,
+      child: Row(
+        children: <Widget>[
+          new Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "นโยบายเงินปันผล",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+              Text(
+                reitDetail.policy,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Sarabun',
+                ),
+              ),
+            ],
+          ))
+        ],
+      ),
+    );
   }
 
   TableRow _tableRowSection5(int index) {

@@ -1,45 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
-import 'package:reit_app/models/favorite_reit.dart';
+import 'package:reit_app/models/reit_detail.dart';
 import 'package:reit_app/screens/detail_reit/detail_reit.dart';
 import 'package:reit_app/services/authen_service.dart';
-import 'package:reit_app/services/favorite_services.dart';
-import 'package:reit_app/services/shared_preferences_service.dart';
+import 'package:reit_app/services/search_service.dart';
 
-class Favorite extends StatefulWidget {
-  final Function chaekIsEmptyReitAndSetState;
-  Favorite({Key key, this.chaekIsEmptyReitAndSetState});
-
+class ReitList extends StatefulWidget {
+  final String comeForm;
+  ReitList({Key key, this.comeForm});
   @override
-  FavoriteState createState() {
-    return FavoriteState();
-  }
+  ReitListState createState() => ReitListState();
 }
 
-class FavoriteState extends State<Favorite> {
-  final favoriteService = Injector.getInjector().get<FavoriteService>();
+class ReitListState extends State<ReitList> {
+  final reitListService = Injector.getInjector().get<SearchService>();
   final authenService = Injector.getInjector().get<AuthenService>();
-  List<FavoriteReit> favoriteReitList = List<FavoriteReit>();
+  List<ReitDetail> reitList = List<ReitDetail>();
 
   @override
   void initState() {
     super.initState();
-    getFavoriteReitAndSetState();
+    getReitAndSetState();
   }
 
-  getFavoriteReitAndSetState() {
-    favoriteService.getFavoriteReitByUserId().then((result) {
+  getReitAndSetState() {
+    reitListService.getReitAll().then((result) {
       setState(() {
-        favoriteReitList.clear();
-        result.forEach((data) {
-          favoriteReitList.add(data);
-        });
+        reitList = result;
       });
-      if (favoriteReitList.length > 0) {
-        widget.chaekIsEmptyReitAndSetState(false);
-      } else {
-        widget.chaekIsEmptyReitAndSetState(true);
-      }
     }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
   }
 
@@ -51,34 +39,29 @@ class FavoriteState extends State<Favorite> {
       },
       child: Expanded(
         child: ListView.builder(
-            itemBuilder: (context, index) => ReitRow(
-                favoriteReit: favoriteReitList[index],
-                getFavoriteReitAndSetState: getFavoriteReitAndSetState),
-            itemCount: favoriteReitList.length,
+            itemBuilder: (context, index) => ReitListRow(
+                  reitList: reitList[index],
+                  comeForm: widget.comeForm,
+                ),
+            itemCount: reitList.length,
             padding: EdgeInsets.symmetric(vertical: 16.0)),
       ),
     );
   }
 }
 
-class ReitRow extends StatefulWidget {
-  final FavoriteReit favoriteReit;
-  final Function getFavoriteReitAndSetState;
-
-  const ReitRow({Key key, this.favoriteReit, this.getFavoriteReitAndSetState})
-      : super(key: key);
+class ReitListRow extends StatefulWidget {
+  final ReitDetail reitList;
+  final String comeForm;
+  const ReitListRow({Key key, this.reitList, this.comeForm}) : super(key: key);
 
   @override
-  ReitRowState createState() {
-    return ReitRowState();
+  ReitListRowState createState() {
+    return ReitListRowState();
   }
 }
 
-class ReitRowState extends State<ReitRow> {
-  final favoriteService = Injector.getInjector().get<FavoriteService>();
-  final sharedPreferencesService =
-      Injector.getInjector().get<SharedPreferencesService>();
-  final authenService = Injector.getInjector().get<AuthenService>();
+class ReitListRowState extends State<ReitListRow> {
   bool isEllipsis = true;
   void toggleEllipsis() {
     setState(() {
@@ -94,11 +77,10 @@ class ReitRowState extends State<ReitRow> {
           context,
           MaterialPageRoute(
               builder: (context) => DetailReit(
-                    reitSymbol: widget.favoriteReit.symbol,
+                    reitSymbol: widget.reitList.symbol,
+                    comeForm: widget.comeForm,
                   )),
-        ).then((result) {
-          widget.getFavoriteReitAndSetState();
-        });
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
@@ -139,42 +121,26 @@ class ReitRowState extends State<ReitRow> {
     );
   }
 
-  Row _getSection1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        reitSymbol(),
-        favoriteStar(),
-      ],
+  Padding _getSection1() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 10, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          reitSymbol(),
+        ],
+      ),
     );
   }
 
   Text reitSymbol() {
     return Text(
-      widget.favoriteReit.symbol,
+      widget.reitList.symbol,
       style: TextStyle(
           color: Colors.black,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
           fontFamily: 'Quicksand'),
-    );
-  }
-
-  IconButton favoriteStar() {
-    return IconButton(
-      icon: Icon(
-        Icons.star,
-        color: Colors.blue,
-        size: 30,
-      ),
-      tooltip: 'Delete Favorite',
-      onPressed: () {
-        favoriteService
-            .deleteReitFavorite(widget.favoriteReit.symbol)
-            .then((result) {
-          widget.getFavoriteReitAndSetState();
-        }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
-      },
     );
   }
 
@@ -194,21 +160,24 @@ class ReitRowState extends State<ReitRow> {
 
   GestureDetector getTrustNameTh() {
     return GestureDetector(
-        onTap: toggleEllipsis,
-        child: isEllipsis
-            ? Text(widget.favoriteReit.trustNameTh,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Baijamjuree'),
-                overflow: TextOverflow.ellipsis)
-            : Text(widget.favoriteReit.trustNameTh,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Baijamjuree')));
+      onTap: toggleEllipsis,
+      child: isEllipsis
+          ? Text(widget.reitList.trustNameTh,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Baijamjuree'),
+              overflow: TextOverflow.ellipsis)
+          : Text(
+              widget.reitList.trustNameTh,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Baijamjuree'),
+            ),
+    );
   }
 
   Row _getSection3() {
@@ -229,18 +198,17 @@ class ReitRowState extends State<ReitRow> {
                       children: <Widget>[
                         _reitPriceMaxMin(
                             text: 'สูงสุด : ',
-                            value: widget.favoriteReit.maxPriceOfDay,
+                            value: widget.reitList.maxPriceOfDay,
                             color: Colors.blue),
                         _reitPriceMaxMin(
                             text: 'ต่ำสุด : ',
-                            value: widget.favoriteReit.minPriceOfDay,
+                            value: widget.reitList.minPriceOfDay,
                             color: Colors.red),
                       ],
                     ),
                   ),
                   _reitPriceOfDay(
-                      value: widget.favoriteReit.priceOfDay,
-                      color: Colors.green),
+                      value: widget.reitList.priceOfDay, color: Colors.green),
                 ]),
           ),
         ),
@@ -275,13 +243,14 @@ class ReitRowState extends State<ReitRow> {
 
   Expanded _reitPriceOfDay({String value, Color color}) {
     return Expanded(
-        flex: 4,
-        child: Text(value,
-            style: TextStyle(
-                color: color,
-                fontSize: 26.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Quicksand'),
-            textAlign: TextAlign.right));
+      flex: 4,
+      child: Text(value,
+          style: TextStyle(
+              color: color,
+              fontSize: 26.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Quicksand'),
+          textAlign: TextAlign.right),
+    );
   }
 }

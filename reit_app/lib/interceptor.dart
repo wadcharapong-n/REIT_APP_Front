@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
@@ -9,10 +8,12 @@ import 'dart:io';
 import 'package:reit_app/services/shared_preferences_service.dart';
 
 class CustomHttpClient extends IOClient {
-  final sharedPreferencesService = Injector.getInjector().get<SharedPreferencesService>();
-  final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+  final sharedPreferencesService =
+      Injector.getInjector().get<SharedPreferencesService>();
+  final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
   CustomHttpClient() : super();
-  
+
   Future<Map<String, String>> getHeader() async {
     var token = await sharedPreferencesService.getToken();
     final Map<String, String> _headers = {
@@ -36,13 +37,15 @@ class CustomHttpClient extends IOClient {
 
   @override
   Future<Response> get(Object url, {Map<String, String> headers}) async {
-    var response = await super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
-  
-    if(response.statusCode == 401) {
+    var response = await super.get(url,
+        headers: (headers ?? await getHeader())..addAll(await getHeader()));
+
+    if (response.statusCode == 401) {
       var refreshToken = await new AuthenService().resfrehToken();
-      if(refreshToken.statusCode == 200) {
-        response = await super.get(url, headers: (headers ?? await getHeader())..addAll(await getHeader()));
-      } 
+      if (refreshToken.statusCode == 200) {
+        response = await super.get(url,
+            headers: (headers ?? await getHeader())..addAll(await getHeader()));
+      }
     }
     return response;
   }
@@ -58,12 +61,11 @@ class CustomMultipartRequest extends MultipartRequest {
   Future<StreamedResponse> send() async {
     try {
       var response = await client.send(this);
-      if(response.statusCode == 401) {
+      if (response.statusCode == 401) {
         var refreshToken = await new AuthenService().resfrehToken();
-        if(refreshToken.statusCode == 200) {
+        if (refreshToken.statusCode == 200) {
           response = await client.send(this);
-        } else {
-        }
+        } else {}
       }
       var stream = onDone(response.stream, client.close);
 
@@ -84,8 +86,8 @@ class CustomMultipartRequest extends MultipartRequest {
   }
 
   Stream<T> onDone<T>(Stream<T> stream, void onDone()) =>
-    stream.transform(new StreamTransformer.fromHandlers(handleDone: (sink) {
-      sink.close();
-      onDone();
-    }));
+      stream.transform(new StreamTransformer.fromHandlers(handleDone: (sink) {
+        sink.close();
+        onDone();
+      }));
 }

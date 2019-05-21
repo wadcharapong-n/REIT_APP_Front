@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:reit_app/screens/dashboard/favorite.dart';
+import 'package:reit_app/screens/dashboard/reitlist.dart';
 import 'package:reit_app/screens/search/search.dart';
 import 'package:reit_app/services/authen_service.dart';
 import 'package:reit_app/services/favorite_services.dart';
@@ -14,11 +15,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  bool isEmptyReit = true;
   final favoriteService = Injector.getInjector().get<FavoriteService>();
   final sharedPreferencesService =
       Injector.getInjector().get<SharedPreferencesService>();
   final authenService = Injector.getInjector().get<AuthenService>();
+  bool isEmptyReit = false;
 
   @override
   void initState() {
@@ -57,7 +58,10 @@ class DashboardState extends State<Dashboard> {
       ),
       actions: <Widget>[
         PopupMenuButton(
-            icon: Icon(Icons.account_circle , size: 38,),
+            icon: Icon(
+              Icons.menu,
+              size: 38,
+            ),
             itemBuilder: (_) => <PopupMenuItem<String>>[
                   PopupMenuItem<String>(
                       child: Row(
@@ -150,20 +154,78 @@ class DashboardState extends State<Dashboard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 5.0),
-          child: Text(
-            'รายการที่สนใจ',
-            style: TextStyle(
-                fontSize: 22.0,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'Prompt'),
-            textAlign: TextAlign.left,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, 0, 0, 5),
+              child: Text(
+                'รายการที่สนใจ',
+                style: TextStyle(
+                    fontSize: 22.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Prompt'),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 24, 0),
+              child: ButtonTheme(
+                padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
+                minWidth: 50.0,
+                height: 25.0,
+                child: RaisedButton(
+                  child: Text(
+                    'กองทรัสต์ทั้งหมด',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Prompt',
+                    ),
+                  ),
+                  color: Colors.blue,
+                  elevation: 4.0,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/ReitAll');
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
         Container(
             margin: EdgeInsets.fromLTRB(24, 0, 24, 0),
+            height: 1.0,
+            width: 400.0,
+            color: Colors.black),
+      ],
+    );
+  }
+
+  Column headerReitList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, 5, 0, 5),
+              child: Text(
+                'กองทรัสต์ทั้งหมด',
+                style: TextStyle(
+                    fontSize: 22.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Prompt'),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ],
+        ),
+        Container(
+            margin: EdgeInsets.fromLTRB(24, 5, 24, 0),
             height: 1.0,
             width: 400.0,
             color: Colors.black),
@@ -192,11 +254,11 @@ class DashboardState extends State<Dashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             inputSearch(),
-            isEmptyReit == false ? headerFavorite() : Text(''),
+            isEmptyReit == false ? headerFavorite() : headerReitList(),
             isEmptyReit == false
                 ? Favorite(
                     chaekIsEmptyReitAndSetState: chaekIsEmptyReitAndSetState)
-                : Text(''),
+                : ReitList(),
           ],
         ),
       ]),

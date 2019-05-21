@@ -123,7 +123,11 @@ class _LocationPageState extends State<LocationPage> {
             .getSearchAroundReit(
                 point.latitude.toString(), point.longitude.toString())
             .then((result) {
-          _showModalSheet(result);
+          if (result.reit == null) {
+            _showModalSheetNull(false);
+          } else {
+            _showModalSheet(result, false);
+          }
         }).catchError((_) => {authenService.LogoutAndNavigateToLogin(context)});
       },
     );
@@ -154,7 +158,8 @@ class _LocationPageState extends State<LocationPage> {
       icon: Icon(Icons.arrow_back),
       color: Colors.black,
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/Dashboard', (Route<dynamic> route) => false);
       },
     );
   }
@@ -254,6 +259,9 @@ class _LocationPageState extends State<LocationPage> {
             child: Column(
               children: <Widget>[
                 SizedBox(width: 120, child: buttonFindReitLocation()),
+                SizedBox(
+                  height: 5,
+                ),
                 (_markers[_selectedMarker] != null)
                     ? SizedBox(width: 120, child: buttonFindReitMarker())
                     : SizedBox(),
@@ -283,12 +291,16 @@ class _LocationPageState extends State<LocationPage> {
               .getSearchAroundReit(_currentLocation.latitude.toString(),
                   _currentLocation.longitude.toString())
               .then((result) {
-            _showModalSheet(result);
+            if (result.reit == null) {
+              _showModalSheetNull(true);
+            } else {
+              _showModalSheet(result, true);
+            }
           }).catchError(
                   (_) => {authenService.LogoutAndNavigateToLogin(context)});
         },
         materialTapTargetSize: MaterialTapTargetSize.padded,
-        child: Text('Find Reit Current Location'));
+        child: Text('ค้นหากองทรัสต์รอบๆ ตำแหน่งปัจจุบัน'));
   }
 
   RaisedButton buttonFindReitMarker() {
@@ -314,16 +326,61 @@ class _LocationPageState extends State<LocationPage> {
                     _markers[_selectedMarker].position.longitude.toString())
                 .then((result) {
               _onMarkerTapped(_selectedMarker);
-              _showModalSheet(result);
+              if (result.reit == null) {
+                _showModalSheetNull(false);
+              } else {
+                _showModalSheet(result, false);
+              }
             }).catchError(
                     (_) => {authenService.LogoutAndNavigateToLogin(context)});
           }
         },
-        child: Text('Find Reit Around Marker'));
+        child: Text('ค้นหากองทรัสต์รอบๆ เครื่องหมาย'));
   }
 
-  _showModalSheet(Place place) async {
-    final checkModel = await showModalBottomSheet(
+  _showModalSheetNull(bool checkFind) async {
+    var checkModel = await showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 100,
+            padding: EdgeInsets.all(15),
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 10,
+                      child: Text("ไม่พบอสังหาริมทรัพย์",
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Prompt',
+                          )),
+                    ),
+                  ],
+                )),
+              ],
+            ),
+          );
+        });
+
+    if (checkModel == null && checkFind == false) {
+      final Marker tappedMarker = _markers[_selectedMarker];
+      final Marker newMarker =
+          tappedMarker.copyWith(iconParam: BitmapDescriptor.defaultMarker);
+      setState(() {
+        _markers[_selectedMarker] = newMarker;
+      });
+    }
+  }
+
+  _showModalSheet(Place place, bool checkFind) async {
+    var checkModel = await showModalBottomSheet(
         context: context,
         builder: (builder) {
           if (place.reit != null) {
@@ -372,6 +429,7 @@ class _LocationPageState extends State<LocationPage> {
                                   MaterialPageRoute(
                                       builder: (context) => DetailReit(
                                             reitSymbol: place.reit[0].symbol,
+                                            comeForm: '/Location',
                                           )),
                                 );
                               },
@@ -385,30 +443,6 @@ class _LocationPageState extends State<LocationPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          // Text(
-                          //   "ชื่อสินทรัพย์",
-                          //   style: TextStyle(
-                          //     fontSize: 18,
-                          //     fontWeight: FontWeight.bold,
-                          //     fontFamily: 'Sarabun',
-                          //   ),
-                          // ),
-                          Text(
-                            place.name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
-                          // Text(
-                          //   "ชื่อ Reit",
-                          //   style: TextStyle(
-                          //     fontSize: 18,
-                          //     fontWeight: FontWeight.bold,
-                          //     fontFamily: 'Sarabun',
-                          //   ),
-                          // ),
                           Text(
                             place.reit[0].trustNameTh,
                             style: TextStyle(
@@ -425,22 +459,40 @@ class _LocationPageState extends State<LocationPage> {
                               fontFamily: 'Sarabun',
                             ),
                           ),
-                          // Text(
-                          //   "ที่อยู่",
-                          //   style: TextStyle(
-                          //     fontSize: 18,
-                          //     fontWeight: FontWeight.bold,
-                          //     fontFamily: 'Sarabun',
-                          //   ),
-                          // ),
-                          // Text(
-                          //   place.address,
-                          //   style: TextStyle(
-                          //     fontWeight: FontWeight.normal,
-                          //     fontSize: 16,
-                          //     fontFamily: 'Sarabun',
-                          //   ),
-                          // ),
+                          SizedBox(height: 7),
+                          Text(
+                            "ชื่อสินทรัพย์",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            place.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 18,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          SizedBox(height: 7),
+                          Text(
+                            "ที่อยู่สินทรัพย์",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
+                          Text(
+                            place.address,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              fontFamily: 'Sarabun',
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -465,33 +517,10 @@ class _LocationPageState extends State<LocationPage> {
                 ),
               ),
             );
-          } else {
-            return Container(
-              height: 100,
-              margin: EdgeInsets.all(15),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text("ไม่พบอสังหาริมทรัพย์",
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Prompt',
-                          )),
-                    ],
-                  )),
-                ],
-              ),
-            );
           }
         });
 
-    if (checkModel == null) {
+    if (checkModel == null && checkFind == false) {
       final Marker tappedMarker = _markers[_selectedMarker];
       final Marker newMarker =
           tappedMarker.copyWith(iconParam: BitmapDescriptor.defaultMarker);
@@ -520,7 +549,7 @@ class _LocationPageState extends State<LocationPage> {
               return Scaffold(
                 appBar: AppBar(
                   centerTitle: true,
-                  title: showTextAppBar('ค้นหาด้วยแผนที่'),
+                  title: showTextAppBar('ค้นหาด้วยค้นหาด้วยตำแหน่ง'),
                   leading: buttonBackPage(),
                   backgroundColor: Colors.white,
                   actions: <Widget>[
@@ -555,7 +584,7 @@ class _LocationPageState extends State<LocationPage> {
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: showTextAppBar('ค้นหาด้วยแผนที่'),
+              title: showTextAppBar('ค้นหาด้วยตำแหน่ง'),
               leading: buttonBackPage(),
               backgroundColor: Colors.orange[600],
               actions: <Widget>[
@@ -567,7 +596,7 @@ class _LocationPageState extends State<LocationPage> {
                 ? Stack(
                     children: <Widget>[
                       googleMap(),
-                      // columnButton(),
+                      columnButton(),
                     ],
                   )
                 : Center(

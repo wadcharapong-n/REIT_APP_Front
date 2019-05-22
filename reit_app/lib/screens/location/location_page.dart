@@ -476,23 +476,23 @@ class _LocationPageState extends State<LocationPage> {
                               fontFamily: 'Sarabun',
                             ),
                           ),
-                          SizedBox(height: 7),
-                          Text(
-                            "ที่อยู่สินทรัพย์",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
-                          Text(
-                            place.address,
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16,
-                              fontFamily: 'Sarabun',
-                            ),
-                          ),
+                          // SizedBox(height: 7),
+                          // Text(
+                          //   "ที่อยู่สินทรัพย์",
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeight.bold,
+                          //     fontFamily: 'Sarabun',
+                          //   ),
+                          // ),
+                          // Text(
+                          //   place.address,
+                          //   style: TextStyle(
+                          //     fontWeight: FontWeight.normal,
+                          //     fontSize: 16,
+                          //     fontFamily: 'Sarabun',
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -596,7 +596,7 @@ class _LocationPageState extends State<LocationPage> {
                 ? Stack(
                     children: <Widget>[
                       googleMap(),
-                      columnButton(),
+                      // columnButton(),
                     ],
                   )
                 : Center(

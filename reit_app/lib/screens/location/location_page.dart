@@ -581,27 +581,34 @@ class _LocationPageState extends State<LocationPage> {
             }
           }
 
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: showTextAppBar('ค้นหาด้วยตำแหน่ง'),
-              leading: buttonBackPage(),
-              backgroundColor: Colors.orange[600],
-              actions: <Widget>[
-                buttonRefresh(),
-                buttonMapSearch(),
-              ],
+          return WillPopScope(
+            onWillPop: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/Dashboard', (Route<dynamic> route) => false);
+              return Future.value(false);
+              },
+            child: Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: showTextAppBar('ค้นหาด้วยตำแหน่ง'),
+                leading: buttonBackPage(),
+                backgroundColor: Colors.orange[600],
+                actions: <Widget>[
+                  buttonRefresh(),
+                  buttonMapSearch(),
+                ],
+              ),
+              body: (_currentLocation != null)
+                  ? Stack(
+                      children: <Widget>[
+                        googleMap(),
+                        // columnButton(),
+                      ],
+                    )
+                  : Center(
+                      child: Loader(),
+                    ),
             ),
-            body: (_currentLocation != null)
-                ? Stack(
-                    children: <Widget>[
-                      googleMap(),
-                      // columnButton(),
-                    ],
-                  )
-                : Center(
-                    child: Loader(),
-                  ),
           );
         });
   }

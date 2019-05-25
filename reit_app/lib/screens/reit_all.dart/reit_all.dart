@@ -70,31 +70,38 @@ class ReitAllState extends State<ReitAll> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarDashbord(),
-      body: Stack(children: <Widget>[
-        ClipPath(
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-              decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [const Color(0xFFFFF3E0), const Color(0xFFFB8c00)],
-                begin: const FractionalOffset(1.0, 1.0),
-                end: const FractionalOffset(0.6, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-          )),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            headerReitList(),
-            ReitList(
-              comeForm: '/ReitAll',
-            ),
-          ],
-        ),
-      ]),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/Dashboard', (Route<dynamic> route) => false);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: appBarDashbord(),
+        body: Stack(children: <Widget>[
+          ClipPath(
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+                decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [const Color(0xFFFFF3E0), const Color(0xFFFB8c00)],
+                  begin: const FractionalOffset(1.0, 1.0),
+                  end: const FractionalOffset(0.6, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            )),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              headerReitList(),
+              ReitList(
+                comeForm: '/ReitAll',
+              ),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }

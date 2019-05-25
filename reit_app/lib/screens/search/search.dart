@@ -140,18 +140,25 @@ class _SuggestionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: suggestions.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          contentPadding: EdgeInsets.fromLTRB(20, 5, 5, 0),
-          title: Text(suggestions[index].symbol),
-          subtitle: Text(suggestions[index].trustNameTh),
-          onTap: () {
-            onSelected(suggestions[index].symbol);
-          },
-        );
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/Dashboard', (Route<dynamic> route) => false);
+        return Future.value(false);
       },
+      child: ListView.builder(
+        itemCount: suggestions.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            contentPadding: EdgeInsets.fromLTRB(20, 5, 5, 0),
+            title: Text(suggestions[index].symbol),
+            subtitle: Text(suggestions[index].trustNameTh),
+            onTap: () {
+              onSelected(suggestions[index].symbol);
+            },
+          );
+        },
+      ),
     );
   }
 }

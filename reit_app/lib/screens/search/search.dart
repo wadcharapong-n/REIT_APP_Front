@@ -36,6 +36,7 @@ class Search extends SearchDelegate {
                     MaterialPageRoute(
                         builder: (context) => DetailReit(
                               reitSymbol: symbol,
+                              comeForm: '/Search',
                             )),
                   );
                 },

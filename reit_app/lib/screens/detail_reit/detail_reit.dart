@@ -61,51 +61,65 @@ class DetailReitState extends State<DetailReit> {
       );
     }
 
-    return new Scaffold(
-      backgroundColor: Colors.white,
-      appBar: new AppBar(
-        elevation: 2,
-        centerTitle: true,
-        title: Text(
-          "รายละเอียด",
-          style: const TextStyle(
+    return WillPopScope(
+      onWillPop: () {
+        if (widget.comeForm == '/Location') {
+          Navigator.of(context).pop();
+        } else if (widget.comeForm == '/ReitAll') {
+          Navigator.of(context).pop();
+        } else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/Dashboard', (Route<dynamic> route) => false);
+        }
+
+        return Future.value(false);
+      },
+      child: new Scaffold(
+        backgroundColor: Colors.white,
+        appBar: new AppBar(
+          elevation: 2,
+          centerTitle: true,
+          title: Text(
+            "รายละเอียด",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 22.0,
+              fontFamily: 'Prompt',
+            ),
+          ),
+          backgroundColor: Colors.orange[600],
+          actions: <Widget>[
+            isFavoriteReit == true ? iconDeleteFavorite() : iconAddFavorite()
+          ],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
             color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 22.0,
-            fontFamily: 'Prompt',
+            onPressed: () {
+              if (widget.comeForm == '/Location') {
+                Navigator.pop(context);
+              } else if (widget.comeForm == '/ReitAll') {
+                Navigator.pop(context);
+              } else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/Dashboard', (Route<dynamic> route) => false);
+              }
+            },
           ),
         ),
-        backgroundColor: Colors.orange[600],
-        actions: <Widget>[
-          isFavoriteReit == true ? iconDeleteFavorite() : iconAddFavorite()
-        ],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.white,
-          onPressed: () {
-            if (widget.comeForm == '/Location') {
-              Navigator.pop(context);
-            } else if (widget.comeForm == '/ReitAll') {
-              Navigator.pop(context);
-            } else {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/Dashboard', (Route<dynamic> route) => false);
-            }
-          },
-        ),
-      ),
-      body: new Container(
-        margin: EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[
-              _getSection1(),
-              _getSection2(),
-              _getSection3(),
-              _getSection4(),
-              _getSection5(),
-              _getSection6(),
-            ],
+        body: new Container(
+          margin: EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: new Column(
+              children: <Widget>[
+                _getSection1(),
+                _getSection2(),
+                _getSection3(),
+                _getSection4(),
+                _getSection5(),
+                _getSection6(),
+              ],
+            ),
           ),
         ),
       ),
